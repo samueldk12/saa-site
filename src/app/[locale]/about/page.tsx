@@ -17,7 +17,7 @@ import {
   FaBuilding,
   FaCalendarAlt
 } from "react-icons/fa";
-import { SiPython, SiPhp, SiNodedotjs, SiFastapi, SiGo, SiPostgresql, SiMongodb, SiApachekafka, SiApachespark, SiAmazonaws, SiDocker, SiKubernetes, SiTerraform } from "react-icons/si";
+import { SiPython, SiPhp, SiNodedotjs, SiFastapi, SiGo, SiPostgresql, SiMongodb, SiApachekafka, SiApachespark, SiAmazon, SiDocker, SiKubernetes, SiTerraform } from "react-icons/si";
 
 export default function About() {
   const { locale } = useParams();
