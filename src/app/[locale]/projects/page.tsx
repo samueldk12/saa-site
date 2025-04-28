@@ -194,6 +194,117 @@ const formatProjectName = (name: string) => {
   return formattedName;
 };
 
+// Mapeamento de tecnologias para cores específicas
+const getTechColor = (tech: string): { bg: string, bgDark: string, text: string, textDark: string } => {
+  const normalizedTech = tech.toLowerCase();
+  const techColors: Record<string, { bg: string, bgDark: string, text: string, textDark: string }> = {
+    // Linguagens
+    'python': { 
+      bg: 'bg-blue-50', 
+      bgDark: 'bg-blue-900/20', 
+      text: 'text-blue-700', 
+      textDark: 'text-blue-300' 
+    },
+    'typescript': { 
+      bg: 'bg-indigo-50', 
+      bgDark: 'bg-indigo-900/20', 
+      text: 'text-indigo-700', 
+      textDark: 'text-indigo-300' 
+    },
+    'javascript': { 
+      bg: 'bg-yellow-50', 
+      bgDark: 'bg-yellow-900/20', 
+      text: 'text-yellow-700', 
+      textDark: 'text-yellow-300' 
+    },
+    'golang': { 
+      bg: 'bg-cyan-50', 
+      bgDark: 'bg-cyan-900/20', 
+      text: 'text-cyan-700', 
+      textDark: 'text-cyan-300' 
+    },
+    // Frameworks e ferramentas
+    'fastapi': { 
+      bg: 'bg-green-50', 
+      bgDark: 'bg-green-900/20', 
+      text: 'text-green-700', 
+      textDark: 'text-green-300' 
+    },
+    'node.js': { 
+      bg: 'bg-emerald-50', 
+      bgDark: 'bg-emerald-900/20', 
+      text: 'text-emerald-700', 
+      textDark: 'text-emerald-300' 
+    },
+    'docker': { 
+      bg: 'bg-sky-50', 
+      bgDark: 'bg-sky-900/20', 
+      text: 'text-sky-700', 
+      textDark: 'text-sky-300' 
+    },
+    // Bancos de dados
+    'mongodb': { 
+      bg: 'bg-green-50', 
+      bgDark: 'bg-green-900/20', 
+      text: 'text-green-700', 
+      textDark: 'text-green-300' 
+    },
+    'postgresql': { 
+      bg: 'bg-blue-50', 
+      bgDark: 'bg-blue-900/20', 
+      text: 'text-blue-700', 
+      textDark: 'text-blue-300' 
+    },
+    // Categorias
+    'restful api': { 
+      bg: 'bg-violet-50', 
+      bgDark: 'bg-violet-900/20', 
+      text: 'text-violet-700', 
+      textDark: 'text-violet-300' 
+    },
+    'machine learning': { 
+      bg: 'bg-purple-50', 
+      bgDark: 'bg-purple-900/20', 
+      text: 'text-purple-700', 
+      textDark: 'text-purple-300' 
+    },
+    'algorithms': { 
+      bg: 'bg-rose-50', 
+      bgDark: 'bg-rose-900/20', 
+      text: 'text-rose-700', 
+      textDark: 'text-rose-300' 
+    },
+    'cli': { 
+      bg: 'bg-slate-50', 
+      bgDark: 'bg-slate-900/20', 
+      text: 'text-slate-700', 
+      textDark: 'text-slate-300' 
+    },
+    'game dev': { 
+      bg: 'bg-red-50', 
+      bgDark: 'bg-red-900/20', 
+      text: 'text-red-700', 
+      textDark: 'text-red-300' 
+    },
+    // Default para outras tecnologias
+    'default': { 
+      bg: 'bg-gray-50', 
+      bgDark: 'bg-gray-800/20', 
+      text: 'text-gray-700', 
+      textDark: 'text-gray-300' 
+    }
+  };
+
+  // Tentativa de correspondência para cada tecnologia
+  for (const [key, value] of Object.entries(techColors)) {
+    if (normalizedTech.includes(key)) {
+      return value;
+    }
+  }
+
+  return techColors.default;
+};
+
 export default function Projects() {
   const { locale } = useParams();
   const t = getTranslations(locale as string);
@@ -321,14 +432,17 @@ export default function Projects() {
         </p>
         
         <div className="flex flex-wrap gap-2 mb-4">
-          {project.technologies.map((tech: string) => (
-            <span 
-              key={`${project.id}-${tech}`}
-              className={`px-3 py-1 bg-${project.color}-100 dark:bg-${project.color}-800/30 text-${project.color}-800 dark:text-${project.color}-300 rounded-full text-xs font-medium`}
-            >
-              {tech}
-            </span>
-          ))}
+          {project.technologies.map((tech: string) => {
+            const techColor = getTechColor(tech);
+            return (
+              <span 
+                key={`${project.id}-${tech}`}
+                className={`px-3 py-1 ${techColor.bg} dark:${techColor.bgDark} ${techColor.text} dark:${techColor.textDark} rounded-full text-xs font-medium`}
+              >
+                {tech}
+              </span>
+            );
+          })}
         </div>
       </div>
       
@@ -414,14 +528,17 @@ export default function Projects() {
             <div className="mb-8">
               <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">{t.projects?.technologies || 'Tecnologias'}</h3>
               <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech: string) => (
-                  <span 
-                    key={`modal-${project.id}-${tech}`}
-                    className={`px-3 py-1 bg-${project.color}-100 dark:bg-${project.color}-800/30 text-${project.color}-800 dark:text-${project.color}-300 rounded-full text-sm font-medium`}
-                  >
-                    {tech}
-                  </span>
-                ))}
+                {project.technologies.map((tech: string) => {
+                  const techColor = getTechColor(tech);
+                  return (
+                    <span 
+                      key={`modal-${project.id}-${tech}`}
+                      className={`px-3 py-1.5 ${techColor.bg} dark:${techColor.bgDark} ${techColor.text} dark:${techColor.textDark} rounded-full text-sm font-medium`}
+                    >
+                      {tech}
+                    </span>
+                  );
+                })}
               </div>
             </div>
             
