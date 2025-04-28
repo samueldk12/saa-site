@@ -198,23 +198,275 @@ body {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  @apply dark:bg-gray-800;
+  background: transparent;
+  margin: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 5px;
-  @apply dark:bg-gray-600;
+  background: rgba(var(--primary), 0.5);
+  border-radius: 4px;
+  transition: background 0.3s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
-  @apply dark:bg-gray-500;
+  background: rgba(var(--primary), 0.7);
+}
+
+/* Utility Classes */
+.card {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-md p-6;
+}
+
+.card:hover {
+  @apply shadow-lg transition-shadow duration-300;
+}
+
+.btn-primary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md transition-colors;
+}
+
+.btn-accent {
+  @apply bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-md transition-colors;
+}
+
+.btn-outline {
+  @apply border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-md transition-colors;
+}
+
+.nav-link {
+  @apply relative text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors;
+}
+
+.nav-link::after {
+  @apply content-[''] absolute w-0 h-0.5 bg-blue-600 dark:bg-blue-400 left-0 -bottom-1 transition-all duration-300;
+}
+
+.nav-link:hover::after {
+  @apply w-full;
+}
+
+.nav-link-active {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+.nav-link-active::after {
+  @apply w-full;
+}
+
+.section-title {
+  @apply text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-white;
+}
+
+.section-subtitle {
+  @apply text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-3xl;
+}
+
+.skill-badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+}
+
+.timeline-item {
+  @apply relative pl-8 pb-8 border-l-2 border-gray-300 dark:border-gray-700;
+}
+
+.timeline-dot {
+  @apply absolute -left-1.5 w-4 h-4 rounded-full bg-blue-600 dark:bg-blue-500;
+}
+
+.timeline-date {
+  @apply text-sm font-medium text-gray-500 dark:text-gray-400 mb-1;
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r;
+}
+
+.gradient-text-primary {
+  @apply from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400;
+}
+
+.gradient-bg {
+  @apply bg-gradient-to-r;
+}
+
+.gradient-bg-primary {
+  @apply from-blue-600 to-indigo-600;
+}
+
+.skill-bar {
+  @apply w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden;
+}
+
+.skill-progress {
+  @apply h-full bg-blue-600 dark:bg-blue-500 rounded-full;
+  transition: width 1s ease-in-out;
+}
+
+/* Hover effects for backgrounds */
+.bg-blue-600 { @apply hover:bg-blue-700; }
+.bg-purple-600 { @apply hover:bg-purple-700; }
+.bg-green-600 { @apply hover:bg-green-700; }
+.bg-cyan-600 { @apply hover:bg-cyan-700; }
+.bg-amber-600 { @apply hover:bg-amber-700; }
+.bg-red-600 { @apply hover:bg-red-700; }
+.bg-orange-600 { @apply hover:bg-orange-700; }
+
+/* Gradient backgrounds */
+.gradient-blue {
+  @apply bg-gradient-to-r from-blue-600 to-indigo-600;
+}
+
+.gradient-purple {
+  @apply bg-gradient-to-r from-purple-600 to-pink-600;
+}
+
+.gradient-green {
+  @apply bg-gradient-to-r from-green-600 to-teal-600;
+}
+
+.gradient-red {
+  @apply bg-gradient-to-r from-red-600 to-pink-600;
+}
+
+.gradient-amber {
+  @apply bg-gradient-to-r from-amber-600 to-orange-600;
+}
+
+.gradient-orange {
+  @apply bg-gradient-to-r from-orange-600 to-red-600;
+}
+
+.gradient-cyan {
+  @apply bg-gradient-to-r from-cyan-600 to-blue-600;
+}
+
+/* Responsive padding classes */
+.p-responsive {
+  @apply p-4 sm:p-6 md:p-8 lg:p-10;
+}
+
+.py-responsive {
+  @apply py-4 sm:py-6 md:py-8 lg:py-10;
+}
+
+.px-responsive {
+  @apply px-4 sm:px-6 md:px-8 lg:px-10;
+}
+
+/* Responsive text size classes */
+.text-responsive-title {
+  @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold;
+}
+
+.text-responsive-subtitle {
+  @apply text-xl sm:text-2xl md:text-3xl font-semibold;
+}
+
+.text-responsive-body {
+  @apply text-base sm:text-lg md:text-xl;
+}
+
+/* Responsive grid classes */
+.grid-responsive-1-2 {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+}
+
+.grid-responsive-1-3 {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.grid-responsive-1-4 {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6;
+}
+
+/* Responsive flexbox classes */
+.flex-responsive-col-row {
+  @apply flex flex-col md:flex-row;
+}
+
+.flex-responsive-row-col {
+  @apply flex flex-row md:flex-col;
+}
+
+/* Responsive spacing classes */
+.gap-responsive {
+  @apply gap-4 sm:gap-6 md:gap-8;
+}
+
+.space-y-responsive {
+  @apply space-y-4 sm:space-y-6 md:space-y-8;
+}
+
+.space-x-responsive {
+  @apply space-x-0 md:space-x-4 lg:space-x-6;
+}
+
+/* Responsive visibility classes */
+.hidden-mobile {
+  @apply hidden md:block;
+}
+
+.hidden-desktop {
+  @apply block md:hidden;
+}
+
+/* Mobile menu transition */
+.mobile-menu-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.mobile-menu-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 200ms, transform 200ms;
+}
+
+.mobile-menu-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-menu-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 150ms, transform 150ms;
+}
+
+/* Responsive image sizing */
+.img-responsive {
+  @apply w-full max-w-[200px] sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px] mx-auto;
+}
+
+.img-responsive-hero {
+  @apply w-full max-w-[250px] sm:max-w-[350px] md:max-w-[450px] lg:max-w-[550px] mx-auto;
+}
+
+/* Responsive margins */
+.mt-responsive {
+  @apply mt-4 sm:mt-6 md:mt-8 lg:mt-10;
+}
+
+.mb-responsive {
+  @apply mb-4 sm:mb-6 md:mb-8 lg:mb-10;
+}
+
+.my-responsive {
+  @apply my-4 sm:my-6 md:my-8 lg:my-10;
+}
+
+/* Responsive container */
+.container-responsive {
+  @apply container mx-auto px-4 sm:px-6 lg:px-8;
 }
 
 @layer components {

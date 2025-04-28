@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
     apple: '/favicon.ico',
   },
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
 };
 
 export default function LocaleLayout({
@@ -26,8 +27,12 @@ export default function LocaleLayout({
   params: { locale: string };
 }) {
   return (
-    <html lang={params.locale}>
-      <body className={inter.className}>{children}</body>
+    <html lang={params.locale} className="scroll-smooth">
+      <head>
+        <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+      </head>
+      <body className={`${inter.className} antialiased`}>{children}</body>
     </html>
   );
 } 
