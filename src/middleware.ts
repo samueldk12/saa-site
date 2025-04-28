@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { match } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 
@@ -42,23 +42,12 @@ export function middleware(request: NextRequest) {
   // Redirecione se o caminho não começar com um locale
   const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname === '/' ? '' : pathname}`;
-  return Response.redirect(request.nextUrl);
+  return NextResponse.redirect(request.nextUrl);
 }
 
 export const config = {
   matcher: [
-    /*
-     * Corresponde a todas as solicitações que:
-     * - Não começam com `/api/`, `/images/`, `/_next/` ou `/files/`
-     * - Não terminam com `.svg`, `.jpg` ou `.png`
-     * - Não têm um locale no pathname
-     */
-    {
-      source: '/((?!api|images|_next|files|.*\\.(svg|jpg|png)).*)',
-      missing: [
-        { type: 'header', key: 'next-router-prefetch' },
-        { type: 'header', key: 'purpose', value: 'prefetch' },
-      ],
-    },
-  ],
+    // Ignora arquivos estáticos e rotas API
+    '/((?!api|images|_next|files|.*\\.(svg|jpg|png)).*)'
+  ]
 }; 
