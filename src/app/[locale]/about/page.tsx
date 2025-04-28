@@ -15,7 +15,8 @@ import {
   FaBriefcase,
   FaCertificate,
   FaBuilding,
-  FaCalendarAlt
+  FaCalendarAlt,
+  FaExternalLinkAlt
 } from "react-icons/fa";
 import { SiPython, SiPhp, SiNodedotjs, SiFastapi, SiGo, SiPostgresql, SiMongodb, SiApachekafka, SiApachespark, SiAmazon, SiDocker, SiKubernetes, SiTerraform } from "react-icons/si";
 
@@ -84,42 +85,72 @@ export default function About() {
     {
       name: locale === 'en' ? "React Fundamentals" : "Fundamentos do React",
       issuer: "Rocketseat",
-      year: "2025"
+      year: "2025",
+      credential: "6d3d7c18-cff8-4473-acd4-8231e577a4a4",
+      certificate_url: "https://app.rocketseat.com.br/certificates/6d3d7c18-cff8-4473-acd4-8231e577a4a4"
     },
     {
       name: locale === 'en' ? "Express SOLID Course" : "Curso de SOLID Express",
       issuer: "Full Cycle",
-      year: "2024"
+      year: "2024",
+      credential: "d8567dcf-c7bd-484e-9678-fb4ea3aec43f",
+      certificate_url: "https://fullcycle.com.br/certificado/d8567dcf-c7bd-484e-9678-fb4ea3aec43f"
     },
     {
       name: locale === 'en' ? "Python and Object-Oriented Programming" : "Formação Python e Orientação a Objetos",
       issuer: "Alura",
-      year: "2022"
+      year: "2022",
+      credential: "3a85f507-74dd-4275-8d9e-0fc8f6356542",
+      certificate_url: "https://cursos.alura.com.br/degree/certificate/3a85f507-74dd-4275-8d9e-0fc8f6356542"
     },
     {
       name: locale === 'en' ? "Git and GitHub: Control and Share Your Code" : "Git e GitHub: Controle e Compartilhe seu Código",
       issuer: "Alura",
-      year: "2022"
+      year: "2022",
+      credential: "9d5dab14-d2cf-4942-a4a6-6018eac7c127",
+      certificate_url: "https://cursos.alura.com.br/certificate/9d5dab14-d2cf-4942-a4a6-6018eac7c127"
+    },
+    {
+      name: locale === 'en' ? "Linux I: Knowing and Using the Terminal" : "Linux I: Conhecendo e Utilizando o Terminal",
+      issuer: "Alura",
+      year: "2021",
+      credential: "7dbaff44-7c90-42c7-a6a0-5ffd876f04c3",
+      certificate_url: "https://cursos.alura.com.br/certificate/7dbaff44-7c90-42c7-a6a0-5ffd876f04c3"
+    },
+    {
+      name: locale === 'en' ? "Linux II: Programs, Processes and Packages" : "Linux II: Programas, Processos e Pacotes",
+      issuer: "Alura",
+      year: "2021",
+      credential: "8bcc484e-a2e7-46d6-a79a-56a3ed4c3834",
+      certificate_url: "https://cursos.alura.com.br/certificate/8bcc484e-a2e7-46d6-a79a-56a3ed4c3834"
     },
     {
       name: locale === 'en' ? "Data Engineering: Introduction to Apache Airflow" : "Engenharia de Dados: Conhecendo Apache Airflow",
       issuer: "Alura",
-      year: "2022"
+      year: "2022",
+      credential: "d4c49d0f-8d45-4828-9f71-acb83ba6bb4e",
+      certificate_url: "https://cursos.alura.com.br/certificate/d4c49d0f-8d45-4828-9f71-acb83ba6bb4e"
     },
     {
       name: locale === 'en' ? "Docker DCA Certification Course" : "Formação Certificação Docker DCA",
       issuer: "Alura",
-      year: "2022"
+      year: "2022",
+      credential: "2b917d53-690c-4046-a539-e3f732c1344b",
+      certificate_url: "https://cursos.alura.com.br/degree/certificate/2b917d53-690c-4046-a539-e3f732c1344b"
     },
     {
       name: "GoStack 14",
       issuer: "Rocketseat",
-      year: "2021"
+      year: "2021",
+      credential: "ed3d059f-1efa-4eb4-9684-050116ef38b8",
+      expiry: "2022",
+      certificate_url: "https://app.rocketseat.com.br/api/certificates/pdf/ed3d059f-1efa-4eb4-9684-050116ef38b8"
     },
     {
       name: locale === 'en' ? "From Bug to Bounty" : "Do Bug ao Bounty",
       issuer: locale === 'en' ? "Certificate in Security" : "Certificado em Segurança",
-      year: "2022"
+      year: "2022",
+      certificate_url: "#"
     }
   ];
 
@@ -404,7 +435,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="bg-white dark:bg-gray-700 rounded-xl shadow p-5 border border-gray-100 dark:border-gray-600 hover:shadow-md transition-shadow"
+                className="bg-white dark:bg-gray-700 rounded-xl shadow p-5 border border-gray-100 dark:border-gray-600 hover:shadow-md transition-shadow group"
               >
                 <div className="flex items-start">
                   <div className="mr-3 mt-1">
@@ -412,10 +443,34 @@ export default function About() {
                       <FaCertificate className="text-amber-600 dark:text-amber-400" />
                     </div>
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h3 className="font-bold text-gray-900 dark:text-white text-base">{cert.name}</h3>
                     <p className="text-amber-600 dark:text-amber-400 text-sm">{cert.issuer}</p>
                     <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">{cert.year}</p>
+                    
+                    {cert.credential && (
+                      <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">
+                        {locale === 'en' ? 'Credential: ' : 'Credencial: '}{cert.credential}
+                      </p>
+                    )}
+                    
+                    {cert.expiry && (
+                      <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">
+                        {locale === 'en' ? 'Expiry: ' : 'Expiração: '}{cert.expiry}
+                      </p>
+                    )}
+                    
+                    {cert.certificate_url && (
+                      <a 
+                        href={cert.certificate_url} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="mt-3 inline-flex items-center text-sm text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+                      >
+                        <span className="mr-1">{t.about?.viewCertificate || 'Ver Certificado'}</span>
+                        <FaExternalLinkAlt className="text-xs" />
+                      </a>
+                    )}
                   </div>
                 </div>
               </motion.div>

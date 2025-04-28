@@ -3,8 +3,7 @@
     "home": "Inicio",
     "about": "Sobre Mí",
     "projects": "Proyectos",
-    "skills": "Habilidades",
-    "contact": "Contacto"
+    "skills": "Habilidades"
   },
   "home": {
     "title": "Samuel Apolinário Arão",
@@ -113,23 +112,5 @@
     "devops_description": "Infraestructura como código, contenedores y orquestación de servicios",
     "architecture_description": "Diseño de sistemas y patrones arquitectónicos para soluciones robustas",
     "security_description": "Implementación de prácticas de seguridad y protección contra vulnerabilidades"
-  },
-  "contact": {
-    "title": "Contacto",
-    "description": "Estoy siempre abierto a nuevas oportunidades y colaboraciones. ¡Siéntete libre de enviarme un mensaje!",
-    "form": {
-      "name": "Nombre",
-      "email": "Correo Electrónico",
-      "message": "Mensaje",
-      "submit": "Enviar Mensaje",
-      "required": "Requerido",
-      "validEmail": "Correo electrónico válido requerido",
-      "minChars": "Mínimo {0} caracteres",
-      "sending": "Enviando...",
-      "success": "¡Mensaje enviado con éxito!",
-      "error": "Error al enviar el mensaje. Por favor, inténtalo de nuevo."
-    },
-    "socialMedia": "Encuéntrame en las redes sociales",
-    "or": "o"
   }
 } 

@@ -29,7 +29,6 @@ export default function Navigation({ locale }: NavigationProps) {
     { href: `/${locale}/about`, label: t.navigation.about },
     { href: `/${locale}/projects`, label: t.navigation.projects },
     { href: `/${locale}/skills`, label: t.navigation.skills },
-    { href: `/${locale}/contact`, label: t.navigation.contact },
   ];
 
   return (

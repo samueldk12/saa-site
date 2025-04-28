@@ -44,7 +44,8 @@
     "cybersecurity": "Cybersegurança",
     "certifications": "Certificações",
     "educationSection": "Formação Acadêmica",
-    "contactInfo": "Informações de Contato"
+    "contactInfo": "Informações de Contato",
+    "viewCertificate": "Ver Certificado"
   },
   "projects": {
     "title": "Meus Projetos",
@@ -57,6 +58,17 @@
     "githubInvite": "Confira meu GitHub para mais projetos e contribuições de código aberto.",
     "visitGithub": "Visitar GitHub",
     "errorMessage": "Não foi possível carregar os projetos. Tente novamente mais tarde.",
+    "openGithub": "Abrir GitHub",
+    "details": "Detalhes",
+    "description": "Descrição",
+    "technologies": "Tecnologias",
+    "statistics": "Estatísticas",
+    "stars": "Estrelas",
+    "forks": "Forks",
+    "mainLanguage": "Linguagem principal",
+    "updatedOn": "Atualizado em",
+    "close": "Fechar",
+    "viewOnGithub": "Ver no GitHub",
     "proxy": {
       "title": "Sistema Proxy FastAPI",
       "description": "Sistema de proxy em FastAPI para web scraping com gerenciamento de sessões e rotação de IPs"

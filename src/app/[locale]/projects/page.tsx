@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 import Link from "next/link";
 
 // Função para determinar ícone e cor com base no nome ou descrição do projeto
-const getProjectTheme = (name, description = '') => {
+const getProjectTheme = (name: string, description: string = '') => {
   const lowerName = (name || '').toLowerCase();
   const lowerDesc = (description || '').toLowerCase();
   
@@ -117,7 +117,7 @@ const getProjectTheme = (name, description = '') => {
 };
 
 // Função para detectar tecnologias com base no nome e descrição
-const detectTechnologies = (name = '', description = '', language = '') => {
+const detectTechnologies = (name: string = '', description: string = '', language: string = '') => {
   const text = ((name || '') + ' ' + (description || '') + ' ' + (language || '')).toLowerCase();
   
   const techStack = {
@@ -177,7 +177,7 @@ const detectTechnologies = (name = '', description = '', language = '') => {
   return technologies;
 };
 
-const formatProjectName = (name) => {
+const formatProjectName = (name: string) => {
   if (!name) return '';
   
   // Substitui hífens e underscores por espaços
@@ -198,11 +198,11 @@ export default function Projects() {
   const { locale } = useParams();
   const t = getTranslations(locale as string);
   
-  const [githubRepos, setGithubRepos] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [githubRepos, setGithubRepos] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   
   // Função para buscar repositórios do GitHub
   useEffect(() => {
@@ -266,7 +266,7 @@ export default function Projects() {
     fetchRepos();
   }, [locale]);
 
-  const openProjectModal = (project) => {
+  const openProjectModal = (project: any) => {
     setSelectedProject(project);
     setIsModalOpen(true);
     document.body.style.overflow = 'hidden';
@@ -277,20 +277,17 @@ export default function Projects() {
     document.body.style.overflow = 'auto';
   };
 
-  const ProjectCard = ({ project, index }) => (
-    <motion.div
-      key={project.id}
+  const ProjectCard = ({ project, index }: { project: any; index: number }) => (
+    <motion.div 
+      className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-full border border-gray-100 dark:border-gray-700"
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ 
-        y: -10, 
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-        transition: { duration: 0.3 } 
-      }}
-      className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg transition-all duration-300 flex flex-col relative group`}
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
     >
       <div className={`h-2 bg-gradient-to-r ${project.gradient}`}></div>
+      
       <div className="p-6 flex-1 relative z-10">
         <div 
           className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 z-0 ${project.bgLight} dark:${project.bgDark}`}
@@ -311,17 +308,6 @@ export default function Projects() {
             >
               <FaInfoCircle className="text-xl" />
             </button>
-            {project.html_url && (
-              <a 
-                href={project.html_url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white transition-colors"
-                aria-label="Ver no GitHub"
-              >
-                <FaGithub className="text-xl" />
-              </a>
-            )}
           </div>
         </div>
         
@@ -333,149 +319,163 @@ export default function Projects() {
           {t.projects?.[project.id]?.description || project.description}
         </p>
         
-        <div className="mt-auto">
-          <div className="flex flex-wrap gap-2 mb-4">
-            {project.technologies.map((tech) => (
-              <span 
-                key={`${project.id}-${tech}`} 
-                className={`inline-block px-2 py-1 rounded-full text-xs font-medium bg-gray-700 dark:bg-gray-600 text-white dark:text-gray-100`}
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {project.technologies.map(tech => (
+            <span 
+              key={`${project.id}-${tech}`}
+              className={`px-3 py-1 bg-${project.color}-100 dark:bg-${project.color}-800/30 text-${project.color}-800 dark:text-${project.color}-300 rounded-full text-xs font-medium`}
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+      
+      <div className="p-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
+        <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm">
+          <FaCalendarAlt className="mr-1 text-xs" />
+          {project.formattedDate}
+        </div>
+        
+        <div className="flex space-x-2">
+          {project.html_url && (
+            <a 
+              href={project.html_url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={`px-3 py-1 bg-${project.color}-600 hover:bg-${project.color}-700 text-white rounded flex items-center gap-1 text-sm transition-colors`}
+              aria-label="Ver no GitHub"
+            >
+              <FaGithub className="text-sm" />
+              <span>{t.projects?.openGithub || 'Abrir GitHub'}</span>
+            </a>
+          )}
           
-          <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-700">
-            <div className="flex items-center gap-1">
-              <FaCalendarAlt className="text-xs" />
-              <span>{locale === 'en' ? 'Updated:' : 
-                     locale === 'es' ? 'Actualizado:' : 
-                     'Atualizado:'} {project.formattedDate}</span>
-            </div>
-            
-            <div className="flex gap-3">
-              <span className="flex items-center gap-1">
-                <FaStar className="text-amber-400" />
-                {project.stargazers_count}
-              </span>
-              <span className="flex items-center gap-1">
-                <FaCodeBranch className="text-gray-400" /> 
-                {project.forks_count}
-              </span>
-            </div>
-          </div>
+          <button
+            onClick={() => openProjectModal(project)}
+            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded flex items-center gap-1 text-sm transition-colors"
+          >
+            <FaInfoCircle className="text-sm" />
+            <span>{t.projects?.details || 'Detalhes'}</span>
+          </button>
         </div>
       </div>
     </motion.div>
   );
 
-  const ProjectModal = ({ project }) => {
-    if (!project) return null;
-    
+  const ProjectModal = ({ project }: { project: any }) => {
     return (
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-50 p-4"
-        onClick={closeProjectModal}
-      >
+      <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <motion.div 
-          initial={{ scale: 0.9, y: 20 }}
-          animate={{ scale: 1, y: 0 }}
-          exit={{ scale: 0.9, y: 20 }}
-          transition={{ type: "spring", duration: 0.5 }}
-          className="bg-white dark:bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-          onClick={(e) => e.stopPropagation()}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.3 }}
         >
-          <div className={`h-3 bg-gradient-to-r ${project.gradient}`}></div>
-          <div className="p-6 md:p-8">
+          <div className={`h-2 bg-gradient-to-r ${project.gradient}`}></div>
+          
+          <div className="p-6 sm:p-8 overflow-y-auto">
             <div className="flex justify-between items-start mb-6">
-              <div className="flex items-center gap-4">
-                <div className={`p-4 rounded-lg ${project.bgLight} dark:${project.bgDark} text-${project.color}-600 dark:text-${project.color}-400`}>
+              <div className="flex items-start">
+                <div className={`p-4 rounded-full ${project.bgLight} dark:${project.bgDark} text-${project.color}-600 dark:text-${project.color}-400 mr-4`}>
                   {project.icon}
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
                     {t.projects?.[project.id]?.title || formatProjectName(project.name)}
                   </h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{project.language}</p>
+                  <div className="mt-2 flex items-center text-gray-600 dark:text-gray-400 text-sm">
+                    <FaCalendarAlt className="mr-1" />
+                    <span>{t.projects?.updatedOn || 'Atualizado em'} {project.formattedDate}</span>
+                  </div>
                 </div>
               </div>
-              <button 
+              
+              <button
                 onClick={closeProjectModal}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white text-xl"
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white p-1"
+                aria-label="Fechar"
               >
-                &times;
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
             
-            <div className="mb-6">
-              <p className="text-gray-700 dark:text-gray-300 mb-4">
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">{t.projects?.description || 'Descrição'}</h3>
+              <p className="text-gray-600 dark:text-gray-300">
                 {t.projects?.[project.id]?.description || project.description}
               </p>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                    {locale === 'en' ? 'Updated' : 
-                     locale === 'es' ? 'Actualizado' : 
-                     'Atualizado'}
-                  </div>
-                  <div className="font-medium flex items-center gap-2">
-                    <FaCalendarAlt className="text-gray-400" />
-                    {project.formattedDate}
-                  </div>
-                </div>
-                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                    {locale === 'en' ? 'Stats' : 
-                     locale === 'es' ? 'Estadísticas' : 
-                     'Estatísticas'}
-                  </div>
-                  <div className="font-medium flex items-center gap-4">
-                    <span className="flex items-center gap-1"><FaStar className="text-amber-400" /> {project.stargazers_count}</span>
-                    <span className="flex items-center gap-1"><FaCodeBranch className="text-gray-400" /> {project.forks_count}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="mb-6">
-                <h3 className="font-medium mb-2 text-gray-800 dark:text-white">
-                  {locale === 'en' ? 'Technologies' : 
-                   locale === 'es' ? 'Tecnologías' : 
-                   'Tecnologias'}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
-                    <span 
-                      key={`${project.id}-${tech}-modal`} 
-                      className={`inline-block px-3 py-1.5 rounded-full text-sm font-medium bg-gray-700 dark:bg-gray-600 text-white dark:text-gray-100`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+            </div>
+            
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">{t.projects?.technologies || 'Tecnologias'}</h3>
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.map(tech => (
+                  <span 
+                    key={`modal-${project.id}-${tech}`}
+                    className={`px-3 py-1 bg-${project.color}-100 dark:bg-${project.color}-800/30 text-${project.color}-800 dark:text-${project.color}-300 rounded-full text-sm font-medium`}
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
             
-            <div className="flex justify-end gap-4 border-t border-gray-100 dark:border-gray-700 pt-4">
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">{t.projects?.statistics || 'Estatísticas'}</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                  <div className="flex items-center">
+                    <FaCodeBranch className="text-gray-500 dark:text-gray-400 mr-2" />
+                    <span className="text-gray-800 dark:text-white font-semibold">{project.forks_count}</span>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">{t.projects?.forks || 'Forks'}</p>
+                </div>
+                
+                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                  <div className="flex items-center">
+                    <FaStar className="text-yellow-500 mr-2" />
+                    <span className="text-gray-800 dark:text-white font-semibold">{project.stargazers_count}</span>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">{t.projects?.stars || 'Estrelas'}</p>
+                </div>
+                
+                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                  <div className="flex items-center">
+                    <span className="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
+                    <span className="text-gray-800 dark:text-white font-semibold">{project.language || '-'}</span>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">{t.projects?.mainLanguage || 'Linguagem principal'}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="p-4 sm:p-6 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-3 justify-end">
+            <button
+              onClick={closeProjectModal}
+              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-colors"
+            >
+              {t.projects?.close || 'Fechar'}
+            </button>
+            
+            {project.html_url && (
               <a 
                 href={project.html_url} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className={`px-4 py-2 bg-gradient-to-r ${project.gradient} text-white rounded-lg flex items-center gap-2 hover:opacity-90 transition-opacity`}
+                className={`px-4 py-2 bg-${project.color}-600 hover:bg-${project.color}-700 text-white rounded-lg flex items-center gap-2 transition-colors`}
               >
-                <FaGithub /> 
-                {locale === 'en' ? 'View on GitHub' : 
-                 locale === 'es' ? 'Ver en GitHub' : 
-                 'Ver no GitHub'}
+                <FaGithub />
+                <span>{t.projects?.viewOnGithub || 'Ver no GitHub'}</span>
               </a>
-            </div>
+            )}
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     );
   };
 
