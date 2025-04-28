@@ -1,7 +1,7 @@
 'use client';
 
 // import { useTranslations } from 'next-intl';
-import { getTranslations } from '@/lib/getTranslations';
+import { getTranslations, getTranslationsWithNamespace } from '@/lib/getTranslations';
 import { motion } from '@/lib/motion-stub';
 import Navigation from '@/components/Navigation';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
@@ -10,7 +10,7 @@ import { useParams } from 'next/navigation';
 export default function Contact() {
   const params = useParams();
   const locale = params.locale as string;
-  const t = getTranslations(locale, 'contact');
+  const t = getTranslationsWithNamespace(locale, 'contact');
 
   const socialLinks = [
     {
