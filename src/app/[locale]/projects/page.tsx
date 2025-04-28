@@ -120,7 +120,7 @@ const getProjectTheme = (name: string, description: string = '') => {
 const detectTechnologies = (name: string = '', description: string = '', language: string = '') => {
   const text = ((name || '') + ' ' + (description || '') + ' ' + (language || '')).toLowerCase();
   
-  const techStack = {
+  const techStack: Record<string, boolean> = {
     'python': text.includes('python') || text.includes('py') || language === 'Python',
     'fastapi': text.includes('fastapi') || text.includes('fast api'),
     'typescript': text.includes('typescript') || text.includes('ts') || language === 'TypeScript',
@@ -138,11 +138,11 @@ const detectTechnologies = (name: string = '', description: string = '', languag
   };
   
   // Extrair tecnologias presentes
-  const technologies = [];
+  const technologies: string[] = [];
   for (const [tech, present] of Object.entries(techStack)) {
     if (present) {
       // Formatar nomes para exibição
-      const techNames = {
+      const techNames: Record<string, string> = {
         'python': 'Python',
         'fastapi': 'FastAPI',
         'typescript': 'TypeScript',
