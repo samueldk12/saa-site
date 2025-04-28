@@ -26,18 +26,8 @@ export function middleware(request: NextRequest) {
 
   if (pathnameHasLocale) return;
 
-  // Evite redirecionar para API e arquivos estáticos
-  if (
-    pathname.startsWith('/api/') ||
-    pathname.startsWith('/images/') ||
-    pathname.startsWith('/_next/') ||
-    pathname.startsWith('/files/') ||
-    pathname.endsWith('.svg') ||
-    pathname.endsWith('.jpg') ||
-    pathname.endsWith('.png')
-  ) {
-    return;
-  }
+  // Verificar se devemos ignorar esta rota
+  if (shouldSkip(pathname)) return;
 
   // Redirecione se o caminho não começar com um locale
   const locale = getLocale(request);
@@ -45,9 +35,19 @@ export function middleware(request: NextRequest) {
   return NextResponse.redirect(request.nextUrl);
 }
 
+// Função para verificar se devemos pular esta rota
+function shouldSkip(pathname: string) {
+  // Ignorar APIs, recursos estáticos e arquivos
+  return (
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/images/') ||
+    pathname.startsWith('/files/') ||
+    pathname.includes('.') // Provavelmente um arquivo (ex: .jpg, .png, etc.)
+  );
+}
+
+// Configuração do middleware com matchers simples
 export const config = {
-  matcher: [
-    // Ignora arquivos estáticos e rotas API
-    '/((?!api|images|_next|files|.*\\.(svg|jpg|png)).*)'
-  ]
+  matcher: ['/', '/:path*']
 }; 
