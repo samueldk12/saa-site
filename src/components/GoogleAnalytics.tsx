@@ -3,6 +3,21 @@
 import { useEffect } from 'react';
 import Script from 'next/script';
 
+// Adicionar a definição do tipo gtag ao objeto window global
+declare global {
+  interface Window {
+    gtag: (
+      command: string,
+      id: string,
+      config?: {
+        page_path?: string;
+        [key: string]: any;
+      }
+    ) => void;
+    dataLayer: any[];
+  }
+}
+
 // Função para enviar pageview ao Google Analytics quando a rota muda
 const pageview = (url: string) => {
   if (typeof window.gtag === 'function') {
