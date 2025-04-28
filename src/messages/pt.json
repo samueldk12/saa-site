@@ -47,6 +47,19 @@
     "contactInfo": "Informações de Contato",
     "viewCertificate": "Ver Certificado"
   },
+  "contact": {
+    "title": "Entre em Contato",
+    "description": "Estou disponível para projetos freelance, oportunidades de trabalho ou apenas para trocar ideias sobre tecnologia. Preencha o formulário abaixo ou utilize uma das opções de contato disponíveis.",
+    "form": {
+      "name": "Seu Nome",
+      "email": "Seu Email",
+      "message": "Sua Mensagem",
+      "submit": "Enviar Mensagem"
+    },
+    "social": {
+      "title": "Redes Sociais"
+    }
+  },
   "projects": {
     "title": "Meus Projetos",
     "subtitle": "Uma seleção dos meus trabalhos em desenvolvimento de software e engenharia de dados",

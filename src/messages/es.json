@@ -46,6 +46,19 @@
     "educationSection": "Educación",
     "contactInfo": "Información de Contacto"
   },
+  "contact": {
+    "title": "Contáctame",
+    "description": "Estoy disponible para proyectos freelance, oportunidades de trabajo o simplemente para intercambiar ideas sobre tecnología. Completa el formulario a continuación o utiliza una de las opciones de contacto disponibles.",
+    "form": {
+      "name": "Tu Nombre",
+      "email": "Tu Email",
+      "message": "Tu Mensaje",
+      "submit": "Enviar Mensaje"
+    },
+    "social": {
+      "title": "Redes Sociales"
+    }
+  },
   "projects": {
     "title": "Mis Proyectos",
     "subtitle": "Una selección de mi trabajo en desarrollo de software e ingeniería de datos",
