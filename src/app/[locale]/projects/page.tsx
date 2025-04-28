@@ -21,81 +21,81 @@ const getProjectTheme = (name: string, description: string = '') => {
       keywords: ['api', 'backend', 'rest', 'fastapi', 'express', 'server'],
       icon: <FaServer className="text-3xl" />,
       color: 'blue',
-      gradient: 'from-blue-500 to-blue-700',
-      bgLight: 'bg-blue-50',
-      bgDark: 'bg-blue-950/30'
+      gradient: 'from-blue-400 to-blue-600',
+      bgLight: 'bg-blue-50/80',
+      bgDark: 'bg-blue-900/20'
     },
     {
       keywords: ['data', 'etl', 'pipeline', 'sql', 'postgres', 'database', 'db'],
       icon: <FaDatabase className="text-3xl" />,
       color: 'green',
-      gradient: 'from-green-500 to-emerald-700',
-      bgLight: 'bg-green-50',
-      bgDark: 'bg-green-950/30'
+      gradient: 'from-green-400 to-emerald-600',
+      bgLight: 'bg-green-50/80',
+      bgDark: 'bg-green-900/20'
     },
     {
       keywords: ['algoritmo', 'algorithm', 'estrutura', 'structure', 'data structure'],
       icon: <FaCode className="text-3xl" />,
       color: 'indigo',
-      gradient: 'from-indigo-500 to-indigo-700',
-      bgLight: 'bg-indigo-50',
-      bgDark: 'bg-indigo-950/30'
+      gradient: 'from-indigo-400 to-indigo-600',
+      bgLight: 'bg-indigo-50/80',
+      bgDark: 'bg-indigo-900/20'
     },
     {
       keywords: ['ai', 'ia', 'machine learning', 'ml', 'intelligence', 'inteligência', 'neural'],
       icon: <FaBrain className="text-3xl" />,
       color: 'purple',
-      gradient: 'from-purple-500 to-violet-700',
-      bgLight: 'bg-purple-50',
-      bgDark: 'bg-purple-950/30'
+      gradient: 'from-purple-400 to-violet-600',
+      bgLight: 'bg-purple-50/80',
+      bgDark: 'bg-purple-900/20'
     },
     {
       keywords: ['cli', 'terminal', 'command', 'linha de comando', 'console'],
       icon: <FaTerminal className="text-3xl" />,
       color: 'gray',
-      gradient: 'from-gray-600 to-gray-800',
-      bgLight: 'bg-gray-50',
-      bgDark: 'bg-gray-800/30'
+      gradient: 'from-gray-500 to-gray-700',
+      bgLight: 'bg-gray-50/80',
+      bgDark: 'bg-gray-800/20'
     },
     {
       keywords: ['go', 'golang'],
       icon: <SiGo className="text-3xl" />,
       color: 'cyan',
-      gradient: 'from-cyan-500 to-teal-700',
-      bgLight: 'bg-cyan-50',
-      bgDark: 'bg-cyan-950/30'
+      gradient: 'from-cyan-400 to-teal-600',
+      bgLight: 'bg-cyan-50/80',
+      bgDark: 'bg-cyan-900/20'
     },
     {
       keywords: ['python'],
       icon: <SiPython className="text-3xl" />,
       color: 'yellow',
-      gradient: 'from-yellow-500 to-amber-700',
-      bgLight: 'bg-yellow-50',
-      bgDark: 'bg-yellow-950/30'
+      gradient: 'from-yellow-400 to-amber-600',
+      bgLight: 'bg-yellow-50/80',
+      bgDark: 'bg-yellow-900/20'
     },
     {
       keywords: ['typescript', 'node'],
       icon: <SiTypescript className="text-3xl" />,
       color: 'blue',
-      gradient: 'from-blue-400 to-indigo-600',
-      bgLight: 'bg-blue-50',
-      bgDark: 'bg-blue-950/30'
+      gradient: 'from-blue-400 to-indigo-500',
+      bgLight: 'bg-blue-50/80',
+      bgDark: 'bg-blue-900/20'
     },
     {
       keywords: ['docker', 'container'],
       icon: <SiDocker className="text-3xl" />,
       color: 'blue',
-      gradient: 'from-blue-400 to-cyan-600',
-      bgLight: 'bg-blue-50',
-      bgDark: 'bg-blue-950/30'
+      gradient: 'from-blue-400 to-cyan-500',
+      bgLight: 'bg-blue-50/80',
+      bgDark: 'bg-blue-900/20'
     },
     {
       keywords: ['unity', 'game', 'jogo'],
       icon: <FaBook className="text-3xl" />,
       color: 'red',
-      gradient: 'from-red-500 to-rose-700',
-      bgLight: 'bg-red-50',
-      bgDark: 'bg-red-950/30'
+      gradient: 'from-red-400 to-rose-600',
+      bgLight: 'bg-red-50/80',
+      bgDark: 'bg-red-900/20'
     }
   ];
   
@@ -110,9 +110,9 @@ const getProjectTheme = (name: string, description: string = '') => {
   return {
     icon: <FaBook className="text-3xl" />,
     color: 'amber',
-    gradient: 'from-amber-500 to-orange-700',
-    bgLight: 'bg-amber-50',
-    bgDark: 'bg-amber-950/30'
+    gradient: 'from-amber-400 to-orange-600',
+    bgLight: 'bg-amber-50/80',
+    bgDark: 'bg-amber-900/20'
   };
 };
 

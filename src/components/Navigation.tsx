@@ -9,6 +9,7 @@ import { getTranslations } from '@/lib/getTranslations';
 import { FaGithub, FaLinkedin, FaBars, FaTimes } from 'react-icons/fa';
 // import { motion } from 'framer-motion';
 import { motion } from '../lib/motion-stub';
+import ThemeToggle from './ThemeToggle';
 
 interface NavigationProps {
   locale: string;
@@ -111,6 +112,7 @@ export default function Navigation({ locale }: NavigationProps) {
                 </Link>
               </div>
               <div className="flex items-center space-x-4">
+                <ThemeToggle />
                 <a
                   href="https://github.com/samueldk12"
                   target="_blank"
@@ -132,7 +134,8 @@ export default function Navigation({ locale }: NavigationProps) {
           </div>
           
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center space-x-4">
+            <ThemeToggle />
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none p-2"

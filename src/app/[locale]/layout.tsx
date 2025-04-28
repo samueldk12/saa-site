@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
+import { ThemeProvider } from '../providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,7 +33,9 @@ export default function LocaleLayout({
         <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
         <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
       </head>
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <ThemeProvider>
+        <body className={`${inter.className} antialiased`}>{children}</body>
+      </ThemeProvider>
     </html>
   );
 } 
