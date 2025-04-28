@@ -219,11 +219,11 @@ export default function Projects() {
         const repos = await response.json();
         
         // Processar os repositórios para adicionar tema, ícone e tecnologias
-        const processedRepos = repos.filter(repo => repo !== null).map(repo => {
+        const processedRepos = repos.filter((repo: any) => repo !== null).map((repo: any) => {
           const theme = getProjectTheme(repo.name, repo.description);
           const topics = repo.topics || [];
           const technologies = topics.length > 0 
-            ? topics.map(t => t.replace(/-/g, ' ')).map(t => t.charAt(0).toUpperCase() + t.slice(1))
+            ? topics.map((t: string) => t.replace(/-/g, ' ')).map((t: string) => t.charAt(0).toUpperCase() + t.slice(1))
             : detectTechnologies(repo.name, repo.description, repo.language);
             
           // Formatar data de atualização
@@ -258,7 +258,8 @@ export default function Projects() {
         setIsLoading(false);
       } catch (err) {
         console.error('Erro ao buscar repositórios:', err);
-        setError(err.message);
+        const error = err as Error;
+        setError(error.message);
         setIsLoading(false);
       }
     };
@@ -320,7 +321,7 @@ export default function Projects() {
         </p>
         
         <div className="flex flex-wrap gap-2 mb-4">
-          {project.technologies.map(tech => (
+          {project.technologies.map((tech: string) => (
             <span 
               key={`${project.id}-${tech}`}
               className={`px-3 py-1 bg-${project.color}-100 dark:bg-${project.color}-800/30 text-${project.color}-800 dark:text-${project.color}-300 rounded-full text-xs font-medium`}
@@ -413,7 +414,7 @@ export default function Projects() {
             <div className="mb-8">
               <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">{t.projects?.technologies || 'Tecnologias'}</h3>
               <div className="flex flex-wrap gap-2">
-                {project.technologies.map(tech => (
+                {project.technologies.map((tech: string) => (
                   <span 
                     key={`modal-${project.id}-${tech}`}
                     className={`px-3 py-1 bg-${project.color}-100 dark:bg-${project.color}-800/30 text-${project.color}-800 dark:text-${project.color}-300 rounded-full text-sm font-medium`}
@@ -481,7 +482,7 @@ export default function Projects() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-950 dark:to-indigo-950">
-      <Navigation locale={locale} />
+      <Navigation locale={locale as string} />
       
       <div className="container mx-auto px-4 pt-24 pb-16">
         <motion.div

@@ -69,7 +69,7 @@ export async function PUT(request: NextRequest) {
       [data.approved ? 1 : 0, data.id]
     );
     
-    if (result.changes > 0) {
+    if (result.changes && result.changes > 0) {
       const updatedTestimonial = await db.get('SELECT * FROM testimonials WHERE id = ?', data.id);
       return NextResponse.json(updatedTestimonial);
     } else {
@@ -109,7 +109,7 @@ export async function DELETE(request: NextRequest) {
     // Remover depoimento
     const result = await db.run('DELETE FROM testimonials WHERE id = ?', id);
     
-    if (result.changes > 0) {
+    if (result.changes && result.changes > 0) {
       return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ error: 'Falha ao remover depoimento' }, { status: 500 });

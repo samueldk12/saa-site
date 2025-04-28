@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       data.id
     );
     
-    if (result.changes > 0) {
+    if (result.changes && result.changes > 0) {
       const updatedTestimonial = await db.get('SELECT * FROM testimonials WHERE id = ?', data.id);
       return NextResponse.json(updatedTestimonial);
     } else {

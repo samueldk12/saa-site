@@ -11,7 +11,7 @@ import { Testimonial } from '@/models/Testimonial';
 export default function Testimonials() {
   const params = useParams();
   const locale = params.locale as string;
-  const t = getTranslations(locale, 'testimonials');
+  const t = getTranslations(locale);
   
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);

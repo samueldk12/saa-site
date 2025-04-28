@@ -6,7 +6,7 @@ const locales = ['pt', 'en', 'es'];
 const defaultLocale = 'pt';
 
 function getLocale(request: NextRequest) {
-  const headers = {};
+  const headers: Record<string, string> = {};
   request.headers.forEach((value, key) => {
     headers[key] = value;
   });

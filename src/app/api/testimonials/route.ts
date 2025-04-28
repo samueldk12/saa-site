@@ -101,7 +101,7 @@ export async function PUT(request: NextRequest) {
       [approved ? 1 : 0, id]
     );
     
-    if (result.changes > 0) {
+    if (result.changes && result.changes > 0) {
       const updatedTestimonial = await db.get('SELECT * FROM testimonials WHERE id = ?', id);
       return NextResponse.json(updatedTestimonial);
     } else {
@@ -126,7 +126,7 @@ export async function DELETE(request: NextRequest) {
     const db = await getDB();
     const result = await db.run('DELETE FROM testimonials WHERE id = ?', id);
     
-    if (result.changes > 0) {
+    if (result.changes && result.changes > 0) {
       return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ error: 'Depoimento não encontrado' }, { status: 404 });
