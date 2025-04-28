@@ -1,0 +1,116 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "skills": "Skills"
+  },
+  "home": {
+    "title": "Samuel Apolinário Arão",
+    "subtitle": "Senior BI Consultant | Data Engineer",
+    "description": "Professional specialized in Data Engineering and Backend Development, with experience in Business Intelligence, ETL, and Big Data solutions. Passionate about solving complex problems with technology.",
+    "cta": "Learn More",
+    "downloadCV": "Download CV",
+    "viewProjects": "View Projects",
+    "scrollDown": "Scroll Down",
+    "expertiseAreas": "Areas of Expertise",
+    "dataCategory": "Data Engineering",
+    "dataDescription": "Building data pipelines, ETL, Data Lakes, and implementing solutions with Big Data and large-scale processing.",
+    "devCategory": "Backend Development",
+    "devDescription": "Creating efficient APIs, web applications, and automation tools with a focus on performance and best practices.",
+    "gameCategory": "Artificial Intelligence",
+    "gameDescription": "Implementation of machine learning models, natural language processing, and neural networks.",
+    "securityCategory": "Cybersecurity",
+    "securityDescription": "Implementation of security practices, vulnerability analysis, and protection of data and systems.",
+    "latestExperience": "Current Position",
+    "currentJobDescription": "Responsible for developing and implementing Business Intelligence solutions, optimizing ETL processes, and data analysis to support decision-making at Kriptos.",
+    "viewFullHistory": "View full history",
+    "ctaTitle": "Let's work together?",
+    "ctaDescription": "I'm always open to new opportunities and challenges. If you're looking for a professional to help on your next project, get in touch!",
+    "profileAlt": "Profile photo of Samuel Apolinário Arão"
+  },
+  "about": {
+    "title": "About Me",
+    "description": "I have a deep interest in subjects that directly or indirectly affect my life, such as politics and economics. Currently, I am focusing my efforts on programming, with an emphasis on back-end and big data.",
+    "philosophy": "I believe that a good person is in the world to help solve problems. This philosophy led me to programming. I seek solutions on multiple fronts, valuing the ability to be useful in different areas.",
+    "career": "I started my career as an intern in web development, but soon moved to the data area, where I remain today.",
+    "current": "Currently, I work as a Senior BI Consultant at Kriptos, where I am responsible for developing and implementing Business Intelligence solutions, optimizing ETL processes, and data analysis to support decision-making.",
+    "education": "I hold a bachelor's degree in Digital Games and a teaching degree in Pedagogy, as well as a postgraduate degree in Artificial Intelligence from PUC Minas and an MBA in Big Data and Competitive Intelligence from Descomplica.",
+    "hobby": "In my free time, I enjoy researching vulnerabilities on websites and writing reports about them, such as my latest XSS finding on the Contagem city hall website. This practice helps me improve my programming and cybersecurity skills.",
+    "experience": "Professional Experience",
+    "skills": "Technical Skills",
+    "backendDev": "Backend Development",
+    "dataEngineering": "Data Engineering",
+    "cybersecurity": "Cybersecurity",
+    "certifications": "Certifications",
+    "educationSection": "Education",
+    "contactInfo": "Contact Information"
+  },
+  "projects": {
+    "title": "My Projects",
+    "subtitle": "A selection of my work in software development and data engineering",
+    "viewCode": "View Code",
+    "liveDemoShort": "Demo",
+    "liveDemo": "View Demo",
+    "viewProject": "View Project",
+    "moreProjects": "More projects",
+    "githubInvite": "Check out my GitHub for more projects and open source contributions.",
+    "visitGithub": "Visit GitHub",
+    "errorMessage": "Unable to load projects. Please try again later.",
+    "proxy": {
+      "title": "FastAPI Proxy System",
+      "description": "FastAPI proxy system for web scraping with session management and IP rotation"
+    },
+    "algoritmos": {
+      "title": "Algorithms & Data Structures",
+      "description": "Implementations of algorithms and data structures in Python, focusing on efficiency and optimization"
+    },
+    "api_arquitetura_hexagonal": {
+      "title": "Hexagonal Architecture API",
+      "description": "REST API with hexagonal architecture in TypeScript, demonstrating clean design principles and testability"
+    },
+    "golang": {
+      "title": "Learning Golang",
+      "description": "Study project on Go, implementing RESTful APIs and database integrations"
+    },
+    "lunar": {
+      "title": "Lunar Land AI",
+      "description": "Artificial intelligence project that uses reinforcement learning to land a lunar module"
+    },
+    "terminal": {
+      "title": "Terminal Project",
+      "description": "Command-line tool in Python for task automation and data processing"
+    },
+    "brawl-party": {
+      "title": "Brawl Party",
+      "description": "Game developed in Unity as a final project for PUC Minas Digital Games course"
+    },
+    "json-translate": {
+      "title": "JSON Translate",
+      "description": "Tool for translating JSON files, useful for application internationalization"
+    }
+  },
+  "skills": {
+    "title": "My Skills",
+    "subtitle": "Technologies and tools I use to create efficient solutions",
+    "languages": "Programming Languages",
+    "dataEngineering": "Data Engineering",
+    "databases": "Databases",
+    "webDev": "Web Development & APIs",
+    "devops": "DevOps & Cloud",
+    "architecture": "Architecture & Methodologies",
+    "security": "Security & Performance",
+    "expert": "Expert",
+    "advanced": "Advanced",
+    "intermediate": "Intermediate",
+    "beginner": "Beginner",
+    "yearsExperience": "years of experience",
+    "languages_description": "Mastery of multiple languages for backend development, data engineering, and automation",
+    "dataEngineering_description": "Experience with large-scale data processing, ETL, and Big Data solutions",
+    "databases_description": "Proficiency in SQL and NoSQL databases for data storage and analysis",
+    "webDev_description": "Development of modern APIs and scalable web systems",
+    "devops_description": "Infrastructure as code, containers, and service orchestration",
+    "architecture_description": "System design and architectural patterns for robust solutions",
+    "security_description": "Implementation of security practices and protection against vulnerabilities"
+  }
+} 

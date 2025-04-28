@@ -1,0 +1,135 @@
+{
+  "navigation": {
+    "home": "Inicio",
+    "about": "Sobre Mí",
+    "projects": "Proyectos",
+    "skills": "Habilidades",
+    "contact": "Contacto"
+  },
+  "home": {
+    "title": "Samuel Apolinário Arão",
+    "subtitle": "Consultor Senior de BI | Ingeniero de Datos",
+    "description": "Profesional especializado en Ingeniería de Datos y Desarrollo Backend, con experiencia en Business Intelligence, ETL y soluciones Big Data. Graduado en Juegos Digitales por PUC Minas y Licenciatura en Pedagogía por UFMG, con postgrado en IA y MBA en Big Data.",
+    "cta": "Conocer Más",
+    "downloadCV": "Descargar CV",
+    "viewProjects": "Ver Proyectos",
+    "scrollDown": "Desplazar Abajo",
+    "expertiseAreas": "Áreas de Especialización",
+    "dataCategory": "Ingeniería de Datos",
+    "dataDescription": "Construcción de data pipelines, ETL, Data Lakes e implementación de soluciones con Big Data y procesamiento a gran escala.",
+    "devCategory": "Desarrollo Backend",
+    "devDescription": "Creación de APIs eficientes, aplicaciones web y herramientas de automatización con enfoque en rendimiento y mejores prácticas.",
+    "gameCategory": "Inteligencia Artificial",
+    "gameDescription": "Implementación de modelos de machine learning, procesamiento de lenguaje natural y redes neuronales.",
+    "securityCategory": "Ciberseguridad",
+    "securityDescription": "Implementación de prácticas de seguridad, análisis de vulnerabilidades y protección de datos y sistemas.",
+    "latestExperience": "Posición Actual",
+    "currentJobDescription": "Responsable del desarrollo e implementación de soluciones de Business Intelligence, optimización de procesos ETL y análisis de datos para apoyar la toma de decisiones en Kriptos.",
+    "viewFullHistory": "Ver historial completo",
+    "ctaTitle": "¿Trabajamos juntos?",
+    "ctaDescription": "Siempre estoy abierto a nuevas oportunidades y desafíos. Si buscas un profesional para ayudar en tu próximo proyecto, ¡contáctame!",
+    "profileAlt": "Foto de perfil de Samuel Apolinário Arão"
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "description": "Tengo un profundo interés en temas que afectan directa o indirectamente mi vida, como la política y la economía. Actualmente, estoy enfocando mis esfuerzos en la programación, con énfasis en back-end y big data.",
+    "philosophy": "Creo que una buena persona está en el mundo para ayudar a resolver problemas. Esta filosofía me llevó a la programación. Busco soluciones en múltiples frentes, valorando la capacidad de ser útil en diferentes áreas.",
+    "career": "Comencé mi carrera como pasante en desarrollo web, pero pronto me trasladé al área de datos, donde permanezco hoy.",
+    "current": "Actualmente trabajo como Consultor Senior de BI en Kriptos, donde soy responsable del desarrollo e implementación de soluciones de Business Intelligence, optimización de procesos ETL y análisis de datos para apoyar la toma de decisiones.",
+    "education": "Soy graduado en Juegos Digitales y Licenciatura en Pedagogía, además de tener un postgrado en Inteligencia Artificial de PUC Minas y un MBA en Big Data e Inteligencia Competitiva de Descomplica.",
+    "hobby": "En mi tiempo libre, disfruto investigando vulnerabilidades en sitios web y escribiendo informes sobre ellas, como mi último hallazgo XSS en el sitio web del ayuntamiento de Contagem. Esta práctica me ayuda a mejorar mis habilidades de programación y ciberseguridad.",
+    "experience": "Experiencia Profesional",
+    "skills": "Habilidades Técnicas",
+    "backendDev": "Desarrollo Backend",
+    "dataEngineering": "Ingeniería de Datos",
+    "cybersecurity": "Ciberseguridad",
+    "certifications": "Certificaciones",
+    "educationSection": "Educación",
+    "contactInfo": "Información de Contacto"
+  },
+  "projects": {
+    "title": "Mis Proyectos",
+    "subtitle": "Una selección de mi trabajo en desarrollo de software e ingeniería de datos",
+    "viewCode": "Ver Código",
+    "liveDemoShort": "Demo",
+    "liveDemo": "Ver Demo",
+    "viewProject": "Ver Proyecto",
+    "moreProjects": "Más proyectos",
+    "githubInvite": "Visita mi GitHub para más proyectos y contribuciones a código abierto.",
+    "visitGithub": "Visitar GitHub",
+    "errorMessage": "No se pudieron cargar los proyectos. Por favor, inténtalo más tarde.",
+    "proxy": {
+      "title": "Sistema Proxy FastAPI",
+      "description": "Sistema proxy FastAPI para web scraping con gestión de sesiones y rotación de IP"
+    },
+    "algoritmos": {
+      "title": "Algoritmos y Estructuras de Datos",
+      "description": "Implementaciones de algoritmos y estructuras de datos en Python, enfocadas en eficiencia y optimización"
+    },
+    "api_arquitetura_hexagonal": {
+      "title": "API con Arquitectura Hexagonal",
+      "description": "API REST con arquitectura hexagonal en TypeScript, demostrando principios de diseño limpio y testabilidad"
+    },
+    "golang": {
+      "title": "Aprendiendo Golang",
+      "description": "Proyecto de estudio sobre Go, implementando APIs RESTful e integraciones con bases de datos"
+    },
+    "lunar": {
+      "title": "IA de Aterrizaje Lunar",
+      "description": "Proyecto de inteligencia artificial que utiliza aprendizaje por refuerzo para aterrizar un módulo lunar"
+    },
+    "terminal": {
+      "title": "Proyecto Terminal",
+      "description": "Herramienta de línea de comandos en Python para automatización de tareas y procesamiento de datos"
+    },
+    "brawl-party": {
+      "title": "Brawl Party",
+      "description": "Juego desarrollado en Unity como proyecto final para el curso de Juegos Digitales de PUC Minas"
+    },
+    "json-translate": {
+      "title": "JSON Translate",
+      "description": "Herramienta para traducir archivos JSON, útil para la internacionalización de aplicaciones"
+    }
+  },
+  "skills": {
+    "title": "Mis Habilidades",
+    "subtitle": "Tecnologías y herramientas que utilizo para crear soluciones eficientes",
+    "languages": "Lenguajes de Programación",
+    "dataEngineering": "Ingeniería de Datos",
+    "databases": "Bases de Datos",
+    "webDev": "Desarrollo Web y APIs",
+    "devops": "DevOps y Cloud",
+    "architecture": "Arquitectura y Metodologías",
+    "security": "Seguridad y Rendimiento",
+    "expert": "Experto",
+    "advanced": "Avanzado",
+    "intermediate": "Intermedio",
+    "beginner": "Principiante",
+    "yearsExperience": "años de experiencia",
+    "languages_description": "Dominio de múltiples lenguajes para desarrollo backend, ingeniería de datos y automatización",
+    "dataEngineering_description": "Experiencia con procesamiento de datos a gran escala, ETL y soluciones Big Data",
+    "databases_description": "Competencia en bases de datos SQL y NoSQL para almacenamiento y análisis de datos",
+    "webDev_description": "Desarrollo de APIs modernas y sistemas web escalables",
+    "devops_description": "Infraestructura como código, contenedores y orquestación de servicios",
+    "architecture_description": "Diseño de sistemas y patrones arquitectónicos para soluciones robustas",
+    "security_description": "Implementación de prácticas de seguridad y protección contra vulnerabilidades"
+  },
+  "contact": {
+    "title": "Contacto",
+    "description": "Estoy siempre abierto a nuevas oportunidades y colaboraciones. ¡Siéntete libre de enviarme un mensaje!",
+    "form": {
+      "name": "Nombre",
+      "email": "Correo Electrónico",
+      "message": "Mensaje",
+      "submit": "Enviar Mensaje",
+      "required": "Requerido",
+      "validEmail": "Correo electrónico válido requerido",
+      "minChars": "Mínimo {0} caracteres",
+      "sending": "Enviando...",
+      "success": "¡Mensaje enviado con éxito!",
+      "error": "Error al enviar el mensaje. Por favor, inténtalo de nuevo."
+    },
+    "socialMedia": "Encuéntrame en las redes sociales",
+    "or": "o"
+  }
+} 
