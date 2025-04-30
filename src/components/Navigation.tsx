@@ -48,6 +48,7 @@ export default function Navigation({ locale }: NavigationProps) {
     { href: `/${locale}/about`, label: t.navigation.about },
     { href: `/${locale}/projects`, label: t.navigation.projects },
     { href: `/${locale}/skills`, label: t.navigation.skills },
+    { href: `/${locale}/saa`, label: 'SAA Company' },
   ];
 
   return (
@@ -90,46 +91,46 @@ export default function Navigation({ locale }: NavigationProps) {
               ))}
             </div>
             
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <Link
-                  href={getLocalePath('pt')}
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-2">
+              <Link
+                href={getLocalePath('pt')}
                   className={`nav-link text-sm ${locale === 'pt' ? 'font-bold' : 'font-normal'}`}
-                >
-                  PT
-                </Link>
-                <Link
-                  href={getLocalePath('en')}
+              >
+                PT
+              </Link>
+              <Link
+                href={getLocalePath('en')}
                   className={`nav-link text-sm ${locale === 'en' ? 'font-bold' : 'font-normal'}`}
-                >
-                  EN
-                </Link>
-                <Link
-                  href={getLocalePath('es')}
+              >
+                EN
+              </Link>
+              <Link
+                href={getLocalePath('es')}
                   className={`nav-link text-sm ${locale === 'es' ? 'font-bold' : 'font-normal'}`}
-                >
-                  ES
-                </Link>
-              </div>
-              <div className="flex items-center space-x-4">
+              >
+                ES
+              </Link>
+            </div>
+            <div className="flex items-center space-x-4">
                 <ThemeToggle />
-                <a
-                  href="https://github.com/samueldk12"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="nav-link"
-                >
-                  <FaGithub className="text-xl" />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/samuel-arao/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="nav-link"
-                >
-                  <FaLinkedin className="text-xl" />
-                </a>
-              </div>
+              <a
+                href="https://github.com/samueldk12"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-link"
+              >
+                <FaGithub className="text-xl" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/samuel-arao/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-link"
+              >
+                <FaLinkedin className="text-xl" />
+              </a>
+            </div>
             </div>
           </div>
           

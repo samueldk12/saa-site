@@ -26,7 +26,15 @@ const getProjectTheme = (name: string, description: string = '') => {
       bgDark: 'bg-blue-900/20'
     },
     {
-      keywords: ['data', 'etl', 'pipeline', 'sql', 'postgres', 'database', 'db'],
+      keywords: ['pipeline', 'etl'],
+      icon: <img src="/images/pipeline-logo.png" alt="Pipeline" className="w-8 h-8" />,
+      color: 'green',
+      gradient: 'from-green-400 to-emerald-600',
+      bgLight: 'bg-green-50/80',
+      bgDark: 'bg-green-900/20'
+    },
+    {
+      keywords: ['data', 'sql', 'postgres', 'database', 'db'],
       icon: <FaDatabase className="text-3xl" />,
       color: 'green',
       gradient: 'from-green-400 to-emerald-600',
@@ -134,7 +142,8 @@ const detectTechnologies = (name: string = '', description: string = '', languag
     'ml': text.includes('ml') || text.includes('machine learning') || text.includes('ai') || text.includes('ia'),
     'algorithm': text.includes('algorithm') || text.includes('algoritmo') || text.includes('estrutura') || text.includes('structure'),
     'cli': text.includes('cli') || text.includes('terminal') || text.includes('command'),
-    'game': text.includes('game') || text.includes('jogo')
+    'game': text.includes('game') || text.includes('jogo'),
+    'pipeline': text.includes('pipeline') || text.includes('etl') || text.includes('data flow')
   };
   
   // Extrair tecnologias presentes
@@ -156,7 +165,8 @@ const detectTechnologies = (name: string = '', description: string = '', languag
         'ml': 'Machine Learning',
         'algorithm': 'Algorithms',
         'cli': 'CLI',
-        'game': 'Game Dev'
+        'game': 'Game Dev',
+        'pipeline': 'Data Pipeline'
       };
       
       technologies.push(techNames[tech]);
@@ -198,101 +208,23 @@ const formatProjectName = (name: string) => {
 const getTechColor = (tech: string): { bg: string, bgDark: string, text: string, textDark: string } => {
   const normalizedTech = tech.toLowerCase();
   const techColors: Record<string, { bg: string, bgDark: string, text: string, textDark: string }> = {
-    // Linguagens
-    'python': { 
-      bg: 'bg-blue-50', 
-      bgDark: 'bg-blue-900/20', 
-      text: 'text-blue-700', 
-      textDark: 'text-blue-300' 
-    },
-    'typescript': { 
-      bg: 'bg-indigo-50', 
-      bgDark: 'bg-indigo-900/20', 
-      text: 'text-indigo-700', 
-      textDark: 'text-indigo-300' 
-    },
-    'javascript': { 
-      bg: 'bg-yellow-50', 
-      bgDark: 'bg-yellow-900/20', 
-      text: 'text-yellow-700', 
-      textDark: 'text-yellow-300' 
-    },
-    'golang': { 
-      bg: 'bg-cyan-50', 
-      bgDark: 'bg-cyan-900/20', 
-      text: 'text-cyan-700', 
-      textDark: 'text-cyan-300' 
-    },
-    // Frameworks e ferramentas
-    'fastapi': { 
-      bg: 'bg-green-50', 
-      bgDark: 'bg-green-900/20', 
-      text: 'text-green-700', 
-      textDark: 'text-green-300' 
-    },
-    'node.js': { 
-      bg: 'bg-emerald-50', 
-      bgDark: 'bg-emerald-900/20', 
-      text: 'text-emerald-700', 
-      textDark: 'text-emerald-300' 
-    },
-    'docker': { 
-      bg: 'bg-sky-50', 
-      bgDark: 'bg-sky-900/20', 
-      text: 'text-sky-700', 
-      textDark: 'text-sky-300' 
-    },
-    // Bancos de dados
-    'mongodb': { 
-      bg: 'bg-green-50', 
-      bgDark: 'bg-green-900/20', 
-      text: 'text-green-700', 
-      textDark: 'text-green-300' 
-    },
-    'postgresql': { 
-      bg: 'bg-blue-50', 
-      bgDark: 'bg-blue-900/20', 
-      text: 'text-blue-700', 
-      textDark: 'text-blue-300' 
-    },
-    // Categorias
-    'restful api': { 
-      bg: 'bg-violet-50', 
-      bgDark: 'bg-violet-900/20', 
-      text: 'text-violet-700', 
-      textDark: 'text-violet-300' 
-    },
-    'machine learning': { 
-      bg: 'bg-purple-50', 
-      bgDark: 'bg-purple-900/20', 
-      text: 'text-purple-700', 
-      textDark: 'text-purple-300' 
-    },
-    'algorithms': { 
-      bg: 'bg-rose-50', 
-      bgDark: 'bg-rose-900/20', 
-      text: 'text-rose-700', 
-      textDark: 'text-rose-300' 
-    },
-    'cli': { 
-      bg: 'bg-slate-50', 
-      bgDark: 'bg-slate-900/20', 
-      text: 'text-slate-700', 
-      textDark: 'text-slate-300' 
-    },
-    'game dev': { 
-      bg: 'bg-red-50', 
-      bgDark: 'bg-red-900/20', 
-      text: 'text-red-700', 
-      textDark: 'text-red-300' 
-    },
-    // Default para outras tecnologias
-    'default': { 
-      bg: 'bg-gray-50', 
-      bgDark: 'bg-gray-800/20', 
-      text: 'text-gray-700', 
-      textDark: 'text-gray-300' 
-    }
+    'python': { bg: 'bg-yellow-100', bgDark: 'bg-yellow-900/30', text: 'text-yellow-800', textDark: 'text-yellow-300' },
+    'typescript': { bg: 'bg-blue-100', bgDark: 'bg-blue-900/30', text: 'text-blue-800', textDark: 'text-blue-300' },
+    'javascript': { bg: 'bg-yellow-100', bgDark: 'bg-yellow-900/30', text: 'text-yellow-800', textDark: 'text-yellow-300' },
+    'node': { bg: 'bg-green-100', bgDark: 'bg-green-900/30', text: 'text-green-800', textDark: 'text-green-300' },
+    'go': { bg: 'bg-cyan-100', bgDark: 'bg-cyan-900/30', text: 'text-cyan-800', textDark: 'text-cyan-300' },
+    'golang': { bg: 'bg-cyan-100', bgDark: 'bg-cyan-900/30', text: 'text-cyan-800', textDark: 'text-cyan-300' },
+    'mongodb': { bg: 'bg-green-100', bgDark: 'bg-green-900/30', text: 'text-green-800', textDark: 'text-green-300' },
+    'postgres': { bg: 'bg-blue-100', bgDark: 'bg-blue-900/30', text: 'text-blue-800', textDark: 'text-blue-300' },
+    'postgresql': { bg: 'bg-blue-100', bgDark: 'bg-blue-900/30', text: 'text-blue-800', textDark: 'text-blue-300' },
+    'api': { bg: 'bg-indigo-100', bgDark: 'bg-indigo-900/30', text: 'text-indigo-800', textDark: 'text-indigo-300' },
+    'rest': { bg: 'bg-indigo-100', bgDark: 'bg-indigo-900/30', text: 'text-indigo-800', textDark: 'text-indigo-300' },
+    'ml': { bg: 'bg-purple-100', bgDark: 'bg-purple-900/30', text: 'text-purple-800', textDark: 'text-purple-300' },
+    'machine': { bg: 'bg-purple-100', bgDark: 'bg-purple-900/30', text: 'text-purple-800', textDark: 'text-purple-300' },
+    'algorithm': { bg: 'bg-cyan-100', bgDark: 'bg-cyan-900/30', text: 'text-cyan-800', textDark: 'text-cyan-300' },
+    'data pipeline': { bg: 'bg-emerald-100', bgDark: 'bg-emerald-900/30', text: 'text-emerald-800', textDark: 'text-emerald-300' },
+    'pipeline': { bg: 'bg-emerald-100', bgDark: 'bg-emerald-900/30', text: 'text-emerald-800', textDark: 'text-emerald-300' },
+    'default': { bg: 'bg-gray-100', bgDark: 'bg-gray-800/50', text: 'text-gray-800', textDark: 'text-gray-300' }
   };
 
   // Tentativa de correspondência para cada tecnologia
@@ -390,7 +322,7 @@ export default function Projects() {
   };
 
   const ProjectCard = ({ project, index }: { project: any; index: number }) => (
-    <motion.div 
+    <motion.div
       className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-full border border-gray-100 dark:border-gray-700"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -409,7 +341,7 @@ export default function Projects() {
         />
         
         <div className="flex justify-between items-start mb-4">
-          <div className={`p-3 rounded-full ${project.bgLight} dark:${project.bgDark} text-${project.color}-600 dark:text-${project.color}-400 transition-transform duration-300 group-hover:scale-110`}>
+          <div className={`p-3 rounded-full ${project.bgLight} dark:${project.bgDark} text-${project.color}-600 dark:text-${project.color}-400 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center`}>
             {project.icon}
           </div>
           <div className="flex space-x-2">
@@ -431,12 +363,12 @@ export default function Projects() {
           {t.projects?.[project.id]?.description || project.description}
         </p>
         
-        <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech: string) => {
             const techColor = getTechColor(tech);
             return (
               <span 
-                key={`${project.id}-${tech}`}
+                key={`${project.id}-${tech}`} 
                 className={`px-3 py-1 ${techColor.bg} dark:${techColor.bgDark} ${techColor.text} dark:${techColor.textDark} rounded-full text-xs font-medium`}
               >
                 {tech}
@@ -444,14 +376,14 @@ export default function Projects() {
             );
           })}
         </div>
-      </div>
-      
+          </div>
+          
       <div className="p-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
         <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm">
           <FaCalendarAlt className="mr-1 text-xs" />
           {project.formattedDate}
-        </div>
-        
+            </div>
+            
         <div className="flex space-x-2">
           {project.html_url && (
             <a 
@@ -493,7 +425,7 @@ export default function Projects() {
           <div className="p-6 sm:p-8 overflow-y-auto">
             <div className="flex justify-between items-start mb-6">
               <div className="flex items-start">
-                <div className={`p-4 rounded-full ${project.bgLight} dark:${project.bgDark} text-${project.color}-600 dark:text-${project.color}-400 mr-4`}>
+                <div className={`p-4 rounded-full ${project.bgLight} dark:${project.bgDark} text-${project.color}-600 dark:text-${project.color}-400 mr-4 flex items-center justify-center`}>
                   {project.icon}
                 </div>
                 <div>
@@ -507,7 +439,7 @@ export default function Projects() {
                 </div>
               </div>
               
-              <button
+              <button 
                 onClick={closeProjectModal}
                 className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white p-1"
                 aria-label="Fechar"
@@ -524,7 +456,7 @@ export default function Projects() {
                 {t.projects?.[project.id]?.description || project.description}
               </p>
             </div>
-            
+              
             <div className="mb-8">
               <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">{t.projects?.technologies || 'Tecnologias'}</h3>
               <div className="flex flex-wrap gap-2">
@@ -571,7 +503,7 @@ export default function Projects() {
               </div>
             </div>
           </div>
-          
+            
           <div className="p-4 sm:p-6 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-3 justify-end">
             <button
               onClick={closeProjectModal}
@@ -587,7 +519,7 @@ export default function Projects() {
                 rel="noopener noreferrer"
                 className={`px-4 py-2 bg-${project.color}-600 hover:bg-${project.color}-700 text-white rounded-lg flex items-center gap-2 transition-colors`}
               >
-                <FaGithub />
+                <FaGithub /> 
                 <span>{t.projects?.viewOnGithub || 'Ver no GitHub'}</span>
               </a>
             )}
