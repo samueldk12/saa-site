@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import SkillBadge from './SkillBadge';
+import type { ProficiencyLevel } from './SkillBadge';
 import { allSkills } from '@/lib/skillsData';
 import { getLocalizedSkillData } from '@/lib/skillsData';
 import { translateSkill } from '@/lib/translateSkill';
@@ -93,7 +94,7 @@ export default function SkillsText({ text, locale = 'pt', className = '' }: Skil
           <SkillBadge 
             key={`skill-${currentIndex}`}
             skill={skillInfo.skill}
-            level={level}
+            level={level as ProficiencyLevel}
             className="mx-0.5"
           >
             {formattedSkill}
