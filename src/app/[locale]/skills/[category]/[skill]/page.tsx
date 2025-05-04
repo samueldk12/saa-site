@@ -25,7 +25,7 @@ import {
 import { SiPython, SiTypescript, SiGo, SiFastapi, SiApachespark, SiApacheairflow, SiDocker, SiGraphql, SiKubernetes, SiPrometheus, SiGrafana } from 'react-icons/si';
 import { getLocalizedSkillData } from '@/lib/skillsData';
 import SkillBadge from '@/components/SkillBadge';
-import { Project } from '@/lib/calculateProficiency';
+import { Project, Experience, Certification } from '@/lib/calculateProficiency';
 
 // Mapear habilidades para ícones
 const skillIcons: Record<string, JSX.Element> = {
@@ -271,7 +271,7 @@ export default function SkillDetailPage() {
                   </h2>
                   
                   <div className="space-y-6">
-                    {experiences.map((experience, index) => (
+                    {experiences.map((experience: Experience, index: number) => (
                       <motion.div 
                         key={index}
                         className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6"
@@ -302,7 +302,7 @@ export default function SkillDetailPage() {
                   </h2>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {certifications.map((certification, index) => (
+                    {certifications.map((certification: Certification, index: number) => (
                       <motion.div 
                         key={index}
                         className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6"
