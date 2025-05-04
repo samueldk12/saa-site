@@ -4,11 +4,13 @@
 import { getTranslations } from '@/lib/getTranslations';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '@/components/Navigation';
-import { FaGithub, FaExternalLinkAlt, FaServer, FaCode, FaDatabase, FaRobot, FaTerminal, FaBook, FaBrain, FaCalendarAlt, FaCodeBranch, FaStar, FaInfoCircle } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaServer, FaCode, FaDatabase, FaRobot, FaTerminal, FaBook, FaBrain, FaCalendarAlt, FaCodeBranch, FaStar, FaInfoCircle, FaTimes } from 'react-icons/fa';
 import { SiTypescript, SiPython, SiGo, SiFastapi, SiPostgresql, SiMongodb, SiRedis, SiDocker, SiJavascript, SiNodedotjs } from 'react-icons/si';
 import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Link from "next/link";
+import { getLocalizedSkillData, getExperiencesForSkill } from '@/lib/skillsData';
+import SkillBadge from '@/components/SkillBadge';
 
 // Função para determinar ícone e cor com base no nome ou descrição do projeto
 const getProjectTheme = (name: string, description: string = '') => {
@@ -246,7 +248,16 @@ export default function Projects() {
   const [error, setError] = useState<string | null>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  
+  const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+  const [showSkillModal, setShowSkillModal] = useState(false);
+
+  const handleSkillClick = (skill: string) => {
+    setSelectedSkill(skill);
+    setShowSkillModal(true);
+  };
+
+  const experiencesForSkill = selectedSkill ? getExperiencesForSkill(selectedSkill) : [];
+
   // Função para buscar repositórios do GitHub
   useEffect(() => {
     const fetchRepos = async () => {
@@ -321,94 +332,96 @@ export default function Projects() {
     document.body.style.overflow = 'auto';
   };
 
-  const ProjectCard = ({ project, index }: { project: any; index: number }) => (
-    <motion.div
-      className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-full border border-gray-100 dark:border-gray-700"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-    >
-      <div className={`h-2 bg-gradient-to-r ${project.gradient}`}></div>
-      
-      <div className="p-6 flex-1 relative z-10">
-        <div 
-          className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 z-0 ${project.bgLight} dark:${project.bgDark}`}
-          style={{ 
-            clipPath: 'polygon(0 0, 100% 0, 100% 70%, 0 100%)',
-          }}
-        />
-        
-        <div className="flex justify-between items-start mb-4">
-          <div className={`p-3 rounded-full ${project.bgLight} dark:${project.bgDark} text-${project.color}-600 dark:text-${project.color}-400 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center`}>
-            {project.icon}
+  const ProjectCard = ({ project, index }: { project: any; index: number }) => {
+    const theme = getProjectTheme(project.name, project.description);
+    const technologies = detectTechnologies(project.name, project.description, project.language);
+    
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow ${theme.bgLight} dark:${theme.bgDark}`}
+      >
+        <div className="p-6">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center">
+              <div className={`w-12 h-12 rounded-lg bg-${theme.color}-100 dark:bg-${theme.color}-900/30 flex items-center justify-center mr-4`}>
+                {theme.icon}
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  {formatProjectName(project.name)}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {project.language || 'Project'}
+                </p>
+              </div>
+            </div>
+            <div className="flex space-x-2">
+              {project.html_url && (
+                <a
+                  href={project.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                >
+                  <FaGithub className="text-xl" />
+                </a>
+              )}
+              {project.homepage && (
+                <a
+                  href={project.homepage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                >
+                  <FaExternalLinkAlt className="text-xl" />
+                </a>
+              )}
+            </div>
           </div>
-          <div className="flex space-x-2">
+          
+          <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+            {project.description || 'No description available.'}
+          </p>
+          
+          <div className="flex flex-wrap gap-2 mb-4">
+            {technologies.map((tech, idx) => (
+              <button
+                key={`${project.id}-${tech}-${idx}`}
+                onClick={() => handleSkillClick(tech)}
+                className="cursor-pointer"
+              >
+                <SkillBadge skill={tech} noLink={true} />
+              </button>
+            ))}
+          </div>
+          
+          <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center space-x-4">
+              <span className="flex items-center">
+                <FaCodeBranch className="mr-1" />
+                {project.forks || 0}
+              </span>
+              <span className="flex items-center">
+                <FaStar className="mr-1" />
+                {project.stargazers_count || 0}
+              </span>
+            </div>
             <button
               onClick={() => openProjectModal(project)}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white transition-colors"
-              aria-label="Ver detalhes"
+              className="flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
             >
-              <FaInfoCircle className="text-xl" />
+              <FaInfoCircle className="mr-1" />
+              {t.projects?.details || 'Details'}
             </button>
           </div>
         </div>
-        
-        <h2 className="text-xl font-bold mb-2 text-gray-800 dark:text-white">
-          {t.projects?.[project.id]?.title || formatProjectName(project.name)}
-        </h2>
-        
-        <p className="text-gray-600 dark:text-gray-400 mb-6 text-sm line-clamp-3">
-          {t.projects?.[project.id]?.description || project.description}
-        </p>
-        
-          <div className="flex flex-wrap gap-2 mb-4">
-          {project.technologies.map((tech: string) => {
-            const techColor = getTechColor(tech);
-            return (
-              <span 
-                key={`${project.id}-${tech}`} 
-                className={`px-3 py-1 ${techColor.bg} dark:${techColor.bgDark} ${techColor.text} dark:${techColor.textDark} rounded-full text-xs font-medium`}
-              >
-                {tech}
-              </span>
-            );
-          })}
-        </div>
-          </div>
-          
-      <div className="p-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
-        <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm">
-          <FaCalendarAlt className="mr-1 text-xs" />
-          {project.formattedDate}
-            </div>
-            
-        <div className="flex space-x-2">
-          {project.html_url && (
-            <a 
-              href={project.html_url} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className={`px-3 py-1 bg-${project.color}-600 hover:bg-${project.color}-700 text-white rounded flex items-center gap-1 text-sm transition-colors`}
-              aria-label="Ver no GitHub"
-            >
-              <FaGithub className="text-sm" />
-              <span>{t.projects?.openGithub || 'Abrir GitHub'}</span>
-            </a>
-          )}
-          
-          <button
-            onClick={() => openProjectModal(project)}
-            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded flex items-center gap-1 text-sm transition-colors"
-          >
-            <FaInfoCircle className="text-sm" />
-            <span>{t.projects?.details || 'Detalhes'}</span>
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
+      </motion.div>
+    );
+  };
 
   const ProjectModal = ({ project }: { project: any }) => {
     return (
@@ -455,11 +468,11 @@ export default function Projects() {
               <p className="text-gray-600 dark:text-gray-300">
                 {t.projects?.[project.id]?.description || project.description}
               </p>
-            </div>
+              </div>
               
             <div className="mb-8">
               <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">{t.projects?.technologies || 'Tecnologias'}</h3>
-              <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2">
                 {project.technologies.map((tech: string) => {
                   const techColor = getTechColor(tech);
                   return (
@@ -477,7 +490,7 @@ export default function Projects() {
             <div className="mb-8">
               <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">{t.projects?.statistics || 'Estatísticas'}</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <div className="flex items-center">
                     <FaCodeBranch className="text-gray-500 dark:text-gray-400 mr-2" />
                     <span className="text-gray-800 dark:text-white font-semibold">{project.forks_count}</span>
@@ -485,7 +498,7 @@ export default function Projects() {
                   <p className="text-gray-600 dark:text-gray-400 text-sm">{t.projects?.forks || 'Forks'}</p>
                 </div>
                 
-                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <div className="flex items-center">
                     <FaStar className="text-yellow-500 mr-2" />
                     <span className="text-gray-800 dark:text-white font-semibold">{project.stargazers_count}</span>
@@ -493,7 +506,7 @@ export default function Projects() {
                   <p className="text-gray-600 dark:text-gray-400 text-sm">{t.projects?.stars || 'Estrelas'}</p>
                 </div>
                 
-                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <div className="flex items-center">
                     <span className="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
                     <span className="text-gray-800 dark:text-white font-semibold">{project.language || '-'}</span>
@@ -530,7 +543,7 @@ export default function Projects() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-950 dark:to-indigo-950">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-black text-gray-800 dark:text-white">
       <Navigation locale={locale as string} />
       
       <div className="container mx-auto px-4 pt-24 pb-16">
@@ -619,6 +632,62 @@ export default function Projects() {
       <AnimatePresence>
         {isModalOpen && selectedProject && (
           <ProjectModal project={selectedProject} />
+        )}
+      </AnimatePresence>
+      
+      {/* Skill Modal */}
+      <AnimatePresence>
+        {showSkillModal && selectedSkill && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+            onClick={() => setShowSkillModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-2xl w-full p-6"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {selectedSkill}
+                </h3>
+                <button
+                  onClick={() => setShowSkillModal(false)}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                >
+                  <FaTimes className="text-xl" />
+                </button>
+              </div>
+              
+              <div className="space-y-4">
+                <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                  {locale === 'en' ? 'Experiences with this skill' : 'Experiências com esta habilidade'}
+                </h4>
+                <div className="space-y-3">
+                  {experiencesForSkill.map((exp, idx) => (
+                    <div
+                      key={`${exp.company}-${idx}`}
+                      className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4"
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h5 className="font-bold text-gray-900 dark:text-white">{exp.company}</h5>
+                          <p className="text-gray-600 dark:text-gray-300">{exp.position}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">{exp.period}</p>
+                        </div>
+                      </div>
+                      <p className="mt-2 text-gray-700 dark:text-gray-300 text-sm">{exp.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </main>

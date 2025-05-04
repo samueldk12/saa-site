@@ -38,8 +38,23 @@ export default function Navigation({ locale }: NavigationProps) {
 
   // Função para mudar o locale mantendo o mesmo caminho
   const getLocalePath = (newLocale: string) => {
-    // Extrai o caminho após o locale atual
-    const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
+    // Verifica se o pathname está disponível e se contém o locale atual
+    if (!pathname) return `/${newLocale}`;
+    
+    // Se o pathname contém "/undefined/", vamos corrigir isso
+    if (pathname.includes('/undefined/')) {
+      // Extrair o caminho após '/undefined/'
+      const pathAfterUndefined = pathname.split('/undefined/')[1];
+      return `/${newLocale}/${pathAfterUndefined}`;
+    }
+    
+    // Extrai o caminho após o locale atual, se o locale estiver presente
+    let pathWithoutLocale = pathname;
+    if (locale && pathname.startsWith(`/${locale}`)) {
+      pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
+    }
+    
+    // Construir o novo caminho com o novo locale
     return `/${newLocale}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
   };
 

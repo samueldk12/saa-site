@@ -11,6 +11,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Ignorar arquivos estáticos
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
+  // Configuração de matcher simples
+  matcher: ['/']
 }; 

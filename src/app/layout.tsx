@@ -17,13 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <>
       <head>
         <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
         <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
       </head>
       <GoogleAnalytics />
       <body className={`${inter.className} antialiased`}>{children}</body>
-    </html>
+    </>
   );
 } 

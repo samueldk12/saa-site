@@ -8,12 +8,12 @@
   "home": {
     "title": "Samuel Apolinário Arão",
     "subtitle": "Consultor BI Senior | Engenheiro de Dados",
-    "description": "Profissional especializado em Engenharia de Dados e Backend Development, com experiência em Business Intelligence, ETL e soluções de Big Data. Apaixonado por resolver problemas complexos com tecnologia.",
+    "description": "Profissional especializado em Engenharia de Dados e Desenvolvimento Backend, com experiência em Business Intelligence, ETL e soluções Big Data. Apaixonado por resolver problemas complexos com tecnologia.",
     "cta": "Saiba Mais",
     "downloadCV": "Baixar CV",
     "viewProjects": "Ver Projetos",
-    "scrollDown": "Role para baixo",
-    "expertiseAreas": "Áreas de Especialização",
+    "scrollDown": "Rolar para Baixo",
+    "expertiseAreas": "Áreas de Expertise",
     "dataCategory": "Engenharia de Dados",
     "dataDescription": "Construção de pipelines de dados, ETL, Data Lakes e implementação de soluções com Big Data e processamento em larga escala.",
     "devCategory": "Desenvolvimento Backend",
@@ -22,11 +22,11 @@
     "gameDescription": "Implementação de modelos de machine learning, processamento de linguagem natural e redes neurais.",
     "securityCategory": "Cybersegurança",
     "securityDescription": "Implementação de práticas de segurança, análise de vulnerabilidades e proteção de dados e sistemas.",
-    "latestExperience": "Experiência Atual",
+    "latestExperience": "Posição Atual",
     "currentJobDescription": "Responsável pelo desenvolvimento e implementação de soluções de Business Intelligence, otimização de processos de ETL e análise de dados para suporte à tomada de decisões na Kriptos.",
     "viewFullHistory": "Ver histórico completo",
     "ctaTitle": "Vamos trabalhar juntos?",
-    "ctaDescription": "Estou sempre aberto a novas oportunidades e desafios. Se você está procurando um profissional para ajudar em seu próximo projeto, entre em contato!",
+    "ctaDescription": "Estou sempre aberto a novas oportunidades e desafios. Se você está procurando um profissional para ajudar no seu próximo projeto, entre em contato!",
     "profileAlt": "Foto de perfil de Samuel Apolinário Arão"
   },
   "about": {
@@ -43,9 +43,11 @@
     "dataEngineering": "Engenharia de Dados",
     "cybersecurity": "Cybersegurança",
     "certifications": "Certificações",
-    "educationSection": "Formação Acadêmica",
+    "educationSection": "Formações",
     "contactInfo": "Informações de Contato",
-    "viewCertificate": "Ver Certificado"
+    "view_certificate": "Ver Certificado",
+    "timeline": "Linha do Tempo",
+    "timelineSubtitle": "Minha jornada profissional e marcos importantes"
   },
   "contact": {
     "title": "Entre em Contato",
@@ -120,6 +122,7 @@
     "subtitle": "Tecnologias e ferramentas que utilizo para criar soluções eficientes",
     "languages": "Linguagens de Programação",
     "dataEngineering": "Engenharia de Dados",
+    "artificialIntelligence": "Inteligência Artificial",
     "databases": "Bancos de Dados",
     "webDev": "Desenvolvimento Web & APIs",
     "devops": "DevOps & Cloud",
@@ -130,12 +133,27 @@
     "intermediate": "Intermediário",
     "beginner": "Iniciante",
     "yearsExperience": "anos de experiência",
-    "languages_description": "Domínio de múltiplas linguagens para desenvolvimento backend, engenharia de dados e automação",
-    "dataEngineering_description": "Experiência com processamento de dados em grande escala, ETL e soluções de Big Data",
+    "viewAllSkills": "Ver todas as habilidades",
+    "languages_description": "Proficiência em múltiplas linguagens para desenvolvimento backend, engenharia de dados e automação",
+    "dataEngineering_description": "Experiência com processamento de dados em larga escala, ETL e soluções Big Data",
+    "artificialIntelligence_description": "Desenvolvimento de soluções de machine learning, visão computacional e processamento de linguagem natural",
     "databases_description": "Proficiência em bancos de dados SQL e NoSQL para armazenamento e análise de dados",
     "webDev_description": "Desenvolvimento de APIs modernas e sistemas web escaláveis",
     "devops_description": "Infraestrutura como código, containers e orquestração de serviços",
     "architecture_description": "Design de sistemas e padrões arquiteturais para soluções robustas",
-    "security_description": "Implementação de práticas de segurança e proteção contra vulnerabilidades"
+    "security_description": "Implementação de práticas de segurança e proteção contra vulnerabilidades",
+    "detailSubtitle": "Projetos, experiências e certificações relacionadas",
+    "experience": "Experiência",
+    "projects": "Projetos",
+    "relatedProjects": "Projetos relacionados",
+    "certifications": "Certificações",
+    "relatedCertifications": "Certificações relacionadas"
+  },
+  "common": {
+    "back": "Voltar",
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "viewDetails": "Ver Detalhes"
   }
 } 

@@ -7,22 +7,111 @@ import { getTranslations } from "@/lib/getTranslations";
 import Navigation from "@/components/Navigation";
 import { 
   FaCode, 
-  FaDatabase, 
-  FaServer, 
-  FaLaptopCode, 
+  FaDatabase as FaDatabaseIcon, 
   FaShieldAlt, 
-  FaGraduationCap, 
+  FaGithub, 
+  FaLinkedin, 
+  FaServer, 
+  FaPython, 
+  FaDocker, 
+  FaLaptopCode,
+  FaDownload,
+  FaEnvelope,
   FaBriefcase,
-  FaCertificate,
+  FaArrowRight,
+  FaWhatsapp,
+  FaChevronDown,
+  FaMapMarkerAlt as FaLocation,
+  FaGraduationCap as FaGrad,
+  FaBrain,
+  FaBolt,
+  FaLightbulb,
   FaBuilding,
+  FaRocket,
+  FaCertificate,
   FaCalendarAlt,
-  FaExternalLinkAlt
+  FaExternalLinkAlt,
+  FaPhone,
+  FaPlus,
+  FaMinus
 } from "react-icons/fa";
-import { SiPython, SiPhp, SiNodedotjs, SiFastapi, SiGo, SiPostgresql, SiMongodb, SiApachekafka, SiApachespark, SiAmazon, SiDocker, SiKubernetes, SiTerraform } from "react-icons/si";
+import { SiApachespark, SiApacheairflow, SiPostgresql, SiElasticsearch, SiGo, SiPython, SiTypescript } from 'react-icons/si';
+import Link from 'next/link';
+import SkillsText from '@/components/SkillsText';
+import { useState, useRef, useEffect } from 'react';
+
+// Interfaces para tipagem
+interface Experience {
+  company: string;
+  position: string;
+  period: string;
+  description: string;
+  technologies: string[];
+}
+
+interface Education {
+  degree: string;
+  institution: string;
+  period: string;
+  focus: string;
+}
+
+interface Certification {
+  name: string;
+  issuer: string;
+  year: string;
+  credential?: string;
+  certificate_url?: string;
+}
+
+interface TranslationType {
+  about?: {
+    title?: string;
+    description?: string;
+    view_certificate?: string;
+    // ... outros campos de tradução
+  };
+  skills?: Record<string, string>;
+}
+
+interface ExperienceCardProps {
+  experience: Experience;
+  t: TranslationType;
+  locale: string;
+}
+
+interface EducationCardProps {
+  education: Education;
+  t: TranslationType;
+}
+
+interface CertificationCardProps {
+  certification: Certification;
+  t: TranslationType;
+}
 
 export default function About() {
-  const { locale } = useParams();
-  const t = getTranslations(locale as string);
+  const params = useParams();
+  const locale = params.locale as string;
+  const t = getTranslations(locale);
+  const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTimelineItem, setActiveTimelineItem] = useState<number | null>(null);
+  const [selectedTimelineItem, setSelectedTimelineItem] = useState<{ type: string; data: any } | null>(null);
+  const [timelineZoom, setTimelineZoom] = useState(1);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const timelineRef = useRef<HTMLDivElement>(null);
+
+  const handleSkillClick = (skill: string) => {
+    setSelectedSkill(skill);
+    setIsModalOpen(true);
+  };
+
+  const handleTimelineItemClick = (index: number) => {
+    setActiveTimelineItem(activeTimelineItem === index ? null : index);
+  };
 
   const workExperience = [
     {
@@ -30,45 +119,45 @@ export default function About() {
       position: locale === 'en' ? "Senior BI Consultant" : "Consultor BI Senior",
       period: locale === 'en' ? "April 2025 - Present" : "abril de 2025 - Presente",
       description: locale === 'en' 
-        ? "Development and implementation of Business Intelligence solutions, optimization of ETL processes, and data analysis to support decision-making."
-        : "Desenvolvimento e implementação de soluções de Business Intelligence, otimização de processos de ETL e análise de dados para suporte à tomada de decisões.",
-      skills: ["Python", "SQL", "Airflow", "Spark", "AWS"]
+        ? "Working primarily as a Data Engineer, responsible for developing and implementing data pipelines, ETL processes, and building scalable data architecture. Creating automation solutions, data integration projects and high-performance APIs with focus on best practices and clean code. Working with large data volumes, including initiatives with the Public Ministry of Minas Gerais (MPMG)."
+        : "Atuando principalmente como Engenheiro de Dados, responsável pelo desenvolvimento e implementação de pipelines de dados, processos de ETL e construção de arquiteturas de dados escaláveis. Desenvolvimento de soluções de automação, projetos de integração de dados e APIs performáticas com foco em boas práticas e código limpo. Trabalho com grandes volumes de dados, incluindo iniciativas junto ao Ministério Público de Minas Gerais (MPMG).",
+      technologies: ["Python", "SQL", "Apache Airflow", "Apache Spark", "AWS", "FastAPI", "Docker", "Apache Hadoop", "Apache Druid", "Apache NiFi", "Web Scraping", "PostgreSQL", "Data Engineering", "Apache Hive", "Data Lakes", "Elasticsearch", "Microservices", "CI/CD", "Jenkins", "Clean Architecture", "TDD", "Linux", "Web Security"]
     },
     {
       company: "TO Brasil",
       position: locale === 'en' ? "System Analyst" : "Analista de sistema Pleno",
       period: locale === 'en' ? "January 2021 - March 2025" : "janeiro de 2021 - março de 2025",
       description: locale === 'en'
-        ? "Responsible for designing and implementing data pipelines, ETL systems, and integration of various data sources for analysis and visualization."
-        : "Responsável por projetar e implementar pipelines de dados, sistemas ETL e integração de diversas fontes de dados para análise e visualização.",
-      skills: ["Python", "Spark", "Airflow", "PostgreSQL", "FastAPI", "Druid"]
+        ? "Responsible for designing and implementing data pipelines, ETL systems, and integration of various data sources for analysis and visualization. Development of automation projects, data integration solutions and high-performance APIs with focus on optimization and clean code."
+        : "Responsável por projetar e implementar pipelines de dados, sistemas ETL e integração de diversas fontes de dados para análise e visualização. Desenvolvimento de projetos de automação, soluções de integração de dados e APIs performáticas com foco em otimização e código limpo.",
+      technologies: ["Python", "SQL", "Apache Airflow", "Apache Spark", "FastAPI", "Docker", "Apache Hadoop", "Apache Druid", "Apache NiFi", "Web Scraping", "PostgreSQL", "Data Engineering", "Apache Hive", "Data Lakes", "Elasticsearch", "Microservices", "CI/CD", "Jenkins", "Clean Architecture", "TDD", "Linux", "Web Security"]
     },
     {
       company: "4mti",
       position: locale === 'en' ? "Software Developer" : "Desenvolvedor de software",
       period: locale === 'en' ? "February 2023 - October 2023" : "fevereiro de 2023 - outubro de 2023",
       description: locale === 'en'
-        ? "Development of web applications and APIs using modern backend and frontend technologies."
-        : "Desenvolvimento de aplicações web e APIs utilizando tecnologias modernas de backend e frontend.",
-      skills: ["Node.js", "React", "MongoDB", "PostgreSQL", "Docker"]
+        ? "Development of web applications and APIs using modern backend and frontend technologies. Implementation of machine learning models for data analysis and predictions."
+        : "Desenvolvimento de aplicações web e APIs utilizando tecnologias modernas de backend e frontend. Implementação de modelos de machine learning para análise de dados e previsões.",
+      technologies: ["Node.js", "React", "MongoDB", "PostgreSQL", "Docker", "PHP", "Python", "Apache Hadoop", "Apache Spark", "ETL", "Web Scraping", "Machine Learning", "Deep Learning", "Computer Vision", "NLP"]
     },
     {
       company: "4mti",
       position: locale === 'en' ? "Data Scientist" : "Cientista de dados",
       period: locale === 'en' ? "October 2020 - January 2021" : "outubro de 2020 - janeiro de 2021",
       description: locale === 'en'
-        ? "Data analysis, development of machine learning models, and implementation of ETL pipelines."
-        : "Análise de dados, desenvolvimento de modelos de machine learning e implementação de pipelines de ETL.",
-      skills: ["Python", "Hadoop", "Spark", "PostgreSQL", "ETL", "Web Crawler"]
+        ? "Data analysis, development of machine learning models, and implementation of ETL pipelines. Creation of computer vision and natural language processing solutions."
+        : "Análise de dados, desenvolvimento de modelos de machine learning e implementação de pipelines de ETL. Criação de soluções de visão computacional e processamento de linguagem natural.",
+      technologies: ["Python", "Apache Hadoop", "Apache Spark", "PostgreSQL", "ETL", "Web Scraping", "PHP", "Node.js", "React", "MongoDB", "Docker", "Machine Learning", "Deep Learning", "Computer Vision", "NLP"]
     },
     {
       company: "4mti",
       position: locale === 'en' ? "Developer" : "Desenvolvedor",
       period: locale === 'en' ? "July 2020 - October 2020" : "julho de 2020 - outubro de 2020",
       description: locale === 'en'
-        ? "Development of web applications and crawling systems for data collection."
-        : "Desenvolvimento de aplicações web e sistemas de crawling para coleta de dados.",
-      skills: ["ReactJS", "Node.js", "ETL", "Spark", "Web Crawler"]
+        ? "Development of web applications and crawling systems for data collection. Implementation of machine learning algorithms for classification and analysis of collected data."
+        : "Desenvolvimento de aplicações web e sistemas de crawling para coleta de dados. Implementação de algoritmos de machine learning para classificação e análise de dados coletados.",
+      technologies: ["React.js", "Node.js", "ETL", "Apache Spark", "Web Scraping", "PHP", "Python", "Apache Hadoop", "MongoDB", "PostgreSQL", "Docker", "Machine Learning", "Deep Learning"]
     },
     {
       company: "RemOpt",
@@ -77,7 +166,7 @@ export default function About() {
       description: locale === 'en'
         ? "Development of web applications, intranet maintenance, security testing, and backend development."
         : "Desenvolvimento de aplicações web, manutenção de intranet, testes de segurança e desenvolvimento back-end.",
-      skills: ["PHP", "jQuery", "MySQL", "HTML", "CSS", "Bootstrap"]
+      technologies: ["PHP", "jQuery", "MySQL", "HTML", "CSS", "Bootstrap"]
     }
   ];
 
@@ -187,364 +276,872 @@ export default function About() {
     }
   ];
 
-  const skillCategories = [
-    {
-      name: t.about?.backendDev || "Desenvolvimento Backend",
-      icon: <FaServer className="text-blue-500 text-2xl" />,
-      skills: [
-        { name: "Python", level: 95 },
-        { name: "Node.js", level: 85 },
-        { name: "Go", level: 70 },
-        { name: "PHP", level: 80 },
-        { name: "FastAPI", level: 90 },
-        { name: "Express", level: 85 },
-      ]
+  // Novos dados para o radar chart das competências
+  const competencyAreas = [
+    { 
+      name: locale === 'en' ? "Data Engineering" : "Engenharia de Dados", 
+      value: 90, 
+      icon: <FaDatabaseIcon className="text-2xl" />,
+      color: "blue",
+      skill: "DATA ENGINEERING"
     },
-    {
-      name: t.about?.dataEngineering || "Engenharia de Dados",
-      icon: <FaDatabase className="text-green-500 text-2xl" />,
-      skills: [
-        { name: "SQL", level: 95 },
-        { name: "ETL", level: 90 },
-        { name: "Apache Spark", level: 85 },
-        { name: "Apache Airflow", level: 80 },
-        { name: "Apache Kafka", level: 75 },
-        { name: "Databricks", level: 70 },
-      ]
+    { 
+      name: locale === 'en' ? "Backend Development" : "Desenvolvimento Backend", 
+      value: 85, 
+      icon: <FaServer />,
+      color: "purple",
+      skill: "REST APIS"
     },
-    {
-      name: t.about?.cybersecurity || "Cybersegurança",
-      icon: <FaShieldAlt className="text-red-500 text-2xl" />,
-      skills: [
-        { name: "Security Auditing", level: 80 },
-        { name: "Vulnerability Analysis", level: 85 },
-        { name: "Penetration Testing", level: 75 },
-        { name: "Secure Coding", level: 90 },
-        { name: "Authentication & Authorization", level: 85 },
-        { name: "OWASP Top 10", level: 90 },
-      ]
+    { 
+      name: locale === 'en' ? "Cybersecurity" : "Cibersegurança", 
+      value: 75, 
+      icon: <FaShieldAlt />,
+      color: "red",
+      skill: "CYBERSECURITY"
+    },
+    { 
+      name: locale === 'en' ? "Problem Solving" : "Resolução de Problemas", 
+      value: 95, 
+      icon: <FaBrain />,
+      color: "green",
+      skill: "PERFORMANCE"
+    },
+    { 
+      name: locale === 'en' ? "System Architecture" : "Arquitetura de Sistemas", 
+      value: 80, 
+      icon: <FaCode />,
+      color: "amber",
+      skill: "CLEAN ARCHITECTURE"
+    },
+    { 
+      name: locale === 'en' ? "Innovation" : "Inovação", 
+      value: 85, 
+      icon: <FaLightbulb />,
+      color: "yellow",
+      skill: "AGILE"
     }
   ];
 
+  // Principais conquistas/marcos da carreira
+  const careerMilestones = [
+    {
+      year: "2025",
+      achievement: locale === 'en' ? "Led a major data migration project involving 50TB+ of data" : "Liderou um grande projeto de migração de dados envolvendo mais de 50TB de dados",
+      icon: <FaRocket className="text-blue-500" />
+    },
+    {
+      year: "2024",
+      achievement: locale === 'en' ? "Designed a scalable data pipeline used by major government agencies" : "Projetou um pipeline de dados escalável utilizado por grandes agências governamentais",
+      icon: <FaDatabaseIcon className="text-purple-500" />
+    },
+    {
+      year: "2023",
+      achievement: locale === 'en' ? "Optimized ETL processes resulting in 70% performance improvement" : "Otimizou processos de ETL resultando em 70% de melhoria de desempenho",
+      icon: <FaBolt className="text-amber-500" />
+    },
+    {
+      year: "2022",
+      achievement: locale === 'en' ? "Implemented an automated intrusion detection system" : "Implementou um sistema automatizado de detecção de intrusões",
+      icon: <FaShieldAlt className="text-red-500" />
+    },
+    {
+      year: "2021",
+      achievement: locale === 'en' ? "Created a custom ML solution for financial data analysis" : "Criou uma solução personalizada de ML para análise de dados financeiros",
+      icon: <FaBrain className="text-green-500" />
+    }
+  ];
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    if (timelineRef.current) {
+      setStartX(e.pageX - timelineRef.current.offsetLeft);
+      setScrollLeft(timelineRef.current.scrollLeft);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || !timelineRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - timelineRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    timelineRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  useEffect(() => {
+    // Função para rolagem suave
+    const handleSmoothScroll = (e: MouseEvent) => {
+      const target = e.target as HTMLAnchorElement;
+      if (target.hash) {
+        e.preventDefault();
+        const element = document.querySelector(target.hash);
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      }
+    };
+
+    // Adicionar event listeners para links de navegação
+    const navLinks = document.querySelectorAll('a[href^="#"]');
+    navLinks.forEach(link => {
+      link.addEventListener('click', handleSmoothScroll as any);
+    });
+
+    // Cleanup
+    return () => {
+      navLinks.forEach(link => {
+        link.removeEventListener('click', handleSmoothScroll as any);
+      });
+    };
+  }, []);
+
+  // Atualizando as informações de contato
+  const contactInfo = {
+    email: "samuel.arao@gmail.com",
+    phone: "+55 31 99144-2175",
+    linkedin: "@samuel-arao",
+    github: "@samueldk12"
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-black text-gray-800 dark:text-white">
-      <Navigation locale={locale as string} />
+      <Navigation locale={locale} />
       
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-24 overflow-hidden">
         {/* Background decoration */}
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#2a2a3c_1px,transparent_1px)] [background-size:20px_20px]"></div>
-        <div className="absolute -z-5 top-1/4 right-0 w-72 h-72 bg-gradient-to-r from-blue-300/20 to-purple-300/20 dark:from-blue-500/10 dark:to-purple-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-transparent dark:from-gray-900/50 dark:to-transparent"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#2a2a3c_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
+        </div>
+        <div className="absolute top-0 right-0 -z-10 w-[800px] h-[600px] opacity-20">
+          <div className="absolute right-0 top-0 w-full h-full bg-gradient-to-br from-blue-500/30 to-purple-500/30 dark:from-blue-500/10 dark:to-purple-500/10 blur-3xl rounded-full"></div>
+        </div>
         
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-16 max-w-4xl mx-auto"
-          >
-            <h1 className="text-5xl md:text-6xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
-              {t.about?.title || "Sobre Mim"}
-            </h1>
-            
-            <motion.div 
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-10 border border-gray-100 dark:border-gray-700"
+          <div className="max-w-5xl mx-auto">
+            {/* Header Content */}
+            <div className="text-center mb-16">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400">
+                  {t.about?.title || "Sobre Mim"}
+                </h1>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="flex flex-wrap justify-center gap-4 mb-8"
+              >
+                <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-full text-blue-700 dark:text-blue-300">
+                  <FaBriefcase className="text-lg" />
+                  <span>Senior BI Consultant @ Kriptos</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 rounded-full text-purple-700 dark:text-purple-300">
+                  <FaLocation className="text-lg" />
+                  <span>Belo Horizonte, MG</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full text-indigo-700 dark:text-indigo-300">
+                  <FaGrad className="text-lg" />
+                  <span>Pós graduado em IA</span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex justify-center gap-6 mb-12"
+              >
+                <a 
+                  href="https://github.com/samueldk12" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-110"
+                >
+                  <FaGithub className="text-2xl" />
+                </a>
+                <a 
+                  href="https://www.linkedin.com/in/samuel-arao/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-110"
+                >
+                  <FaLinkedin className="text-2xl" />
+                </a>
+                <a 
+                  href="mailto:samuel.arao@gmail.com"
+                  className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-110"
+                >
+                  <FaEnvelope className="text-2xl" />
+                </a>
+              </motion.div>
+            </div>
+
+            {/* About Content */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-12 border border-gray-100 dark:border-gray-700"
             >
-              <p className="text-lg mb-6 leading-relaxed text-gray-700 dark:text-gray-300">
-                {t.about?.description || (locale === 'en' 
-                  ? "I have a deep interest in subjects that directly or indirectly affect my life, such as politics and economics. Currently, I am focusing my efforts on programming, with an emphasis on back-end and big data."
-                  : "Tenho um interesse profundo em assuntos que afetam minha vida direta ou indiretamente, como política e economia. No momento concentro meus esforços em programação, com foco em back-end e big data.")}
-              </p>
-              
-              <p className="text-lg mb-6 leading-relaxed text-gray-700 dark:text-gray-300">
-                {t.about?.philosophy || (locale === 'en'
-                  ? "I believe that a good person is in the world to help solve problems. This philosophy led me to programming. I seek solutions on multiple fronts, valuing the ability to be useful in different areas."
-                  : "Acredito que uma boa pessoa está no mundo para ajudar a resolver problemas. Essa filosofia me levou à programação. Busco soluções em várias frentes, valorizando a capacidade de ser útil em diferentes áreas.")}
-              </p>
-              
-              <p className="text-lg mb-6 leading-relaxed text-gray-700 dark:text-gray-300">
-                {t.about?.career || (locale === 'en'
-                  ? "I started my career as an intern in web development, but soon moved to the data area, where I remain today."
-                  : "Iniciei minha carreira como estagiário em desenvolvimento web, mas logo mudei para a área de dados, onde permaneço até hoje.")}
-              </p>
-              
-              <p className="text-lg mb-6 leading-relaxed text-gray-700 dark:text-gray-300">
-                {t.about?.current || (locale === 'en'
-                  ? "Currently, I work as a Senior BI Consultant at Kriptos, where I am responsible for developing and implementing Business Intelligence solutions, optimizing ETL processes, and data analysis to support decision-making."
-                  : "Atualmente trabalho como Consultor BI Senior na Kriptos, onde sou responsável pelo desenvolvimento e implementação de soluções de Business Intelligence, otimização de processos de ETL e análise de dados para suporte à tomada de decisões.")}
-              </p>
-              
-              <p className="text-lg mb-6 leading-relaxed text-gray-700 dark:text-gray-300">
-                {t.about?.education || (locale === 'en'
-                  ? "I hold a bachelor's degree in Digital Games and a teaching degree in Pedagogy, as well as a postgraduate degree in Artificial Intelligence from PUC Minas and an MBA in Big Data and Competitive Intelligence from Descomplica."
-                  : "Sou graduado em Jogos Digitais e Licenciatura em Pedagogia, além de pós-graduado em Inteligência Artificial pela PUC Minas e MBA em Big Data e Inteligência Competitiva pelo Descomplica.")}
-              </p>
-              
-              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                {t.about?.hobby || (locale === 'en'
-                  ? "In my free time, I enjoy researching vulnerabilities on websites and writing reports about them, such as my latest XSS finding on the Contagem city hall website. This practice helps me improve my programming and cybersecurity skills."
-                  : "No meu tempo livre, gosto de pesquisar falhas em sites na internet e fazer relatórios sobre elas, como meu último achado de XSS no site da prefeitura de Contagem. Essa prática me ajuda a aprimorar minhas habilidades de programação e segurança cibernética.")}
-              </p>
+              <div className="prose prose-lg dark:prose-invert max-w-none">
+                <SkillsText
+                  text={t.about?.description || (locale === 'en'
+                    ? "I hold a bachelor's degree in Digital Games and a teaching degree in Pedagogy, as well as a postgraduate degree in Artificial Intelligence from PUC Minas and an MBA in Big Data and Competitive Intelligence from Descomplica."
+                    : "Formações")}
+                  locale={locale}
+                />
+              </div>
             </motion.div>
-          </motion.div>
+
+            {/* Navigation Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="grid grid-cols-2 md:grid-cols-5 gap-4"
+            >
+              <a
+                href="#timeline"
+                className="col-span-2 md:col-span-1 group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-1 hover:scale-105 transition-transform"
+              >
+                <div className="relative flex h-full items-center gap-4 rounded-lg bg-gray-950/50 backdrop-blur-xl p-4">
+                  <FaGrad className="text-2xl text-blue-300" />
+                  <span className="font-medium text-white">{locale === 'en' ? "Timeline" : "Linha do Tempo"}</span>
+                </div>
+              </a>
+              <a
+                href="#experience"
+                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-1 hover:scale-105 transition-transform"
+              >
+                <div className="relative flex h-full items-center gap-4 rounded-lg bg-gray-950/50 backdrop-blur-xl p-4">
+                  <FaBriefcase className="text-2xl text-purple-300" />
+                  <span className="font-medium text-white">{locale === 'en' ? "Experience" : "Experiência"}</span>
+                </div>
+              </a>
+              <a
+                href="#education"
+                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-500 to-green-600 p-1 hover:scale-105 transition-transform"
+              >
+                <div className="relative flex h-full items-center gap-4 rounded-lg bg-gray-950/50 backdrop-blur-xl p-4">
+                  <FaGrad className="text-2xl text-green-300" />
+                  <span className="font-medium text-white">{locale === 'en' ? "Education" : "Formação"}</span>
+                </div>
+              </a>
+              <a
+                href="#certifications"
+                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 p-1 hover:scale-105 transition-transform"
+              >
+                <div className="relative flex h-full items-center gap-4 rounded-lg bg-gray-950/50 backdrop-blur-xl p-4">
+                  <FaCertificate className="text-2xl text-amber-300" />
+                  <span className="font-medium text-white">{locale === 'en' ? "Certifications" : "Certificações"}</span>
+                </div>
+              </a>
+              <a
+                href="#contact"
+                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500 to-red-600 p-1 hover:scale-105 transition-transform"
+              >
+                <div className="relative flex h-full items-center gap-4 rounded-lg bg-gray-950/50 backdrop-blur-xl p-4">
+                  <FaEnvelope className="text-2xl text-red-300" />
+                  <span className="font-medium text-white">{locale === 'en' ? "Contact" : "Contato"}</span>
+                </div>
+              </a>
+            </motion.div>
+          </div>
         </div>
       </section>
-        
-      {/* Work Experience */}
-      <section className="py-20 bg-white dark:bg-gray-800/80 relative">
+
+      {/* Timeline Section */}
+      <section id="timeline" className="py-20 bg-white dark:bg-gray-800/50 relative">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-12 text-center"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 inline-block">
-              <FaBriefcase className="inline-block mr-3 text-3xl" />
-              {t.about?.experience || "Experiência Profissional"}
+            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+              {t.about?.timeline || "Linha do Tempo"}
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full"></div>
+            <p className="text-gray-600 dark:text-gray-400">
+              {locale === 'en' 
+                ? "My professional journey and key milestones"
+                : "Minha jornada profissional e marcos importantes"}
+            </p>
           </motion.div>
-          
-          <div className="space-y-8 max-w-4xl mx-auto">
-            {workExperience.map((job, index) => (
-              <motion.div
-                key={`${job.company}-${job.position}-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 md:p-8 border-l-4 border-blue-600 dark:border-blue-500 hover:shadow-xl transition-shadow"
+
+          <div className="relative">
+            {/* Controles de zoom */}
+            <div className="absolute right-4 -top-12 flex gap-2">
+              <button 
+                onClick={() => setTimelineZoom(prev => Math.min(prev + 0.2, 2))}
+                className="p-2 bg-gray-700 rounded-full hover:bg-blue-500/20 transition-all"
               >
-                <div className="flex flex-col md:flex-row md:items-start">
-                  <div className="mb-4 md:mb-0 md:mr-6">
-                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-                      <FaBuilding className="text-blue-600 dark:text-blue-400 text-2xl" />
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{job.position}</h3>
-                        <p className="text-lg font-semibold text-blue-600 dark:text-blue-400">{job.company}</p>
-                      </div>
-                      <div className="mt-2 md:mt-0 flex items-center text-gray-600 dark:text-gray-400">
-                        <FaCalendarAlt className="mr-2" />
-                        <span>{job.period}</span>
-                      </div>
-                    </div>
-                    
-                    <p className="text-gray-700 dark:text-gray-300 mb-6">{job.description}</p>
-                    
-                    <div className="flex flex-wrap gap-2">
-                      {job.skills.map(skill => (
-                        <span 
-                          key={`${job.company}-${job.position}-${skill}`} 
-                          className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium"
+                <FaPlus />
+              </button>
+              <button 
+                onClick={() => setTimelineZoom(prev => Math.max(prev - 0.2, 0.5))}
+                className="p-2 bg-gray-700 rounded-full hover:bg-blue-500/20 transition-all"
+              >
+                <FaMinus />
+              </button>
+            </div>
+
+            {/* Container da linha do tempo com scroll via drag */}
+            <div 
+              ref={timelineRef}
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+              className="overflow-x-auto overflow-y-hidden cursor-grab active:cursor-grabbing scrollbar-hide"
+              style={{ 
+                height: '600px',
+                paddingTop: '200px',
+                paddingBottom: '50px',
+                WebkitOverflowScrolling: 'touch',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none'
+              }}
+            >
+              <div 
+                className="relative"
+                style={{ 
+                  transform: `scale(${timelineZoom})`,
+                  transformOrigin: 'center center',
+                  width: 'max-content',
+                  minWidth: '100%',
+                  paddingLeft: '50%',
+                  paddingRight: '50%'
+                }}
+              >
+                {/* Linha central */}
+                <div className="absolute left-0 right-0 h-1 bg-gray-700 top-1/2 -translate-y-1/2"></div>
+                
+                {/* Eventos da linha do tempo */}
+                <div className="flex items-center gap-16">
+                  {[...workExperience, ...education, ...certifications]
+                    .sort((a, b) => {
+                      const yearA = parseInt(('period' in a ? a.period : a.year).toString().split('-')[0]);
+                      const yearB = parseInt(('period' in b ? b.period : b.year).toString().split('-')[0]);
+                      return yearB - yearA;
+                    })
+                    .map((item, index) => {
+                      const type = 'company' in item ? 'experience' : 
+                                'degree' in item ? 'education' : 'certification';
+                      
+                      const getIconColor = (type: string) => {
+                        switch(type) {
+                          case 'experience': return 'text-blue-400';
+                          case 'education': return 'text-green-400';
+                          case 'certification': return 'text-yellow-400';
+                          default: return 'text-gray-400';
+                        }
+                      };
+
+                      const getBgColor = (type: string) => {
+                        switch(type) {
+                          case 'experience': return 'hover:bg-blue-500/20 border-blue-400/50';
+                          case 'education': return 'hover:bg-green-500/20 border-green-400/50';
+                          case 'certification': return 'hover:bg-yellow-500/20 border-yellow-400/50';
+                          default: return 'hover:bg-gray-500/20 border-gray-400/50';
+                        }
+                      };
+
+                      const getIcon = (type: string) => {
+                        switch(type) {
+                          case 'experience': return <FaBriefcase className={`text-2xl ${getIconColor(type)}`} />;
+                          case 'education': return <FaGrad className={`text-2xl ${getIconColor(type)}`} />;
+                          case 'certification': return <FaCertificate className={`text-2xl ${getIconColor(type)}`} />;
+                          default: return null;
+                        }
+                      };
+
+                      return (
+                        <div 
+                          key={index}
+                          className={`relative ${index % 2 === 0 ? '-top-32' : 'top-32'}`}
                         >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                          {/* Linha vertical conectora */}
+                          <div className={`absolute left-1/2 w-px h-24 ${index % 2 === 0 ? 'top-full' : 'bottom-full'} bg-gray-600`}></div>
+                          
+                          {/* Botão do evento */}
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setSelectedTimelineItem({ type, data: item })}
+                            className={`relative group w-32 p-4 rounded-lg border ${getBgColor(type)} bg-gray-800/80 backdrop-blur-sm transition-all`}
+                          >
+                            <div className="flex flex-col items-center gap-2">
+                              <div className="w-12 h-12 rounded-full bg-gray-700/50 flex items-center justify-center">
+                                {getIcon(type)}
+                              </div>
+                              <span className="text-sm font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis w-full">
+                                {'company' in item ? item.company :
+                                 'degree' in item ? item.degree :
+                                 item.name}
+                              </span>
+                              <span className="text-xs text-gray-400">
+                                {'period' in item ? item.period.split('-')[0] : item.year}
+                              </span>
+                            </div>
+
+                            {/* Tooltip */}
+                            <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs rounded p-2 w-48 z-10 left-1/2 -translate-x-1/2 pointer-events-none">
+                              {'company' in item ? `${item.position} at ${item.company}` :
+                               'degree' in item ? `${item.degree} at ${item.institution}` :
+                               `${item.name} - ${item.issuer}`}
+                            </div>
+                          </motion.button>
+                        </div>
+                      );
+                    })}
                 </div>
-              </motion.div>
+              </div>
+            </div>
+
+            {/* Detalhes do item selecionado */}
+            <AnimatePresence>
+              {selectedTimelineItem && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="-mt-12 bg-gray-800/50 rounded-lg p-6 border border-gray-700"
+                >
+                  {selectedTimelineItem.type === 'experience' && (
+                    <ExperienceCard 
+                      experience={selectedTimelineItem.data} 
+                      t={t} 
+                      locale={locale}
+                    />
+                  )}
+                  {selectedTimelineItem.type === 'education' && (
+                    <EducationCard education={selectedTimelineItem.data} t={t} />
+                  )}
+                  {selectedTimelineItem.type === 'certification' && (
+                    <CertificationCard certification={selectedTimelineItem.data} t={t} />
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </section>
+      
+      {/* Professional Experience Section */}
+      <section id="experience" className="py-20 bg-white dark:bg-gray-800/80 relative scroll-mt-20">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-center">
+            {t.about?.experience || "Experiência Profissional"}
+            </h2>
+          <div className="space-y-8">
+            {workExperience.map((exp, index) => (
+              <ExperienceCard 
+                key={index} 
+                experience={exp} 
+                t={t} 
+                locale={locale}
+              />
             ))}
           </div>
         </div>
       </section>
       
       {/* Education Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-900/80 relative">
+      <section id="education" className="py-20 bg-gray-50 dark:bg-gray-900/80 relative scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-12 text-center"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 inline-block">
-              <FaGraduationCap className="inline-block mr-3 text-3xl" />
-              {t.about?.educationSection || "Formação Acadêmica"}
+            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400">
+              <FaGrad className="inline-block mr-3 text-3xl" />
+              {t.about?.education || (locale === 'en'
+                ? "Education"
+                : "Formações")}
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto rounded-full"></div>
           </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {education.map((edu, index) => (
-              <motion.div
-                key={`${edu.degree}-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 border-t-4 border-purple-600 dark:border-purple-500 hover:shadow-xl transition-shadow h-full"
-              >
-                <div className="flex items-start mb-4">
-                  <div className="mr-4">
-                    <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                      <FaGraduationCap className="text-purple-600 dark:text-purple-400 text-xl" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{edu.degree}</h3>
-                    <p className="text-purple-600 dark:text-purple-400 font-medium">{edu.institution}</p>
-                  </div>
-                </div>
-                <div className="ml-16">
-                  <p className="text-gray-500 dark:text-gray-400 mb-3 flex items-center">
-                    <FaCalendarAlt className="mr-2 text-xs" />
-                    {edu.period}
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm">{edu.focus}</p>
-                </div>
-              </motion.div>
+              <EducationCard key={index} education={edu} t={t} />
             ))}
           </div>
         </div>
       </section>
       
       {/* Certifications Section */}
-      <section className="py-20 bg-white dark:bg-gray-800/50 relative">
+      <section id="certifications" className="py-20 bg-white dark:bg-gray-800/50 relative scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-12 text-center"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-400 inline-block">
+            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-400">
               <FaCertificate className="inline-block mr-3 text-3xl" />
               {t.about?.certifications || "Certificações"}
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto rounded-full"></div>
           </motion.div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {certifications.map((cert, index) => (
-              <motion.div
-                key={`${cert.name}-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="bg-white dark:bg-gray-700 rounded-xl shadow p-5 border border-gray-100 dark:border-gray-600 hover:shadow-md transition-shadow group"
-              >
-                <div className="flex items-start">
-                  <div className="mr-3 mt-1">
-                    <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
-                      <FaCertificate className="text-amber-600 dark:text-amber-400" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-gray-900 dark:text-white text-base">{cert.name}</h3>
-                    <p className="text-amber-600 dark:text-amber-400 text-sm">{cert.issuer}</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">{cert.year}</p>
-                    
-                    {cert.credential && (
-                      <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">
-                        {locale === 'en' ? 'Credential: ' : 'Credencial: '}{cert.credential}
-                      </p>
-                    )}
-                    
-                    {cert.expiry && (
-                      <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">
-                        {locale === 'en' ? 'Expiry: ' : 'Expiração: '}{cert.expiry}
-                      </p>
-                    )}
-                    
-                    {cert.certificate_url && (
-                      <a 
-                        href={cert.certificate_url} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="mt-3 inline-flex items-center text-sm text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
-                      >
-                        <span className="mr-1">{t.about?.viewCertificate || 'Ver Certificado'}</span>
-                        <FaExternalLinkAlt className="text-xs" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
+              <CertificationCard key={index} certification={cert} t={t} />
             ))}
           </div>
         </div>
       </section>
       
-      {/* Skills Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-900/50">
+      {/* Contact Section */}
+      <section id="contact" className="py-20 bg-gray-50 dark:bg-gray-900/80 relative scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-12 text-center"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-teal-600 dark:from-blue-400 dark:to-teal-400 inline-block">
-              <FaLaptopCode className="inline-block mr-3 text-3xl" />
-              {t.about?.skills || "Habilidades Técnicas"}
+            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-pink-600 dark:from-red-400 dark:to-pink-400">
+              <FaEnvelope className="inline-block mr-3 text-3xl" />
+              {t.about?.contactInfo || "Contato"}
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-teal-500 mx-auto rounded-full"></div>
           </motion.div>
           
-          <div className="space-y-16 max-w-4xl mx-auto">
-            {skillCategories.map((category, categoryIndex) => (
-              <motion.div
-                key={category.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
-              >
-                <div className="flex items-center mb-6">
-                  {category.icon}
-                  <h3 className="text-2xl font-bold ml-3 text-gray-800 dark:text-white">{category.name}</h3>
+          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg">
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                    <FaEnvelope className="text-2xl text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Email</h3>
+                    <a 
+                      href={`mailto:${contactInfo.email}`}
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      {contactInfo.email}
+                    </a>
+                  </div>
                 </div>
                 
-                <div className="space-y-6">
-                  {category.skills.map((skill, skillIndex) => (
-                    <motion.div
-                      key={`${category.name}-${skill.name}`}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-100px" }}
-                      transition={{ duration: 0.3, delay: skillIndex * 0.05 + categoryIndex * 0.1 }}
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                    <FaPhone className="text-2xl text-green-600 dark:text-green-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Telefone</h3>
+                    <a 
+                      href={`tel:${contactInfo.phone}`}
+                      className="text-green-600 dark:text-green-400 hover:underline"
                     >
-                      <div className="flex justify-between mb-2">
-                        <span className="font-medium text-gray-800 dark:text-white">{skill.name}</span>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          {skill.level >= 90 ? `${t.skills?.expert || "Especialista"}` : 
-                           skill.level >= 80 ? `${t.skills?.advanced || "Avançado"}` : 
-                           skill.level >= 65 ? `${t.skills?.intermediate || "Intermediário"}` : 
-                           `${t.skills?.beginner || "Iniciante"}`}
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                        <motion.div 
-                          className="h-2.5 rounded-full bg-gradient-to-r from-blue-500 to-teal-500"
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          viewport={{ once: true, margin: "-100px" }}
-                          transition={{ duration: 0.5, delay: skillIndex * 0.05 + categoryIndex * 0.1 }}
-                        ></motion.div>
-                      </div>
-                    </motion.div>
-                  ))}
+                      {contactInfo.phone}
+                    </a>
+                  </div>
                 </div>
-              </motion.div>
-            ))}
+                
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                    <FaLocation className="text-2xl text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Localização</h3>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      Belo Horizonte, MG - Brasil
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg">
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
+                    <FaLinkedin className="text-2xl text-indigo-600 dark:text-indigo-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">LinkedIn</h3>
+                    <a 
+                      href={`https://www.linkedin.com/in/${contactInfo.linkedin.replace('@', '')}/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-600 dark:text-indigo-400 hover:underline"
+                    >
+                      {contactInfo.linkedin}
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gray-100 dark:bg-gray-900/30 rounded-lg flex items-center justify-center">
+                    <FaGithub className="text-2xl text-gray-600 dark:text-gray-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">GitHub</h3>
+                    <a 
+                      href={`https://github.com/${contactInfo.github.replace('@', '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 dark:text-gray-400 hover:underline"
+                    >
+                      {contactInfo.github}
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
+                    <FaDownload className="text-2xl text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Currículo</h3>
+                    <a 
+                      href="/cv.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-600 dark:text-amber-400 hover:underline"
+                    >
+                      {locale === 'en' ? "Download CV" : "Baixar Currículo"}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </main>
   );
+}
+
+// Componentes auxiliares
+interface ExperienceCardProps {
+  experience: Experience;
+  t: TranslationType;
+  locale: string;
+}
+
+const ExperienceCard = ({ experience, t, locale }: ExperienceCardProps) => {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700"
+    >
+      <div className="flex items-center gap-4 mb-4">
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white">
+          <span className="text-xl font-bold">{experience.company[0]}</span>
+        </div>
+        <div>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{experience.position}</h3>
+          <p className="text-lg text-gray-700 dark:text-gray-300">{experience.company}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+            <FaCalendarAlt className="text-blue-500" />
+            {experience.period}
+          </p>
+        </div>
+      </div>
+      
+      <p className="text-gray-600 dark:text-gray-400 mb-4">
+        <SkillsText text={experience.description} locale={locale} />
+      </p>
+      
+      <div className="flex flex-wrap gap-2">
+        {Array.from(new Set(experience.technologies)).map((tech, index) => (
+          <span
+            key={index}
+            className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm"
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
+const EducationCard = ({ education, t }: EducationCardProps) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700"
+  >
+    <div className="flex items-start gap-4">
+      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white">
+        <FaGrad className="text-2xl" />
+      </div>
+      <div>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">{education.degree}</h3>
+        <p className="text-gray-700 dark:text-gray-300">{education.institution}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 mt-1">
+          <FaCalendarAlt className="text-green-500" />
+          {education.period}
+        </p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{education.focus}</p>
+      </div>
+    </div>
+  </motion.div>
+);
+
+const CertificationCard = ({ certification, t }: CertificationCardProps) => {
+  // Função para determinar o ícone baseado no emissor
+  const getIssuerIcon = (issuer: string) => {
+    const iconClass = "w-6 h-6"; // Tamanho fixo para todos os ícones
+    switch (issuer.toLowerCase()) {
+      case 'rocketseat':
+        return <FaRocket className={iconClass} />;
+      case 'alura':
+        return <FaGrad className={iconClass} />;
+      case 'full cycle':
+        return <FaCode className={iconClass} />;
+      default:
+        return <FaCertificate className={iconClass} />;
+    }
+  };
+
+  // Função para determinar a cor do gradiente baseado no emissor
+  const getGradientColor = (issuer: string) => {
+    switch (issuer.toLowerCase()) {
+      case 'rocketseat':
+        return 'from-purple-500 to-indigo-600';
+      case 'alura':
+        return 'from-blue-500 to-cyan-600';
+      case 'full cycle':
+        return 'from-green-500 to-emerald-600';
+      default:
+        return 'from-amber-500 to-orange-600';
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700"
+    >
+      <div className="flex items-start gap-4">
+        <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getGradientColor(certification.issuer)} flex items-center justify-center text-white shrink-0`}>
+          {getIssuerIcon(certification.issuer)}
+        </div>
+        <div>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">{certification.name}</h3>
+          <p className="text-gray-700 dark:text-gray-300">{certification.issuer}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 mt-1">
+            <FaCalendarAlt className="w-4 h-4 text-amber-500" />
+            {certification.year}
+          </p>
+          {certification.certificate_url && (
+            <a
+              href={certification.certificate_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 mt-2 text-sm"
+            >
+              <FaExternalLinkAlt className="w-3 h-3" />
+              {t.about?.view_certificate || "Ver Certificado"}
+            </a>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Função auxiliar para mapear habilidades para categorias
+function getSkillCategory(skill: string): string {
+  const skillCategoryMap: Record<string, string> = {
+    // Linguagens
+    'PYTHON': 'languages',
+    'PHP': 'languages',
+    'NODE.JS': 'web',
+    'TYPESCRIPT': 'languages',
+    'GO': 'languages',
+    'JAVASCRIPT': 'languages',
+    
+    // Engenharia de Dados
+    'ETL': 'data',
+    'APACHE SPARK': 'data',
+    'APACHE AIRFLOW': 'data',
+    'HADOOP': 'data',
+    'APACHE NIFI': 'data',
+    'APACHE HIVE': 'data',
+    'DATA LAKES': 'data',
+    'WEB SCRAPING': 'data',
+    'DATA ENGINEERING': 'data',
+    
+    // Inteligência Artificial
+    'MACHINE LEARNING': 'ai',
+    'DEEP LEARNING': 'ai',
+    'GAN': 'ai',
+    'COMPUTER VISION': 'ai',
+    'NLP': 'ai',
+    
+    // Bancos de Dados
+    'POSTGRESQL': 'databases',
+    'MYSQL': 'databases',
+    'MONGODB': 'databases',
+    'REDIS': 'databases',
+    
+    // Web & APIs
+    'FASTAPI': 'web',
+    'REST APIS': 'web',
+    'GRAPHQL': 'web',
+    'MICROSERVICES': 'web',
+    
+    // DevOps & Cloud
+    'DOCKER': 'devops',
+    'KUBERNETES': 'devops',
+    'AWS': 'devops',
+    'CI/CD': 'devops',
+    'JENKINS': 'devops',
+    'PROMETHEUS': 'devops',
+    'GRAFANA': 'devops',
+    
+    // Arquitetura & Metodologias
+    'CLEAN ARCHITECTURE': 'architecture',
+    'PERFORMANCE': 'architecture',
+    'AGILE': 'architecture',
+    'TDD': 'architecture',
+    
+    // Segurança
+    'WEB SECURITY': 'security',
+    'CRYPTOGRAPHY': 'security',
+    'PENETRATION TESTING': 'security',
+    'API SECURITY': 'security',
+    'LINUX': 'security',
+    'SSRF': 'security',
+    'CYBERSECURITY': 'security'
+  };
+  
+  return skillCategoryMap[skill] || 'languages';
 } 

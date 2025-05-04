@@ -44,7 +44,10 @@
     "cybersecurity": "Cybersecurity",
     "certifications": "Certifications",
     "educationSection": "Education",
-    "contactInfo": "Contact Information"
+    "contactInfo": "Contact Information",
+    "view_certificate": "View Certificate",
+    "timeline": "Timeline",
+    "timelineSubtitle": "My professional journey and key milestones"
   },
   "contact": {
     "title": "Get in Touch",
@@ -108,6 +111,7 @@
     "subtitle": "Technologies and tools I use to create efficient solutions",
     "languages": "Programming Languages",
     "dataEngineering": "Data Engineering",
+    "artificialIntelligence": "Artificial Intelligence",
     "databases": "Databases",
     "webDev": "Web Development & APIs",
     "devops": "DevOps & Cloud",
@@ -118,12 +122,30 @@
     "intermediate": "Intermediate",
     "beginner": "Beginner",
     "yearsExperience": "years of experience",
-    "languages_description": "Mastery of multiple languages for backend development, data engineering, and automation",
+    "viewAllSkills": "View all skills",
+    "languages_description": "Proficiency in multiple languages for backend development, data engineering, and automation",
     "dataEngineering_description": "Experience with large-scale data processing, ETL, and Big Data solutions",
+    "artificialIntelligence_description": "Development of machine learning solutions, computer vision, and natural language processing",
     "databases_description": "Proficiency in SQL and NoSQL databases for data storage and analysis",
     "webDev_description": "Development of modern APIs and scalable web systems",
     "devops_description": "Infrastructure as code, containers, and service orchestration",
     "architecture_description": "System design and architectural patterns for robust solutions",
-    "security_description": "Implementation of security practices and protection against vulnerabilities"
+    "security_description": "Implementation of security practices and protection against vulnerabilities",
+    "detailSubtitle": "Related projects, experiences, and certifications",
+    "experience": "Experience",
+    "projects": "Projects",
+    "relatedProjects": "Related projects",
+    "relatedExperiences": "Related Experiences",
+    "viewProject": "View Project",
+    "viewCertificate": "View Certificate",
+    "noRelatedContent": "No specific information available for this skill.",
+    "checkBackLater": "Check back later for updates."
+  },
+  "common": {
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "viewDetails": "View Details"
   }
 } 

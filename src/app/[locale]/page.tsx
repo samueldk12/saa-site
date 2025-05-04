@@ -26,11 +26,21 @@ import {
   FaBriefcase,
   FaArrowRight,
   FaWhatsapp,
-  FaChevronDown
+  FaChevronDown,
+  FaMapMarkerAlt as FaLocation,
+  FaGraduationCap as FaGrad,
+  FaBrain,
+  FaBolt,
+  FaLightbulb,
+  FaBuilding,
+  FaRocket
 } from 'react-icons/fa';
 import { SiApachespark, SiApacheairflow, SiPostgresql, SiElasticsearch, SiGo, SiPython, SiTypescript } from 'react-icons/si';
 import { useState, useEffect } from 'react';
 import { Testimonial } from '@/models/Testimonial';
+import SkillsText from '@/components/SkillsText';
+import SkillBadge from '@/components/SkillBadge';
+import { getLocalizedSkillData } from '@/lib/skillsData';
 
 export default function Home() {
   const params = useParams();
@@ -40,15 +50,12 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Buscar os depoimentos mais votados
   useEffect(() => {
     async function fetchTopTestimonials() {
       try {
         const response = await fetch('/api/testimonials');
         if (!response.ok) throw new Error('Falha ao buscar depoimentos');
         const data = await response.json();
-        
-        // Ordenar por votos e pegar os 2 mais votados
         const sortedTestimonials = [...data].sort((a, b) => b.votes - a.votes).slice(0, 2);
         setTopTestimonials(sortedTestimonials);
       } catch (error) {
@@ -60,7 +67,6 @@ export default function Home() {
 
     fetchTopTestimonials();
 
-    // Adicionar efeito de scroll
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
     };
@@ -69,25 +75,6 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5 }
-    }
-  };
-
   const scrollToExpertise = () => {
     const expertiseSection = document.getElementById("expertise");
     if (expertiseSection) {
@@ -95,8 +82,96 @@ export default function Home() {
     }
   };
 
+  const handleSocialClick = (platform: string) => {
+    const socialLinks = {
+      github: 'https://github.com/samueldk12',
+      linkedin: 'https://www.linkedin.com/in/samuel-arao/',
+      email: 'mailto:samuel.arao@gmail.com'
+    };
+
+    const url = socialLinks[platform as keyof typeof socialLinks];
+    if (url) {
+      window.open(url, '_blank');
+    }
+  };
+
+  // Novos dados para o radar chart das competências
+  const competencyAreas = [
+    { 
+      name: locale === 'en' ? "Data Engineering" : "Engenharia de Dados", 
+      value: 90, 
+      icon: <FaDatabase className="text-2xl" />,
+      color: "blue",
+      skill: "DATA ENGINEERING"
+    },
+    { 
+      name: locale === 'en' ? "Backend Development" : "Desenvolvimento Backend", 
+      value: 85, 
+      icon: <FaServer className="text-2xl" />,
+      color: "purple",
+      skill: "REST APIS"
+    },
+    { 
+      name: locale === 'en' ? "Cybersecurity" : "Cibersegurança", 
+      value: 75, 
+      icon: <FaShieldAlt className="text-2xl" />,
+      color: "red",
+      skill: "CYBERSECURITY"
+    },
+    { 
+      name: locale === 'en' ? "Problem Solving" : "Resolução de Problemas", 
+      value: 95, 
+      icon: <FaBrain className="text-2xl" />,
+      color: "green",
+      skill: "PERFORMANCE"
+    },
+    { 
+      name: locale === 'en' ? "System Architecture" : "Arquitetura de Sistemas", 
+      value: 80, 
+      icon: <FaCode className="text-2xl" />,
+      color: "amber",
+      skill: "CLEAN ARCHITECTURE"
+    },
+    { 
+      name: locale === 'en' ? "Innovation" : "Inovação", 
+      value: 85, 
+      icon: <FaLightbulb className="text-2xl" />,
+      color: "yellow",
+      skill: "AGILE"
+    }
+  ];
+
+  // Principais conquistas/marcos da carreira
+  const careerMilestones = [
+    {
+      year: "2025",
+      achievement: locale === 'en' ? "Led a major data migration project involving 50TB+ of data" : "Liderou um grande projeto de migração de dados envolvendo mais de 50TB de dados",
+      icon: <FaRocket className="text-blue-500" />
+    },
+    {
+      year: "2024",
+      achievement: locale === 'en' ? "Designed a scalable data pipeline used by major government agencies" : "Projetou um pipeline de dados escalável utilizado por grandes agências governamentais",
+      icon: <FaDatabase className="text-purple-500" />
+    },
+    {
+      year: "2023",
+      achievement: locale === 'en' ? "Optimized ETL processes resulting in 70% performance improvement" : "Otimizou processos de ETL resultando em 70% de melhoria de desempenho",
+      icon: <FaBolt className="text-amber-500" />
+    },
+    {
+      year: "2022",
+      achievement: locale === 'en' ? "Implemented an automated intrusion detection system" : "Implementou um sistema automatizado de detecção de intrusões",
+      icon: <FaShieldAlt className="text-red-500" />
+    },
+    {
+      year: "2021",
+      achievement: locale === 'en' ? "Created a custom ML solution for financial data analysis" : "Criou uma solução personalizada de ML para análise de dados financeiros",
+      icon: <FaBrain className="text-green-500" />
+    }
+  ];
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-black text-gray-800 dark:text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-black text-gray-800 dark:text-white">
       <Navigation locale={locale} />
       
       {/* Hero Section - Full Height */}
@@ -146,31 +221,27 @@ export default function Home() {
             </div>
             
             <div className="flex gap-6 items-center">
-              <a 
-                href="https://github.com/samueldk12" 
-                target="_blank" 
-                rel="noopener noreferrer"
+              <button 
+                onClick={() => handleSocialClick('github')}
                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors transform hover:scale-110 duration-200"
                 aria-label="GitHub"
               >
                 <FaGithub className="text-3xl" />
-              </a>
-              <a 
-                href="https://www.linkedin.com/in/samuel-arao/" 
-                target="_blank" 
-                rel="noopener noreferrer"
+              </button>
+              <button 
+                onClick={() => handleSocialClick('linkedin')}
                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors transform hover:scale-110 duration-200"
                 aria-label="LinkedIn"
               >
                 <FaLinkedin className="text-3xl" />
-              </a>
-              <a 
-                href="mailto:samuel.arao@gmail.com" 
+              </button>
+              <button 
+                onClick={() => handleSocialClick('email')}
                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors transform hover:scale-110 duration-200"
                 aria-label="Email"
               >
                 <FaEnvelope className="text-3xl" />
-              </a>
+              </button>
               <a 
                 href="https://wa.me/5531991442176" 
                 target="_blank" 
@@ -218,7 +289,7 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
-      
+
       {/* Expertise Section */}
       <section id="expertise" className="py-20 bg-white dark:bg-gray-800/80 relative">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#2a2a3c_1px,transparent_1px)] [background-size:20px_20px]"></div>
@@ -236,86 +307,112 @@ export default function Home() {
             <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full"></div>
           </motion.div>
           
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Data Engineering Card */}
             <motion.div 
               className="bg-white dark:bg-gray-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
-              variants={itemVariants}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               whileHover={{ y: -10, transition: { duration: 0.2 } }}
             >
               <div className="h-2 bg-gradient-to-r from-blue-400 to-blue-600"></div>
               <div className="p-8">
                 <div className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 p-4 rounded-2xl inline-block mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <FaDatabase className="text-3xl" />
+                  <SiApachespark className="text-3xl" />
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">{t.home?.dataCategory || "Engenharia de Dados"}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  {t.home?.dataDescription || "Construção de pipelines de dados, ETL, Data Lakes e implementação de soluções com Big Data e processamento em larga escala."}
+                  <SkillsText 
+                    text={t.home?.dataDescription || "Construção de pipelines de dados, ETL, Data Lakes e implementação de soluções com Big Data e processamento em larga escala."} 
+                    locale={locale}
+                  />
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
-                  <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">Apache Spark</span>
-                  <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">ETL</span>
-                  <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">Data Lakes</span>
+                  <Link href={`/${locale}/skills/data/apache-spark`}>
+                    <SkillBadge skill="APACHE SPARK" category="data" level={getLocalizedSkillData("APACHE SPARK", locale).level} noLink={true}>Apache Spark</SkillBadge>
+                  </Link>
+                  <Link href={`/${locale}/skills/data/etl`}>
+                    <SkillBadge skill="ETL" category="data" level={getLocalizedSkillData("ETL", locale).level} noLink={true}>ETL</SkillBadge>
+                  </Link>
+                  <Link href={`/${locale}/skills/data/data-lakes`}>
+                    <SkillBadge skill="DATA LAKES" category="data" level={getLocalizedSkillData("DATA LAKES", locale).level} noLink={true}>Data Lakes</SkillBadge>
+                  </Link>
                 </div>
               </div>
             </motion.div>
-            
+
             {/* Backend Development Card */}
             <motion.div 
               className="bg-white dark:bg-gray-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
-              variants={itemVariants}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               whileHover={{ y: -10, transition: { duration: 0.2 } }}
             >
               <div className="h-2 bg-gradient-to-r from-indigo-400 to-indigo-600"></div>
               <div className="p-8">
                 <div className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-4 rounded-2xl inline-block mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <FaServer className="text-3xl" />
+                  <SiPython className="text-3xl" />
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">{t.home?.devCategory || "Desenvolvimento Backend"}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  {t.home?.devDescription || "Criação de APIs eficientes, aplicações web e ferramentas de automação com foco em performance e boas práticas."}
+                  <SkillsText 
+                    text={t.home?.devDescription || "Criação de APIs eficientes, aplicações web e ferramentas de automação com foco em performance e boas práticas."}
+                    locale={locale}
+                  />
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
-                  <span className="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium">Node.js</span>
-                  <span className="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium">FastAPI</span>
-                  <span className="inline-block px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium">REST APIs</span>
+                  <Link href={`/${locale}/skills/languages/python`}>
+                    <SkillBadge skill="PYTHON" category="languages" level={getLocalizedSkillData("PYTHON", locale).level} noLink={true}>Python</SkillBadge>
+                  </Link>
+                  <Link href={`/${locale}/skills/web/fastapi`}>
+                    <SkillBadge skill="FASTAPI" category="web" level={getLocalizedSkillData("FASTAPI", locale).level} noLink={true}>FastAPI</SkillBadge>
+                  </Link>
+                  <Link href={`/${locale}/skills/languages/go`}>
+                    <SkillBadge skill="GO" category="languages" level={getLocalizedSkillData("GO", locale).level} noLink={true}>Go</SkillBadge>
+                  </Link>
                 </div>
               </div>
             </motion.div>
-            
+
             {/* AI Card */}
             <motion.div 
               className="bg-white dark:bg-gray-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
-              variants={itemVariants}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               whileHover={{ y: -10, transition: { duration: 0.2 } }}
             >
               <div className="h-2 bg-gradient-to-r from-purple-400 to-purple-600"></div>
               <div className="p-8">
                 <div className="bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 p-4 rounded-2xl inline-block mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <FaRobot className="text-3xl" />
+                  <FaBrain className="text-3xl" />
                 </div>
-                <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">{t.home?.gameCategory || "Inteligência Artificial"}</h3>
+                <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">{t.home?.aiCategory || "Inteligência Artificial"}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  {t.home?.gameDescription || "Implementação de modelos de machine learning, processamento de linguagem natural e redes neurais."}
+                  <SkillsText 
+                    text={t.home?.aiDescription || "Implementação de modelos de machine learning, processamento de linguagem natural e redes neurais."}
+                    locale={locale}
+                  />
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
-                  <span className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">Machine Learning</span>
-                  <span className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">NLP</span>
-                  <span className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">Python</span>
+                  <Link href={`/${locale}/skills/ai/machine-learning`}>
+                    <SkillBadge skill="MACHINE LEARNING" category="ai" level={getLocalizedSkillData("MACHINE LEARNING", locale).level} noLink={true}>Machine Learning</SkillBadge>
+                  </Link>
+                  <Link href={`/${locale}/skills/ai/deep-learning`}>
+                    <SkillBadge skill="DEEP LEARNING" category="ai" level={getLocalizedSkillData("DEEP LEARNING", locale).level} noLink={true}>Deep Learning</SkillBadge>
+                  </Link>
                 </div>
               </div>
             </motion.div>
-            
-            {/* Cybersecurity Card */}
+
+            {/* Security Card */}
             <motion.div 
               className="bg-white dark:bg-gray-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
-              variants={itemVariants}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               whileHover={{ y: -10, transition: { duration: 0.2 } }}
             >
               <div className="h-2 bg-gradient-to-r from-gray-400 to-gray-600"></div>
@@ -325,19 +422,25 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">{t.home?.securityCategory || "Cybersegurança"}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  {t.home?.securityDescription || "Implementação de práticas de segurança, análise de vulnerabilidades e proteção de dados e sistemas."}
+                  <SkillsText 
+                    text={t.home?.securityDescription || "Implementação de práticas de segurança, análise de vulnerabilidades e proteção de dados e sistemas."}
+                    locale={locale}
+                  />
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
-                  <span className="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium">Penetration Testing</span>
-                  <span className="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium">XSS</span>
-                  <span className="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium">OWASP</span>
+                  <Link href={`/${locale}/skills/security/web-security`}>
+                    <SkillBadge skill="WEB SECURITY" category="security" level={getLocalizedSkillData("WEB SECURITY", locale).level} noLink={true}>Web Security</SkillBadge>
+                  </Link>
+                  <Link href={`/${locale}/skills/security/linux`}>
+                    <SkillBadge skill="LINUX" category="security" level={getLocalizedSkillData("LINUX", locale).level} noLink={true}>Linux</SkillBadge>
+                  </Link>
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
-      
+
       {/* Current Experience Section */}
       <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-950 relative">
         <div className="absolute top-0 left-0 w-full h-24 bg-white dark:bg-gray-800/80 -mt-12 rounded-b-[50%] z-10"></div>
@@ -359,7 +462,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold">Kriptos</h3>
-                    <p className="text-blue-100">Senior BI Consultant</p>
+                    <p className="text-blue-100">{locale === 'en' ? 'Senior BI Consultant' : 'Consultor BI Senior'}</p>
                   </div>
                 </div>
                 <div className="mb-6">
@@ -369,9 +472,7 @@ export default function Home() {
                   </div>
                   <div className="flex items-center">
                     <div className="w-4 h-4 rounded-full bg-white mr-2"></div>
-                    <span>{locale === 'en' ? 'April 2025 - Present' : 
-                           locale === 'es' ? 'Abril 2025 - Presente' : 
-                           'abril de 2025 - Presente'}</span>
+                    <span>{locale === 'en' ? 'April 2025 - Present' : 'abril de 2025 - Presente'}</span>
                   </div>
                 </div>
                 <Link
@@ -385,244 +486,55 @@ export default function Home() {
               
               <div className="md:w-2/3 p-8 md:p-12">
                 <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
-                  {locale === 'en' ? 'Senior BI Consultant' : 
-                   locale === 'es' ? 'Consultor BI Senior' : 
-                   'Consultor BI Senior'}
+                  {locale === 'en' ? 'Senior BI Consultant' : 'Consultor BI Senior'}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                  {t.home?.currentJobDescription || (
-                    locale === 'en' 
-                      ? "Responsible for developing and implementing Business Intelligence solutions, optimizing ETL processes, and data analysis to support decision-making at Kriptos."
-                      : locale === 'es'
-                        ? "Responsable del desarrollo e implementación de soluciones de Business Intelligence, optimización de procesos ETL y análisis de datos para apoyar la toma de decisiones en Kriptos."
-                        : "Responsável pelo desenvolvimento e implementação de soluções de Business Intelligence, otimização de processos de ETL e análise de dados para suporte à tomada de decisões na Kriptos."
-                  )}
+                <p className="text-gray-600 dark:text-gray-300 mb-8">
+                  <SkillsText 
+                    text={t.home?.currentExperienceDescription || "Atuando principalmente como Engenheiro de Dados, responsável pelo desenvolvimento e implementação de pipelines de dados, processos de ETL e construção de arquiteturas de dados escaláveis. Desenvolvimento de soluções de automação, projetos de integração de dados e APIs performáticas com foco em boas práticas e código limpo. Trabalho com grandes volumes de dados, incluindo iniciativas junto ao Ministério Público de Minas Gerais (MPMG)."}
+                    locale={locale}
+                  />
                 </p>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                  <div className="bg-gray-50 dark:bg-gray-700/40 p-4 rounded-xl">
-                    <h4 className="font-semibold mb-2 text-gray-800 dark:text-white">
-                      {locale === 'en' ? 'Tools' : 
-                       locale === 'es' ? 'Herramientas' : 
-                       'Ferramentas'}
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-lg text-xs font-medium">Apache Spark</span>
-                      <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-lg text-xs font-medium">Power BI</span>
-                      <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-lg text-xs font-medium">Python</span>
-                      <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-lg text-xs font-medium">SQL</span>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-gray-50 dark:bg-gray-700/40 p-4 rounded-xl">
-                    <h4 className="font-semibold mb-2 text-gray-800 dark:text-white">
-                      {locale === 'en' ? 'Responsibilities' : 
-                       locale === 'es' ? 'Responsabilidades' : 
-                       'Responsabilidades'}
-                    </h4>
-                    <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 text-sm">
-                      <li>{locale === 'en' ? 'Dashboard development' : 
-                          locale === 'es' ? 'Desarrollo de dashboards' : 
-                          'Desenvolvimento de dashboards'}</li>
-                      <li>{locale === 'en' ? 'Data modeling' : 
-                          locale === 'es' ? 'Modelado de datos' : 
-                          'Modelagem de dados'}</li>
-                      <li>{locale === 'en' ? 'Process automation' : 
-                          locale === 'es' ? 'Automatización de procesos' : 
-                          'Automação de processos'}</li>
-                      <li>{locale === 'en' ? 'Data analysis' : 
-                          locale === 'es' ? 'Análisis de datos' : 
-                          'Análise de dados'}</li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-xl border-l-4 border-indigo-500 dark:border-indigo-400">
-                  <p className="text-indigo-700 dark:text-indigo-300 italic">
-                    {locale === 'en' 
-                      ? "I analyze, process, and transform large volumes of data into actionable insights that help the company make data-driven strategic decisions."
-                      : locale === 'es'
-                        ? "Analizo, proceso y transformo grandes volúmenes de datos en conocimientos accionables que ayudan a la empresa a tomar decisiones estratégicas basadas en datos."
-                        : "Analiso, processo e transformo grandes volumes de dados em insights acionáveis que auxiliam a empresa a tomar decisões estratégicas baseadas em dados."}
-                  </p>
+                <h4 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">{t.home?.tools || "Ferramentas"}</h4>
+                <div className="flex flex-wrap gap-2">
+                  <SkillBadge skill="PYTHON" category="languages" level="advanced" noLink={true}>Python</SkillBadge>
+                  <SkillBadge skill="SQL" category="languages" level="intermediate" noLink={true}>SQL</SkillBadge>
+                  <SkillBadge skill="APACHE AIRFLOW" category="data" level="intermediate" noLink={true}>Airflow</SkillBadge>
+                  <SkillBadge skill="APACHE SPARK" category="data" level="advanced" noLink={true}>Spark</SkillBadge>
+                  <SkillBadge skill="AWS" category="devops" level="beginner" noLink={true}>AWS</SkillBadge>
+                  <SkillBadge skill="FASTAPI" category="web" level="intermediate" noLink={true}>FastAPI</SkillBadge>
+                  <SkillBadge skill="DOCKER" category="devops" level="advanced" noLink={true}>Docker</SkillBadge>
+                  <SkillBadge skill="APACHE HADOOP" category="data" level="advanced" noLink={true}>Hadoop</SkillBadge>
+                  <SkillBadge skill="APACHE DRUID" category="data" level="intermediate" noLink={true}>Druid</SkillBadge>
+                  <SkillBadge skill="APACHE NIFI" category="data" level="intermediate" noLink={true}>NiFi</SkillBadge>
+                  <SkillBadge skill="WEB SCRAPING" category="data" level="advanced" noLink={true}>Web Scraping</SkillBadge>
+                  <SkillBadge skill="POSTGRESQL" category="databases" level="advanced" noLink={true}>PostgreSQL</SkillBadge>
+                  <SkillBadge skill="DATA ENGINEERING" category="data" level="intermediate" noLink={true}>Data Engineering</SkillBadge>
+                  <SkillBadge skill="APACHE HIVE" category="data" level="intermediate" noLink={true}>Hive</SkillBadge>
+                  <SkillBadge skill="DATA LAKES" category="data" level="intermediate" noLink={true}>Data Lakes</SkillBadge>
+                  <SkillBadge skill="ELASTICSEARCH" category="databases" level="intermediate" noLink={true}>Elasticsearch</SkillBadge>
+                  <SkillBadge skill="MICROSERVICES" category="architecture" level="intermediate" noLink={true}>Microservices</SkillBadge>
+                  <SkillBadge skill="CI/CD" category="devops" level="intermediate" noLink={true}>CI/CD</SkillBadge>
+                  <SkillBadge skill="JENKINS" category="devops" level="intermediate" noLink={true}>Jenkins</SkillBadge>
+                  <SkillBadge skill="CLEAN ARCHITECTURE" category="architecture" level="intermediate" noLink={true}>Clean Architecture</SkillBadge>
+                  <SkillBadge skill="TDD" category="architecture" level="intermediate" noLink={true}>TDD</SkillBadge>
+                  <SkillBadge skill="LINUX" category="security" level="intermediate" noLink={true}>Linux</SkillBadge>
+                  <SkillBadge skill="WEB SECURITY" category="security" level="intermediate" noLink={true}>Web Security</SkillBadge>
                 </div>
               </div>
             </div>
           </motion.div>
         </div>
       </section>
-      
-      {/* Featured Projects Section */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-800">
-        <div className="container mx-auto px-4">
-          {!isLoading && topTestimonials.length > 0 && (
-            <motion.div 
-              className="mb-16"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h2 className="text-3xl font-bold mb-8 text-center">
-                {locale === 'en' ? 'What People Say' : locale === 'es' ? 'Lo Que Dicen de Mí' : 'O Que Dizem Sobre Mim'}
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {topTestimonials.map((testimonial) => (
-                  <motion.div
-                    key={testimonial.id}
-                    className="bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 relative overflow-hidden"
-                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  >
-                    <FaQuoteLeft className="text-blue-300 dark:text-blue-500 opacity-20 text-4xl absolute top-6 left-6" />
-                    
-                    <div className="mt-6 mb-8 relative z-10">
-                      <p className="text-gray-700 dark:text-gray-300 italic">
-                        "{testimonial.testimonial}"
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center">
-                      <div className="mr-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold">
-                          {testimonial.name.charAt(0)}
-                        </div>
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-900 dark:text-white">{testimonial.name}</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {testimonial.position}, {testimonial.company}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="absolute top-4 right-4 flex items-center">
-                      <span className="flex items-center gap-1 text-gray-400">
-                        <FaThumbsUp />
-                        <span className="text-sm font-medium">{testimonial.votes}</span>
-                      </span>
-                    </div>
-                    
-                    <FaQuoteRight className="text-blue-300 dark:text-blue-500 opacity-20 text-4xl absolute bottom-6 right-6" />
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-          
-          <motion.div 
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-3xl font-bold mb-4">{t.projects?.title || (locale === 'en' ? "My Projects" : locale === 'es' ? "Mis Proyectos" : "Meus Projetos")}</h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              {t.projects?.subtitle || (locale === 'en' ? "A selection of my work in software development and data engineering" : locale === 'es' ? "Una selección de mi trabajo en desarrollo de software e ingeniería de datos" : "Uma seleção dos meus trabalhos em desenvolvimento de software e engenharia de dados")}
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-            <motion.div 
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            >
-              <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-700"></div>
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                    <FaDatabase className="text-2xl text-blue-600 dark:text-blue-400" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">{t.projects?.proxy?.title || (locale === 'en' ? "FastAPI Proxy System" : locale === 'es' ? "Sistema Proxy FastAPI" : "Sistema Proxy FastAPI")}</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  {t.projects?.proxy?.description || (locale === 'en' ? "FastAPI proxy system for web scraping with session management and IP rotation" : locale === 'es' ? "Sistema proxy FastAPI para web scraping con gestión de sesiones y rotación de IP" : "Sistema de proxy em FastAPI para web scraping com gerenciamento de sessões e rotação de IPs")}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-full text-xs font-medium">Python</span>
-                  <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-full text-xs font-medium">FastAPI</span>
-                  <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-full text-xs font-medium">Redis</span>
-                </div>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            >
-              <div className="h-2 bg-gradient-to-r from-green-500 to-green-700"></div>
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-full">
-                    <SiTypescript className="text-2xl text-green-600 dark:text-green-400" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">{t.projects?.api_arquitetura_hexagonal?.title || (locale === 'en' ? "Hexagonal Architecture API" : locale === 'es' ? "API con Arquitectura Hexagonal" : "API Arquitetura Hexagonal")}</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  {t.projects?.api_arquitetura_hexagonal?.description || (locale === 'en' ? "REST API with hexagonal architecture in TypeScript, demonstrating clean design principles and testability" : locale === 'es' ? "API REST con arquitectura hexagonal en TypeScript, demostrando principios de diseño limpio y testabilidad" : "API REST com arquitetura hexagonal em TypeScript, demonstrando princípios de design limpo e testabilidade")}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300 rounded-full text-xs font-medium">TypeScript</span>
-                  <span className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300 rounded-full text-xs font-medium">Node.js</span>
-                  <span className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300 rounded-full text-xs font-medium">MongoDB</span>
-                </div>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              className="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            >
-              <div className="h-2 bg-gradient-to-r from-purple-500 to-purple-700"></div>
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full">
-                    <SiPython className="text-2xl text-purple-600 dark:text-purple-400" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">{t.projects?.lunar?.title || (locale === 'en' ? "Lunar Land AI" : locale === 'es' ? "IA de Aterrizaje Lunar" : "Lunar Land AI")}</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  {t.projects?.lunar?.description || (locale === 'en' ? "Artificial intelligence project that uses reinforcement learning to land a lunar module" : locale === 'es' ? "Proyecto de inteligencia artificial que utiliza aprendizaje por refuerzo para aterrizar un módulo lunar" : "Projeto de inteligência artificial que utiliza aprendizado por reforço para pousar uma nave lunar")}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 rounded-full text-xs font-medium">Python</span>
-                  <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 rounded-full text-xs font-medium">PyTorch</span>
-                  <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 rounded-full text-xs font-medium">RL</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-          
-          <motion.div 
-            className="text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <Link 
-              href={`/${locale}/projects`}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors"
-            >
-              {t.home?.viewProjects || (locale === 'en' ? "View Projects" : locale === 'es' ? "Ver Proyectos" : "Ver Projetos")} <FaArrowRight />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-      
+
+      {/* CTA Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <motion.div 
             className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-8 md:p-12 text-white text-center"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl font-bold mb-4">{t.home?.ctaTitle || "Vamos trabalhar juntos?"}</h2>
@@ -635,13 +547,11 @@ export default function Home() {
               rel="noopener noreferrer" 
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 rounded-full font-medium hover:bg-gray-100 transition-colors"
             >
-              <FaWhatsapp className="text-xl" /> {locale === 'en' ? 'Contact Me' : 
-                                                  locale === 'es' ? 'Contáctame' : 
-                                                  'Fale comigo'}
+              <FaWhatsapp className="text-xl" /> {locale === 'en' ? 'Contact Me' : 'Fale comigo'}
             </a>
           </motion.div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
