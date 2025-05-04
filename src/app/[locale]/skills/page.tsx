@@ -341,7 +341,7 @@ export default function Skills() {
                         </SkillBadge>
                       </div>
                       <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full bg-${getLevelColor(skillData.level)}-600 dark:bg-${getLevelColor(skillData.level)}-500 mr-2`}></div>
+                        <div className={`w-3 h-3 rounded-full bg-${getLevelColor(skillData.level as ProficiencyLevel)}-600 dark:bg-${getLevelColor(skillData.level as ProficiencyLevel)}-500 mr-2`}></div>
                         <span className="text-sm text-gray-600 dark:text-gray-400">
                           {skillData.score}%
                         </span>
@@ -350,7 +350,7 @@ export default function Skills() {
                     
                     <div className="bg-gray-200 dark:bg-gray-700 w-full h-2 rounded-full overflow-hidden mb-2">
                       <div 
-                        className={`bg-${getLevelColor(skillData.level)}-600 dark:bg-${getLevelColor(skillData.level)}-500 h-full rounded-full`}
+                        className={`bg-${getLevelColor(skillData.level as ProficiencyLevel)}-600 dark:bg-${getLevelColor(skillData.level as ProficiencyLevel)}-500 h-full rounded-full`}
                         style={{ width: `${skillData.score}%` }}
                       ></div>
                     </div>
