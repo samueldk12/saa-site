@@ -8,30 +8,6 @@ import {
 } from './calculateProficiency';
 import { translateSkill, getEnglishSkillName } from './translateSkill';
 
-// Interfaces
-export interface Project {
-  name: string;
-  description: string;
-  url: string;
-  skills: string[];
-}
-
-export interface Experience {
-  company: string;
-  position: string;
-  period: string;
-  description: string;
-  technologies: string[];
-}
-
-export interface Certification {
-  name: string;
-  issuer: string;
-  year: string;
-  credential?: string;
-  certificate_url?: string;
-}
-
 // Dados dos projetos
 export const projectsData: Project[] = [
   {

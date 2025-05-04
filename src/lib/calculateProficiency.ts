@@ -12,6 +12,7 @@ export interface Experience {
   position: string;
   period: string;
   description: string;
+  technologies: string[];
 }
 
 // Tipo para dados de certificações
@@ -20,7 +21,7 @@ export interface Certification {
   issuer: string;
   year: string;
   credential?: string;
-  certificate_url: string;
+  certificate_url?: string;
 }
 
 // Função auxiliar para calcular a duração de uma experiência em meses
