@@ -223,7 +223,7 @@ export default function SkillDetailPage() {
                   </h2>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {projects.map((project: Project, index) => (
+                    {projects.map((project: Project, index: number) => (
                       <motion.div 
                         key={index}
                         className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6"
