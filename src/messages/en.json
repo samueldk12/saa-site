@@ -27,7 +27,17 @@
     "viewFullHistory": "View full history",
     "ctaTitle": "Let's work together?",
     "ctaDescription": "I'm always open to new opportunities and challenges. If you're looking for a professional to help on your next project, get in touch!",
-    "profileAlt": "Profile photo of Samuel Apolinário Arão"
+    "profileAlt": "Profile photo of Samuel Apolinário Arão",
+    "currentExperienceDescription": "Working primarily as a Data Engineer, responsible for developing and implementing data pipelines, ETL/ELT processes, and building scalable data architectures. Development of automation solutions, data integration projects, and high-performance APIs with a focus on best practices and clean code. Working with large data volumes, including initiatives with the Public Ministry of Minas Gerais (MPMG).",
+    "contactMe": "Contact Me",
+    "phone": "Phone",
+    "location": "Location",
+    "postgrad": "Postgraduate in AI",
+    "currentPosition": {
+      "title": "Senior BI Consultant",
+      "location": "Minas Gerais, Brazil",
+      "period": "April 2025 - Present"
+    }
   },
   "about": {
     "title": "About Me",
@@ -47,7 +57,16 @@
     "contactInfo": "Contact Information",
     "view_certificate": "View Certificate",
     "timeline": "Timeline",
-    "timelineSubtitle": "My professional journey and key milestones"
+    "timelineSubtitle": "My professional journey and key milestones",
+    "downloadCV": "Download CV",
+    "viewResume": "View Resume",
+    "emailMe": "Email Me",
+    "callMe": "Call Me",
+    "findMe": "Location",
+    "socialProfiles": "Social Profiles",
+    "downloadResume": "Download Resume",
+    "viewGitHub": "View GitHub",
+    "viewLinkedIn": "View LinkedIn"
   },
   "contact": {
     "title": "Get in Touch",
@@ -135,11 +154,19 @@
     "experience": "Experience",
     "projects": "Projects",
     "relatedProjects": "Related projects",
+    "certifications": "Certifications",
+    "relatedCertifications": "Related certifications",
+    "noRelatedContent": "No specific information available for this skill.",
+    "checkBackLater": "Check back later for updates.",
     "relatedExperiences": "Related Experiences",
     "viewProject": "View Project",
     "viewCertificate": "View Certificate",
-    "noRelatedContent": "No specific information available for this skill.",
-    "checkBackLater": "Check back later for updates."
+    "levelExplanations": {
+      "expert": "This is an advanced level of knowledge, applied in complex projects. Includes a deep understanding of fundamentals and the ability to implement sophisticated solutions. The use of this technology is frequent and continuous in professional projects.",
+      "advanced": "Represents solid experience gained through various real projects. Includes knowledge of advanced features and implementation best practices. Application of technology in diverse situations, solving complex problems efficiently.",
+      "intermediate": "Reflects practical knowledge applied in projects. Includes familiarity with intermediate features and ability to develop functional solutions. Experience with common use cases and typical problem solving.",
+      "beginner": "Indicates basic knowledge of fundamental concepts and applications. Includes understanding of basic principles and ability to use the technology in simple cases. Familiar with the technology but with limited practical experience."
+    }
   },
   "common": {
     "back": "Back",

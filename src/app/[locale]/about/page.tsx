@@ -453,11 +453,11 @@ export default function About() {
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 rounded-full text-purple-700 dark:text-purple-300">
                   <FaLocation className="text-lg" />
-                  <span>Belo Horizonte, MG</span>
+                  <span>{t.home?.location || "Localização"}: Minas Gerais, Brasil</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full text-indigo-700 dark:text-indigo-300">
                   <FaGrad className="text-lg" />
-                  <span>Pós graduado em IA</span>
+                  <span>{t.home?.postgrad || "Pós graduado em IA"}</span>
                 </div>
               </motion.div>
 
@@ -501,9 +501,7 @@ export default function About() {
             >
               <div className="prose prose-lg dark:prose-invert max-w-none">
                 <SkillsText
-                  text={t.about?.description || (locale === 'en'
-                    ? "I hold a bachelor's degree in Digital Games and a teaching degree in Pedagogy, as well as a postgraduate degree in Artificial Intelligence from PUC Minas and an MBA in Big Data and Competitive Intelligence from Descomplica."
-                    : "Formações")}
+                  text={t.about?.description || ""}
                   locale={locale}
                 />
               </div>
@@ -749,8 +747,8 @@ export default function About() {
       <section id="experience" className="py-20 bg-white dark:bg-gray-800/80 relative scroll-mt-20">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 text-center">
-            {t.about?.experience || "Experiência Profissional"}
-            </h2>
+            {t.about?.experience || ""}
+          </h2>
           <div className="space-y-8">
             {workExperience.map((exp, index) => (
               <ExperienceCard 
@@ -776,9 +774,7 @@ export default function About() {
           >
             <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400">
               <FaGrad className="inline-block mr-3 text-3xl" />
-              {t.about?.education || (locale === 'en'
-                ? "Education"
-                : "Formações")}
+              {t.about?.educationSection || t.about?.education}
             </h2>
           </motion.div>
           
@@ -802,7 +798,7 @@ export default function About() {
           >
             <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-400">
               <FaCertificate className="inline-block mr-3 text-3xl" />
-              {t.about?.certifications || "Certificações"}
+              {t.about?.certifications || ""}
             </h2>
           </motion.div>
           
@@ -853,7 +849,7 @@ export default function About() {
                     <FaPhone className="text-2xl text-green-600 dark:text-green-400" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Telefone</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t.home?.phone || "Telefone"}</h3>
                     <a 
                       href={`tel:${contactInfo.phone}`}
                       className="text-green-600 dark:text-green-400 hover:underline"
@@ -868,9 +864,9 @@ export default function About() {
                     <FaLocation className="text-2xl text-purple-600 dark:text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Localização</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t.home?.location || "Localização"}</h3>
                     <p className="text-gray-600 dark:text-gray-300">
-                      Belo Horizonte, MG - Brasil
+                      Minas Gerais, Brasil
                     </p>
                   </div>
                 </div>
@@ -918,14 +914,14 @@ export default function About() {
                     <FaDownload className="text-2xl text-amber-600 dark:text-amber-400" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Currículo</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t.about?.curriculum || t.home?.curriculum || "Currículo"}</h3>
                     <a 
-                      href="/cv.pdf"
+                      href={`/files/curriculo_${locale === 'pt' ? 'pt' : 'en'}.pdf`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-amber-600 dark:text-amber-400 hover:underline"
                     >
-                      {locale === 'en' ? "Download CV" : "Baixar Currículo"}
+                      {t.about?.downloadCV || t.home?.downloadCV}
                     </a>
                   </div>
                 </div>

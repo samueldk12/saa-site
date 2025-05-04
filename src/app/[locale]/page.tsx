@@ -547,7 +547,7 @@ export default function Home() {
               rel="noopener noreferrer" 
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 rounded-full font-medium hover:bg-gray-100 transition-colors"
             >
-              <FaWhatsapp className="text-xl" /> {locale === 'en' ? 'Contact Me' : 'Fale comigo'}
+              <FaWhatsapp className="text-xl" /> {t.home?.contactMe || "Fale comigo"}
             </a>
           </motion.div>
         </div>

@@ -373,10 +373,6 @@ export default function Skills() {
                         {t.skills?.[skillData.level] || skillData.level}
                       </span>
                     </div>
-                    
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      {t.skills?.clickToView || "Clique para ver projetos, experiências e certificações relacionadas"}
-                    </div>
                   </motion.div>
                 );
               })}
