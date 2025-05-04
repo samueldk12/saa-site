@@ -330,13 +330,13 @@ export default function Home() {
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   <Link href={`/${locale}/skills/data/apache-spark`}>
-                    <SkillBadge skill="APACHE SPARK" category="data" level={getLocalizedSkillData("APACHE SPARK", locale).level} noLink={true}>Apache Spark</SkillBadge>
+                    <SkillBadge skill="APACHE SPARK" category="data" level={getLocalizedSkillData("APACHE SPARK", locale).level as "advanced" | "beginner" | "intermediate" | "expert"} noLink={true}>Apache Spark</SkillBadge>
                   </Link>
                   <Link href={`/${locale}/skills/data/etl`}>
-                    <SkillBadge skill="ETL" category="data" level={getLocalizedSkillData("ETL", locale).level} noLink={true}>ETL</SkillBadge>
+                    <SkillBadge skill="ETL" category="data" level={getLocalizedSkillData("ETL", locale).level as "advanced" | "beginner" | "intermediate" | "expert"} noLink={true}>ETL</SkillBadge>
                   </Link>
                   <Link href={`/${locale}/skills/data/data-lakes`}>
-                    <SkillBadge skill="DATA LAKES" category="data" level={getLocalizedSkillData("DATA LAKES", locale).level} noLink={true}>Data Lakes</SkillBadge>
+                    <SkillBadge skill="DATA LAKES" category="data" level={getLocalizedSkillData("DATA LAKES", locale).level as "advanced" | "beginner" | "intermediate" | "expert"} noLink={true}>Data Lakes</SkillBadge>
                   </Link>
                 </div>
               </div>
@@ -364,13 +364,13 @@ export default function Home() {
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   <Link href={`/${locale}/skills/languages/python`}>
-                    <SkillBadge skill="PYTHON" category="languages" level={getLocalizedSkillData("PYTHON", locale).level} noLink={true}>Python</SkillBadge>
+                    <SkillBadge skill="PYTHON" category="languages" level={getLocalizedSkillData("PYTHON", locale).level as "advanced" | "beginner" | "intermediate" | "expert"} noLink={true}>Python</SkillBadge>
                   </Link>
                   <Link href={`/${locale}/skills/web/fastapi`}>
-                    <SkillBadge skill="FASTAPI" category="web" level={getLocalizedSkillData("FASTAPI", locale).level} noLink={true}>FastAPI</SkillBadge>
+                    <SkillBadge skill="FASTAPI" category="web" level={getLocalizedSkillData("FASTAPI", locale).level as "advanced" | "beginner" | "intermediate" | "expert"} noLink={true}>FastAPI</SkillBadge>
                   </Link>
                   <Link href={`/${locale}/skills/languages/go`}>
-                    <SkillBadge skill="GO" category="languages" level={getLocalizedSkillData("GO", locale).level} noLink={true}>Go</SkillBadge>
+                    <SkillBadge skill="GO" category="languages" level={getLocalizedSkillData("GO", locale).level as "advanced" | "beginner" | "intermediate" | "expert"} noLink={true}>Go</SkillBadge>
                   </Link>
                 </div>
               </div>
@@ -398,10 +398,10 @@ export default function Home() {
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   <Link href={`/${locale}/skills/ai/machine-learning`}>
-                    <SkillBadge skill="MACHINE LEARNING" category="ai" level={getLocalizedSkillData("MACHINE LEARNING", locale).level} noLink={true}>Machine Learning</SkillBadge>
+                    <SkillBadge skill="MACHINE LEARNING" category="ai" level={getLocalizedSkillData("MACHINE LEARNING", locale).level as "advanced" | "beginner" | "intermediate" | "expert"} noLink={true}>Machine Learning</SkillBadge>
                   </Link>
                   <Link href={`/${locale}/skills/ai/deep-learning`}>
-                    <SkillBadge skill="DEEP LEARNING" category="ai" level={getLocalizedSkillData("DEEP LEARNING", locale).level} noLink={true}>Deep Learning</SkillBadge>
+                    <SkillBadge skill="DEEP LEARNING" category="ai" level={getLocalizedSkillData("DEEP LEARNING", locale).level as "advanced" | "beginner" | "intermediate" | "expert"} noLink={true}>Deep Learning</SkillBadge>
                   </Link>
                 </div>
               </div>
@@ -429,10 +429,10 @@ export default function Home() {
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   <Link href={`/${locale}/skills/security/web-security`}>
-                    <SkillBadge skill="WEB SECURITY" category="security" level={getLocalizedSkillData("WEB SECURITY", locale).level} noLink={true}>Web Security</SkillBadge>
+                    <SkillBadge skill="WEB SECURITY" category="security" level={getLocalizedSkillData("WEB SECURITY", locale).level as "advanced" | "beginner" | "intermediate" | "expert"} noLink={true}>Web Security</SkillBadge>
                   </Link>
                   <Link href={`/${locale}/skills/security/linux`}>
-                    <SkillBadge skill="LINUX" category="security" level={getLocalizedSkillData("LINUX", locale).level} noLink={true}>Linux</SkillBadge>
+                    <SkillBadge skill="LINUX" category="security" level={getLocalizedSkillData("LINUX", locale).level as "advanced" | "beginner" | "intermediate" | "expert"} noLink={true}>Linux</SkillBadge>
                   </Link>
                 </div>
               </div>

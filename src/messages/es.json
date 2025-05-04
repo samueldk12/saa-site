@@ -104,7 +104,18 @@
     "json-translate": {
       "title": "JSON Translate",
       "description": "Herramienta para traducir archivos JSON, útil para la internacionalización de aplicaciones"
-    }
+    },
+    "openGithub": "Abrir GitHub",
+    "details": "Detalles",
+    "description": "Descripción",
+    "technologies": "Tecnologías",
+    "statistics": "Estadísticas",
+    "stars": "Estrellas",
+    "forks": "Forks",
+    "mainLanguage": "Lenguaje principal",
+    "updatedOn": "Actualizado el",
+    "close": "Cerrar",
+    "viewOnGithub": "Ver en GitHub"
   },
   "skills": {
     "title": "Mis Habilidades",
@@ -137,5 +148,12 @@
     "relatedProjects": "Proyectos relacionados",
     "certifications": "Certificaciones",
     "relatedCertifications": "Certificaciones relacionadas"
+  },
+  "common": {
+    "back": "Volver",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "viewDetails": "Ver Detalles"
   }
 } 
