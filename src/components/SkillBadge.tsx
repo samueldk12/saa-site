@@ -2,15 +2,18 @@ import React, { ReactNode } from 'react';
 import SkillLink from './SkillLink';
 import { getProficiencyColor } from '@/lib/calculateProficiency';
 
-type SkillBadgeProps = {
+export type ProficiencyLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';
+
+interface SkillBadgeProps {
   skill: string;
   category?: string;
-  level?: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+  level?: ProficiencyLevel;
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
   icon?: ReactNode;
-  children?: ReactNode;
   noLink?: boolean;
-};
+  children?: React.ReactNode;
+}
 
 // Função auxiliar para obter as classes do badge
 const getBadgeClasses = (level: string) => {
@@ -29,6 +32,7 @@ export default function SkillBadge({
   skill, 
   category, 
   level = 'intermediate',
+  size = 'md',
   className = '', 
   icon,
   children,

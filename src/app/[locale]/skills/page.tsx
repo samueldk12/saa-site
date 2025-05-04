@@ -46,6 +46,7 @@ import {
 } from 'react-icons/si';
 import { useState } from 'react';
 import SkillBadge from '@/components/SkillBadge';
+import type { ProficiencyLevel } from '@/components/SkillBadge';
 import { getLocalizedSkillData, allSkills, workExperienceFromAbout, getExperiencesForSkill, getProjectsForSkill } from '@/lib/skillsData';
 import { translateSkill } from '@/lib/translateSkill';
 
@@ -333,7 +334,7 @@ export default function Skills() {
                         <SkillBadge 
                           skill={skillData.normalizedSkill} 
                           category={activeSkillCategory.id}
-                          level={skillData.level}
+                          level={skillData.level as ProficiencyLevel}
                           className="text-base font-semibold p-2"
                         >
                           {skillData.skill}
@@ -395,7 +396,7 @@ export default function Skills() {
                     <SkillBadge
                       skill={selectedSkill}
                       category={getSkillCategory(selectedSkill)}
-                      level={getLocalizedSkillData(selectedSkill, locale).level}
+                      level={getLocalizedSkillData(selectedSkill, locale).level as ProficiencyLevel}
                       size="lg"
                     >
                       {getLocalizedSkillData(selectedSkill, locale).skill}
@@ -447,7 +448,7 @@ export default function Skills() {
 }
 
 // Função auxiliar para obter a cor com base no nível
-function getLevelColor(level: string) {
+function getLevelColor(level: ProficiencyLevel) {
   switch (level) {
     case 'expert': return 'blue';
     case 'advanced': return 'green';
@@ -458,7 +459,7 @@ function getLevelColor(level: string) {
 }
 
 // Função auxiliar para obter a explicação do nível
-function getLevelExplanation(level: string) {
+function getLevelExplanation(level: ProficiencyLevel) {
   switch (level) {
     case 'expert':
       return 'Uso avançado em projetos complexos';
