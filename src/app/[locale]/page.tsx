@@ -195,7 +195,7 @@ export default function Home() {
             </h1>
             
             <h2 className="text-2xl md:text-3xl text-gray-700 dark:text-gray-300 mb-6 font-light">
-              {t.home?.subtitle || "Consultor BI Senior | Engenheiro de Dados"}
+              {t.home?.subtitle || "Data engineering | Engenheiro de Dados"}
             </h2>
             
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-xl leading-relaxed">
@@ -462,7 +462,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold">Kriptos</h3>
-                    <p className="text-blue-100">{locale === 'en' ? 'Senior BI Consultant' : 'Consultor BI Senior'}</p>
+                    <p className="text-blue-100">{locale === 'en' ? 'Senior Data Engineering' : 'Engenheiro de dados'}</p>
                   </div>
                 </div>
                 <div className="mb-6">
@@ -486,7 +486,7 @@ export default function Home() {
               
               <div className="md:w-2/3 p-8 md:p-12">
                 <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
-                  {locale === 'en' ? 'Senior BI Consultant' : 'Consultor BI Senior'}
+                  {locale === 'en' ? 'data engineering' : 'Engenheiro de dados'}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-8">
                   <SkillsText 

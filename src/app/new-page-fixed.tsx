@@ -94,7 +94,7 @@ export default function Home() {
               {t.home?.title || "Samuel Apolinário Arão"}
             </h1>
             <h2 className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-6">
-              {t.home?.subtitle || "Consultor BI Senior | Engenheiro de Dados"}
+              {t.home?.subtitle || "Assessor MPMG | Engenheiro de Dados Senior"}
             </h2>
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-xl">
               {t.home?.description || "Profissional especializado em Engenharia de Dados e Backend Development, com experiência em Business Intelligence, ETL e soluções de Big Data. Apaixonado por resolver problemas complexos com tecnologia."}

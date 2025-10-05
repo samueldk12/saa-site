@@ -115,9 +115,18 @@ export default function About() {
 
   const workExperience = [
     {
+      company: "MPMG",
+      position: locale === 'en' ? "Data Engineering" : "Engenheiro de dados",
+      period: locale === 'en' ? "September 2025 - Present" : "Setembro de 2025 - Presente",
+      description: locale === 'en' 
+        ? "Working primarily as a Data Engineer, responsible for developing and implementing data pipelines, ETL processes, and building scalable data architecture. Creating automation solutions, data integration projects and high-performance APIs with focus on best practices and clean code. Working with large data volumes, including initiatives with the Public Ministry of Minas Gerais (MPMG)."
+        : "Atuando principalmente como Engenheiro de Dados, responsável pelo desenvolvimento e implementação de pipelines de dados, processos de ETL e construção de arquiteturas de dados escaláveis. Desenvolvimento de soluções de automação, projetos de integração de dados e APIs performáticas com foco em boas práticas e código limpo. Trabalho com grandes volumes de dados, incluindo iniciativas junto ao Ministério Público de Minas Gerais (MPMG).",
+      technologies: ["Python", "SQL", "Apache Airflow", "Apache Spark", "AWS", "FastAPI", "Docker", "Apache Hadoop", "Apache Druid", "Apache NiFi", "Web Scraping", "PostgreSQL", "Data Engineering", "Apache Hive", "Data Lakes", "Elasticsearch", "Microservices", "CI/CD", "Jenkins", "Clean Architecture", "TDD", "Linux", "Web Security"]
+    },
+    {
       company: "Kriptos",
       position: locale === 'en' ? "Senior BI Consultant" : "Consultor BI Senior",
-      period: locale === 'en' ? "April 2025 - Present" : "abril de 2025 - Presente",
+      period: locale === 'en' ? "April 2025 - September 2025" : "abril de 2025 - setembro 2025",
       description: locale === 'en' 
         ? "Working primarily as a Data Engineer, responsible for developing and implementing data pipelines, ETL processes, and building scalable data architecture. Creating automation solutions, data integration projects and high-performance APIs with focus on best practices and clean code. Working with large data volumes, including initiatives with the Public Ministry of Minas Gerais (MPMG)."
         : "Atuando principalmente como Engenheiro de Dados, responsável pelo desenvolvimento e implementação de pipelines de dados, processos de ETL e construção de arquiteturas de dados escaláveis. Desenvolvimento de soluções de automação, projetos de integração de dados e APIs performáticas com foco em boas práticas e código limpo. Trabalho com grandes volumes de dados, incluindo iniciativas junto ao Ministério Público de Minas Gerais (MPMG).",
