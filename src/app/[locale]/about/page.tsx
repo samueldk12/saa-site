@@ -458,7 +458,7 @@ export default function About() {
               >
                 <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-full text-blue-700 dark:text-blue-300">
                   <FaBriefcase className="text-lg" />
-                  <span>Senior BI Consultant @ Kriptos</span>
+                  <span>Data Engineering @ MPMG</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 rounded-full text-purple-700 dark:text-purple-300">
                   <FaLocation className="text-lg" />

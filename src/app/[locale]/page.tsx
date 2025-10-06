@@ -461,7 +461,7 @@ export default function Home() {
                     <FaBriefcase className="text-2xl" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold">Kriptos</h3>
+                    <h3 className="text-xl font-semibold">MPMG</h3>
                     <p className="text-blue-100">{locale === 'en' ? 'Senior Data Engineering' : 'Engenheiro de dados'}</p>
                   </div>
                 </div>
@@ -472,7 +472,7 @@ export default function Home() {
                   </div>
                   <div className="flex items-center">
                     <div className="w-4 h-4 rounded-full bg-white mr-2"></div>
-                    <span>{locale === 'en' ? 'April 2025 - Present' : 'abril de 2025 - Presente'}</span>
+                    <span>{locale === 'en' ? 'September 2025 - Present' : 'Setembro de 2025 - Presente'}</span>
                   </div>
                 </div>
                 <Link
