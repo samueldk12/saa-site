@@ -180,6 +180,20 @@ export default function About() {
   ];
 
   const certifications = [
+      {
+        name: locale === 'en' ? "Fundamentals in Go" : "Fundamentos em Go",
+        issuer: "Full Cycle",
+        year: "2025",
+        credential: "244022a8-f5b8-4994-93fb-2992ec916bbd",
+        certificate_url: "https://fullcycle.com.br/certificado/244022a8-f5b8-4994-93fb-2992ec916bbd"
+      },
+     {
+      name: locale === 'en' ? "Elastic and Elastic Stack: The complete course" : "Elastic e Elastic Stack: O curso completo",
+      issuer: "Udemy",
+      year: "2025",
+      credential: "UC-a28b3431-ac43-4de4-88ed-29aa1f3e5bb1",
+      certificate_url: "https://udemy-certificate.s3.amazonaws.com/pdf/UC-a28b3431-ac43-4de4-88ed-29aa1f3e5bb1.pdf"
+    },
     {
       name: locale === 'en' ? "React Fundamentals" : "Fundamentos do React",
       issuer: "Rocketseat",
