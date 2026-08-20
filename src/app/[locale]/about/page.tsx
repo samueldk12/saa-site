@@ -777,62 +777,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Atributos — barras cinéticas que preenchem ao entrar em cena */}
-      <section className="py-16 relative scroll-mt-20">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mb-8"
-          >
-            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-amber-700 dark:text-cyan-400">
-              {locale === 'en' ? '// Attributes' : '// Atributos'}
-            </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 dark:text-white mt-1">
-              {locale === 'en' ? 'Where I bring the most energy' : 'Onde eu entrego mais energia'}
-            </h2>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 gap-x-10 gap-y-6">
-            {competencyAreas.map((area, index) => {
-              const style = COMPETENCY_COLOR[area.color] || COMPETENCY_COLOR.blue;
-              const category = getSkillCategory(area.skill);
-              const slug = area.skill.toLowerCase().replace(/\s+/g, '-');
-              return (
-                <motion.div
-                  key={area.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                >
-                  <Link href={`/${locale}/skills/${category}/${slug}`} className="group block">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="flex items-center gap-2 font-medium text-stone-800 dark:text-gray-200 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
-                        <span className={style.text}>{area.icon}</span>
-                        {area.name}
-                        <FaExternalLinkAlt className="text-[0.6rem] text-stone-500 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </span>
-                      <span className="font-mono text-sm text-stone-500 dark:text-gray-400">{area.value}%</span>
-                    </div>
-                    <div className="h-2.5 rounded-sm bg-amber-900/5 dark:bg-white/5 border border-amber-900/10 dark:border-white/10 overflow-hidden group-hover:border-amber-700/40 dark:group-hover:border-cyan-400/40 transition-colors">
-                      <motion.div
-                        className={`h-full rounded-sm ${style.bg}`}
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${area.value}%` }}
-                        viewport={{ once: true, margin: '-60px' }}
-                        transition={{ duration: 0.9, delay: index * 0.05, ease: 'easeOut' }}
-                      />
-                    </div>
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Timeline Section */}
       <section id="timeline" className="py-20 relative">
         <div className="container mx-auto px-4">
@@ -1066,6 +1010,62 @@ export default function About() {
                 </motion.div>
               )}
             </AnimatePresence>
+          </div>
+        </div>
+      </section>
+
+      {/* Atributos — barras cinéticas que preenchem ao entrar em cena */}
+      <section className="py-16 relative scroll-mt-20">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-8"
+          >
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-amber-700 dark:text-cyan-400">
+              {locale === 'en' ? '// Attributes' : '// Atributos'}
+            </span>
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 dark:text-white mt-1">
+              {locale === 'en' ? 'Where I bring the most energy' : 'Onde eu entrego mais energia'}
+            </h2>
+          </motion.div>
+          <div className="grid sm:grid-cols-2 gap-x-10 gap-y-6">
+            {competencyAreas.map((area, index) => {
+              const style = COMPETENCY_COLOR[area.color] || COMPETENCY_COLOR.blue;
+              const category = getSkillCategory(area.skill);
+              const slug = area.skill.toLowerCase().replace(/\s+/g, '-');
+              return (
+                <motion.div
+                  key={area.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                >
+                  <Link href={`/${locale}/skills/${category}/${slug}`} className="group block">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="flex items-center gap-2 font-medium text-stone-800 dark:text-gray-200 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
+                        <span className={style.text}>{area.icon}</span>
+                        {area.name}
+                        <FaExternalLinkAlt className="text-[0.6rem] text-stone-500 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </span>
+                      <span className="font-mono text-sm text-stone-500 dark:text-gray-400">{area.value}%</span>
+                    </div>
+                    <div className="h-2.5 rounded-sm bg-amber-900/5 dark:bg-white/5 border border-amber-900/10 dark:border-white/10 overflow-hidden group-hover:border-amber-700/40 dark:group-hover:border-cyan-400/40 transition-colors">
+                      <motion.div
+                        className={`h-full rounded-sm ${style.bg}`}
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${area.value}%` }}
+                        viewport={{ once: true, margin: '-60px' }}
+                        transition={{ duration: 0.9, delay: index * 0.05, ease: 'easeOut' }}
+                      />
+                    </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
