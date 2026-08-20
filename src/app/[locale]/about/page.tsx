@@ -109,6 +109,7 @@ export default function About() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTimelineItem, setActiveTimelineItem] = useState<number | null>(null);
   const [selectedTimelineItem, setSelectedTimelineItem] = useState<{ type: string; data: any } | null>(null);
+  const [marqueePaused, setMarqueePaused] = useState(false);
   const [timelineZoom, setTimelineZoom] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -609,23 +610,25 @@ export default function About() {
         </div>
       </section>
 
-      {/* Marquee de marcos de carreira — leitura rápida e cinética */}
-      <section className="relative py-4 bg-gray-900 dark:bg-black overflow-hidden -skew-y-1 my-4">
+      {/* Marquee de marcos de carreira — leitura rápida e cinética, pausa ao passar o mouse */}
+      <section
+        className="relative py-4 bg-gray-900 dark:bg-black overflow-hidden -skew-y-1 my-4"
+        onMouseEnter={() => setMarqueePaused(true)}
+        onMouseLeave={() => setMarqueePaused(false)}
+      >
         <div className="skew-y-1">
-          <motion.div
-            className="flex gap-10 whitespace-nowrap"
-            animate={{ x: ['0%', '-50%'] }}
-            transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+          <div
+            className={`flex gap-10 whitespace-nowrap animate-marquee ${marqueePaused ? '[animation-play-state:paused]' : ''}`}
           >
             {[...careerMilestones, ...careerMilestones].map((m, i) => (
-              <span key={i} className="inline-flex items-center gap-3 text-sm sm:text-base text-gray-200">
+              <span key={i} className="inline-flex items-center gap-3 text-sm sm:text-base text-gray-200 hover:text-white transition-colors cursor-default">
                 <span className="text-lg">{m.icon}</span>
                 <span className="font-mono text-amber-400 font-bold">{m.year}</span>
                 <span>{m.achievement}</span>
                 <span className="text-gray-600 ml-6">/</span>
               </span>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -644,6 +647,8 @@ export default function About() {
           <div className="grid sm:grid-cols-2 gap-x-10 gap-y-6">
             {competencyAreas.map((area, index) => {
               const style = COMPETENCY_COLOR[area.color] || COMPETENCY_COLOR.blue;
+              const category = getSkillCategory(area.skill);
+              const slug = area.skill.toLowerCase().replace(/\s+/g, '-');
               return (
                 <motion.div
                   key={area.name}
@@ -652,22 +657,25 @@ export default function About() {
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
                 >
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="flex items-center gap-2 font-medium text-gray-800 dark:text-gray-200">
-                      <span className={style.text}>{area.icon}</span>
-                      {area.name}
-                    </span>
-                    <span className="font-mono text-sm text-gray-500 dark:text-gray-400">{area.value}%</span>
-                  </div>
-                  <div className="h-2.5 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                    <motion.div
-                      className={`h-full rounded-full ${style.bg}`}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${area.value}%` }}
-                      viewport={{ once: true, margin: '-60px' }}
-                      transition={{ duration: 0.9, delay: index * 0.05, ease: 'easeOut' }}
-                    />
-                  </div>
+                  <Link href={`/${locale}/skills/${category}/${slug}`} className="group block">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="flex items-center gap-2 font-medium text-gray-800 dark:text-gray-200 group-hover:text-gray-950 dark:group-hover:text-white transition-colors">
+                        <span className={style.text}>{area.icon}</span>
+                        {area.name}
+                        <FaExternalLinkAlt className="text-[0.6rem] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </span>
+                      <span className="font-mono text-sm text-gray-500 dark:text-gray-400">{area.value}%</span>
+                    </div>
+                    <div className="h-2.5 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden group-hover:ring-2 group-hover:ring-offset-2 dark:group-hover:ring-offset-gray-900 group-hover:ring-gray-300 dark:group-hover:ring-gray-600 transition-all">
+                      <motion.div
+                        className={`h-full rounded-full ${style.bg}`}
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${area.value}%` }}
+                        viewport={{ once: true, margin: '-60px' }}
+                        transition={{ duration: 0.9, delay: index * 0.05, ease: 'easeOut' }}
+                      />
+                    </div>
+                  </Link>
                 </motion.div>
               );
             })}
