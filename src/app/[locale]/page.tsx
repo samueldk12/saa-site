@@ -256,7 +256,7 @@ export default function Home() {
             transition={{ duration: 0.7, delay: 0.2 }}
           >
             <div className="hidden dark:block absolute inset-0 m-auto w-64 h-64 md:w-80 md:h-80 rounded-full bg-blue-500/10 blur-3xl -z-10" />
-            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 grayscale hover:grayscale-0 transition-all duration-700 ease-out">
+            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600">
               <Image
                 src="/images/profile.jpg"
                 alt={t.home?.profileAlt || "Foto de perfil de Samuel Apolinário Arão"}

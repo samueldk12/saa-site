@@ -104,26 +104,26 @@ export default function SAACompany() {
   // bordas finas e um único acento (navy), sem cor por projeto.
   const SAAProjectCard = ({ project, index }: { project: any; index: number }) => (
     <motion.div
-      className="group relative rounded-3xl overflow-hidden flex flex-col h-full border border-white/60 dark:border-white/10 bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl backdrop-saturate-150 shadow-[0_4px_24px_rgba(30,58,95,0.12)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.35)] hover:bg-white/70 dark:hover:bg-white/[0.1] hover:border-[#1E3A5F]/40 dark:hover:border-[#3B82F6]/40 hover:-translate-y-1 transition-all duration-300"
+      className="group relative rounded-[28px] overflow-hidden flex flex-col h-full border border-white/15 bg-black/30 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:bg-white/[0.08] hover:border-white/25 hover:-translate-y-1 transition-all duration-300"
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/70 dark:via-white/20 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
       <div className="p-5 sm:p-6 flex-1 flex flex-col">
         <div className="flex justify-between items-start mb-4">
-          <div className="p-2.5 rounded-xl bg-white/60 dark:bg-white/10 backdrop-blur-sm flex items-center justify-center relative">
+          <div className="p-2.5 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center relative">
             {project.icon}
             {project.showPartnerTag && (
-              <div className="absolute -bottom-1.5 -right-1.5 bg-[#1E3A5F] dark:bg-[#3B82F6] rounded-full w-4 h-4 flex items-center justify-center border-2 border-white dark:border-[#0F1B2D]">
+              <div className="absolute -bottom-1.5 -right-1.5 bg-[#4FA8FF] rounded-full w-4 h-4 flex items-center justify-center border-2 border-black/40">
                 <FaHandshake className="text-white text-[0.5rem]" />
               </div>
             )}
           </div>
           <button
             onClick={() => openProjectModal(project)}
-            className="text-slate-500 dark:text-slate-400 hover:text-[#1E3A5F] dark:hover:text-white transition-colors"
+            className="text-white/50 hover:text-white transition-colors"
             aria-label="Ver detalhes"
           >
             <FaInfoCircle className="text-base sm:text-lg" />
@@ -131,17 +131,17 @@ export default function SAACompany() {
         </div>
 
         <div className="flex items-center gap-2 mb-1.5">
-          <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
             {project.name}
           </h2>
           {project.partnerName && (
-            <span className="flex items-center gap-1 text-[0.65rem] font-mono uppercase tracking-wide text-[#1E3A5F] dark:text-[#93C5FD] border border-[#1E3A5F]/30 dark:border-[#3B82F6]/30 px-1.5 py-0.5 rounded-full">
+            <span className="flex items-center gap-1 text-[0.65rem] font-mono uppercase tracking-wide text-[#7CC5FF] border border-[#4FA8FF]/30 px-1.5 py-0.5 rounded-full">
               {project.partnerName}
             </span>
           )}
         </div>
 
-        <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mb-4 sm:mb-5 line-clamp-3 flex-1">
+        <p className="text-xs sm:text-sm text-white/60 mb-4 sm:mb-5 line-clamp-3 flex-1">
           {project.description}
         </p>
 
@@ -149,15 +149,15 @@ export default function SAACompany() {
           {project.technologies.map((tech: string) => (
             <span
               key={`${project.id}-${tech}`}
-              className="px-2 py-0.5 border border-slate-300/60 dark:border-white/15 bg-white/40 dark:bg-white/5 text-slate-700 dark:text-slate-300 rounded-full text-[0.65rem] font-mono"
+              className="px-2 py-0.5 border border-white/15 bg-white/5 text-white/60 rounded-full text-[0.65rem] font-mono"
             >
               {tech}
             </span>
           ))}
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-white/50 dark:border-white/10">
-          <div className="flex items-center text-slate-600 dark:text-slate-400 text-[0.65rem] font-mono uppercase tracking-wide">
+        <div className="flex items-center justify-between pt-4 border-t border-white/10">
+          <div className="flex items-center text-white/40 text-[0.65rem] font-mono uppercase tracking-wide">
             <FaBuilding className="mr-1.5 text-[0.6rem]" />
             {t.projects?.commercial || 'Comercial'}
           </div>
@@ -167,7 +167,7 @@ export default function SAACompany() {
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3A5F] dark:text-[#93C5FD] hover:underline"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7CC5FF] hover:text-white transition-colors"
               aria-label="Visitar site"
             >
               <FaGlobe className="text-[0.65rem]" />
@@ -182,36 +182,36 @@ export default function SAACompany() {
 
   const ProjectModal = ({ project }: { project: any }) => {
     return (
-      <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
         <motion.div
-          className="relative rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-white/60 dark:border-white/10 bg-white/70 dark:bg-[#0F1B2D]/80 backdrop-blur-2xl backdrop-saturate-150"
+          className="relative rounded-[32px] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-white/15 bg-black/40 backdrop-blur-2xl backdrop-saturate-150"
           initial={{ opacity: 0, y: 16, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, scale: 0.97 }}
           transition={{ duration: 0.25 }}
         >
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/70 dark:via-white/20 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
           <div className="p-5 sm:p-8 overflow-y-auto">
-            <div className="flex justify-between items-start mb-6 pb-6 border-b border-white/50 dark:border-white/10">
+            <div className="flex justify-between items-start mb-6 pb-6 border-b border-white/10">
               <div className="flex items-start">
-                <div className="p-3 rounded-xl bg-white/60 dark:bg-white/10 backdrop-blur-sm mr-4 flex items-center justify-center relative">
+                <div className="p-3 rounded-xl bg-white/10 backdrop-blur-sm mr-4 flex items-center justify-center relative">
                   {project.icon}
                   {project.showPartnerTag && (
-                    <div className="absolute -bottom-1 -right-1 bg-[#1E3A5F] dark:bg-[#3B82F6] rounded-full w-5 h-5 flex items-center justify-center border-2 border-white dark:border-[#0F1B2D]">
+                    <div className="absolute -bottom-1 -right-1 bg-[#4FA8FF] rounded-full w-5 h-5 flex items-center justify-center border-2 border-black/40">
                       <FaHandshake className="text-[0.55rem] text-white" />
                     </div>
                   )}
                 </div>
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex flex-wrap items-center gap-2 tracking-tight">
+                  <h2 className="text-xl sm:text-2xl font-bold text-white flex flex-wrap items-center gap-2 tracking-tight">
                     {project.name}
                     {project.partnerName && (
-                      <span className="text-[0.65rem] font-mono uppercase tracking-wide text-[#1E3A5F] dark:text-[#93C5FD] border border-[#1E3A5F]/30 dark:border-[#3B82F6]/30 px-1.5 py-0.5 rounded">
+                      <span className="text-[0.65rem] font-mono uppercase tracking-wide text-[#7CC5FF] border border-[#4FA8FF]/30 px-1.5 py-0.5 rounded">
                         {project.partnerName}
                       </span>
                     )}
                   </h2>
-                  <div className="mt-1.5 flex items-center text-slate-600 dark:text-slate-400 text-xs font-mono uppercase tracking-wide">
+                  <div className="mt-1.5 flex items-center text-white/50 text-xs font-mono uppercase tracking-wide">
                     <FaBuilding className="mr-1.5" />
                     <span>{t.projects?.commercial || 'Projeto Comercial'}</span>
                   </div>
@@ -220,7 +220,7 @@ export default function SAACompany() {
 
               <button
                 onClick={closeProjectModal}
-                className="text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white p-1 rounded-full hover:bg-white/50 dark:hover:bg-white/10 transition-colors"
+                className="text-white/50 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors"
                 aria-label="Fechar"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -230,36 +230,36 @@ export default function SAACompany() {
             </div>
 
             <div className="mb-6">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">
+              <h3 className="text-xs font-mono uppercase tracking-widest text-white/40 mb-2">
                 {t.projects?.description || 'Descrição'}
               </h3>
-              <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+              <p className="text-sm sm:text-base text-white/70 leading-relaxed">
                 {project.fullDescription || project.description}
               </p>
 
               {project.partnership && (
-                <div className="mt-4 border border-white/50 dark:border-white/10 bg-white/40 dark:bg-white/5 backdrop-blur-sm rounded-xl p-3 flex items-center gap-3">
+                <div className="mt-4 border border-white/10 bg-white/5 backdrop-blur-sm rounded-xl p-3 flex items-center gap-3">
                   {project.partnerIcon && (
                     <div className="w-8 h-8 flex-shrink-0">
                       {project.partnerIcon}
                     </div>
                   )}
-                  <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                    <span className="font-semibold text-slate-900 dark:text-white">{t.projects?.partnership || (locale === 'en' ? 'Partnership' : locale === 'es' ? 'Asociación' : 'Parceria')}:</span> {project.partnership}
+                  <p className="text-white/70 text-xs sm:text-sm">
+                    <span className="font-semibold text-white">{t.projects?.partnership || (locale === 'en' ? 'Partnership' : locale === 'es' ? 'Asociación' : 'Parceria')}:</span> {project.partnership}
                   </p>
                 </div>
               )}
             </div>
 
             <div>
-              <h3 className="text-xs font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">
+              <h3 className="text-xs font-mono uppercase tracking-widest text-white/40 mb-2">
                 {t.projects?.technologies || 'Tecnologias'}
               </h3>
               <div className="flex flex-wrap gap-1.5">
                 {project.technologies.map((tech: string) => (
                   <span
                     key={`modal-${project.id}-${tech}`}
-                    className="px-2.5 py-1 border border-slate-300/60 dark:border-white/15 bg-white/40 dark:bg-white/5 text-slate-700 dark:text-slate-300 rounded-full text-xs font-mono"
+                    className="px-2.5 py-1 border border-white/15 bg-white/5 text-white/70 rounded-full text-xs font-mono"
                   >
                     {tech}
                   </span>
@@ -268,10 +268,10 @@ export default function SAACompany() {
             </div>
           </div>
 
-          <div className="p-4 sm:p-5 border-t border-white/50 dark:border-white/10 flex flex-wrap gap-2 sm:gap-3 justify-end">
+          <div className="p-4 sm:p-5 border-t border-white/10 flex flex-wrap gap-2 sm:gap-3 justify-end">
             <button
               onClick={closeProjectModal}
-              className="px-4 py-2 border border-white/50 dark:border-white/15 hover:bg-white/50 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 rounded-full transition-colors text-sm font-medium"
+              className="px-4 py-2 border border-white/15 hover:bg-white/10 text-white/70 hover:text-white rounded-full transition-colors text-sm font-medium"
             >
               {locale === 'en' ? 'Close' : locale === 'es' ? 'Cerrar' : 'Fechar'}
             </button>
@@ -281,7 +281,7 @@ export default function SAACompany() {
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-[#1E3A5F] hover:bg-[#152C49] dark:bg-[#3B82F6] dark:hover:bg-[#2563EB] text-white rounded-full flex items-center gap-2 transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-[#4FA8FF] hover:bg-[#3B93EA] text-black rounded-full flex items-center gap-2 transition-colors text-sm font-medium"
               >
                 <FaGlobe className="text-sm" />
                 <span>{locale === 'en' ? 'Visit Site' : locale === 'es' ? 'Visitar Sitio' : 'Visitar Site'}</span>
@@ -309,21 +309,21 @@ export default function SAACompany() {
   ];
 
   return (
-    <main className="relative min-h-screen bg-slate-50 dark:bg-[#0A1220] overflow-hidden">
+    <main className="relative min-h-screen bg-gradient-to-b from-black via-[#050B1F] to-[#0E2A52] overflow-hidden">
       {/* Camada de cor por trás do vidro — e' o que da' o "liquid" ao glass */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <motion.div
-          className="absolute -top-24 -left-24 w-[32rem] h-[32rem] rounded-full bg-gradient-to-br from-blue-400/40 to-indigo-500/30 dark:from-blue-500/25 dark:to-indigo-600/20 blur-3xl"
+          className="absolute -top-24 -left-24 w-[32rem] h-[32rem] rounded-full bg-gradient-to-br from-blue-500/30 to-indigo-600/25 blur-3xl"
           animate={{ x: [0, 40, 0], y: [0, 20, 0] }}
           transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute top-1/3 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-teal-300/40 to-cyan-400/30 dark:from-teal-500/20 dark:to-cyan-600/15 blur-3xl"
+          className="absolute top-1/3 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-cyan-400/25 to-blue-500/20 blur-3xl"
           animate={{ x: [0, -30, 0], y: [0, 30, 0] }}
           transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute bottom-0 left-1/4 w-[26rem] h-[26rem] rounded-full bg-gradient-to-br from-indigo-400/30 to-purple-400/20 dark:from-indigo-500/20 dark:to-purple-600/15 blur-3xl"
+          className="absolute bottom-0 left-1/4 w-[30rem] h-[24rem] rounded-full bg-gradient-to-br from-blue-600/30 to-cyan-500/15 blur-3xl"
           animate={{ x: [0, 20, 0], y: [0, -25, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -332,16 +332,16 @@ export default function SAACompany() {
       <Navigation locale={locale as string} />
 
       <div className="container mx-auto px-4 sm:px-6 pt-24 pb-16 max-w-6xl relative z-10">
-        {/* Masthead — liquid glass */}
+        {/* Masthead — liquid glass escuro, como o vidro da Apple */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="relative rounded-[28px] overflow-hidden mb-10 border border-white/60 dark:border-white/10 bg-white/50 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_40px_rgba(30,58,95,0.18)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)]"
+          className="relative rounded-[32px] overflow-hidden mb-8 border border-white/15 bg-black/30 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
         >
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 dark:via-white/30 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
           <div className="p-6 sm:p-10 flex flex-col md:flex-row md:items-center gap-8">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-2xl border border-white/20 bg-[#171B24]/90 backdrop-blur-sm flex items-center justify-center p-3 shadow-inner">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-2xl border border-white/15 bg-white/5 backdrop-blur-sm flex items-center justify-center p-3">
               <img
                 src="/images/saa-logo.png"
                 alt="SAA Logo"
@@ -349,13 +349,13 @@ export default function SAACompany() {
               />
             </div>
             <div className="flex-1">
-              <span className="text-[0.65rem] font-mono uppercase tracking-widest text-[#1E3A5F] dark:text-[#93C5FD]">
+              <span className="text-[0.65rem] font-mono uppercase tracking-widest text-[#7CC5FF]">
                 {locale === 'en' ? 'Company Overview' : locale === 'es' ? 'Perfil de la Empresa' : 'Perfil da Empresa'}
               </span>
-              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 mb-3 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-white mt-1 mb-3 tracking-tight">
                 SAA Company
               </h1>
-              <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 max-w-2xl">
+              <p className="text-sm sm:text-base text-white/70 max-w-2xl">
                 {locale === 'en'
                   ? 'SAA Company was created to deliver modern solutions for business challenges. The company specializes in AI, data engineering, web application development, and game development, focusing on innovative technological approaches for each project.'
                   : locale === 'es'
@@ -366,35 +366,49 @@ export default function SAACompany() {
           </div>
 
           {/* Faixa de indicadores */}
-          <div className="grid grid-cols-3 border-t border-white/40 dark:border-white/10 divide-x divide-white/40 dark:divide-white/10">
+          <div className="grid grid-cols-3 border-t border-white/10 divide-x divide-white/10">
             {stats.map((s) => (
               <div key={s.label} className="px-4 sm:px-8 py-4 text-center">
-                <div className="text-xl sm:text-2xl font-bold font-mono text-slate-900 dark:text-white">{s.value}</div>
-                <div className="text-[0.65rem] sm:text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 mt-0.5">{s.label}</div>
+                <div className="text-xl sm:text-2xl font-bold font-mono text-white">{s.value}</div>
+                <div className="text-[0.65rem] sm:text-xs uppercase tracking-wide text-white/50 mt-0.5">{s.label}</div>
               </div>
             ))}
           </div>
+        </motion.div>
 
-          {/* Linhas de atuação */}
-          <div className="border-t border-white/40 dark:border-white/10 px-6 sm:px-10 py-4 flex flex-wrap gap-x-6 gap-y-2">
+        {/* Dock de linhas de atuação — capsula de vidro, estilo iOS 26 */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="flex items-center gap-3 mb-10 overflow-x-auto pb-1"
+        >
+          <div className="flex items-center gap-1 sm:gap-2 rounded-full border border-white/15 bg-black/30 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.45)] px-2 py-2 shrink-0">
             {capabilities.map((c) => (
-              <span key={c.label} className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                <span className="text-[#1E3A5F] dark:text-[#93C5FD]">{c.icon}</span>
-                {c.label}
-              </span>
+              <div key={c.label} className="flex flex-col items-center gap-1 px-3 sm:px-4 py-1.5 rounded-full hover:bg-white/10 transition-colors cursor-default">
+                <span className="text-base text-[#4FA8FF]">{c.icon}</span>
+                <span className="text-[0.65rem] text-white/80 whitespace-nowrap">{c.label}</span>
+              </div>
             ))}
           </div>
+          <a
+            href="#parceria"
+            aria-label={locale === 'en' ? 'Jump to partnership' : locale === 'es' ? 'Ir a la asociación' : 'Ir para parceria'}
+            className="w-12 h-12 shrink-0 rounded-full border border-white/15 bg-black/30 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.45)] flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            <FaHandshake />
+          </a>
         </motion.div>
 
         {/* Seção de Projetos */}
         <section className="mb-14">
           <div className="flex items-center gap-3 mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
               {locale === 'en' ? 'Products' : locale === 'es' ? 'Productos' : 'Produtos'}
             </h2>
-            <div className="h-px flex-1 bg-slate-300/60 dark:bg-white/10" />
+            <div className="h-px flex-1 bg-white/10" />
           </div>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mb-8 max-w-2xl">
+          <p className="text-sm sm:text-base text-white/60 mb-8 max-w-2xl">
             {locale === 'en'
               ? 'Explore our commercial projects and solutions.'
               : locale === 'es'
@@ -410,12 +424,12 @@ export default function SAACompany() {
         </section>
 
         {/* Seção de Parceria PneuJogos */}
-        <section>
+        <section id="parceria" className="scroll-mt-24">
           <div className="flex items-center gap-3 mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
               {locale === 'en' ? 'Strategic Partnership' : locale === 'es' ? 'Asociación Estratégica' : 'Parceria Estratégica'}
             </h2>
-            <div className="h-px flex-1 bg-slate-300/60 dark:bg-white/10" />
+            <div className="h-px flex-1 bg-white/10" />
           </div>
 
           <motion.div
@@ -423,11 +437,11 @@ export default function SAACompany() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.4 }}
-            className="relative rounded-3xl overflow-hidden border border-white/60 dark:border-white/10 bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl backdrop-saturate-150 shadow-[0_4px_24px_rgba(30,58,95,0.12)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.35)] p-6 sm:p-8"
+            className="relative rounded-[32px] overflow-hidden border border-white/15 bg-black/30 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-6 sm:p-8"
           >
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/70 dark:via-white/20 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
             <div className="flex flex-col md:flex-row items-start gap-6 sm:gap-8">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-2xl border border-white/40 dark:border-white/10 bg-white/60 dark:bg-white/10 backdrop-blur-sm p-2 flex items-center justify-center">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-2xl border border-white/15 bg-white/10 backdrop-blur-sm p-2 flex items-center justify-center">
                 <img
                   src="/images/pneujogos-logo.jpeg"
                   alt="PneuJogos"
@@ -437,14 +451,14 @@ export default function SAACompany() {
 
               <div className="flex-1">
                 <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">PneuJogos</h3>
-                  <span className="inline-flex items-center gap-1.5 text-[0.65rem] font-mono uppercase tracking-wide text-[#1E3A5F] dark:text-[#93C5FD] border border-[#1E3A5F]/30 dark:border-[#3B82F6]/30 px-2 py-1 rounded-full">
+                  <h3 className="text-lg sm:text-xl font-bold text-white">PneuJogos</h3>
+                  <span className="inline-flex items-center gap-1.5 text-[0.65rem] font-mono uppercase tracking-wide text-[#7CC5FF] border border-[#4FA8FF]/30 px-2 py-1 rounded-full">
                     <FaHandshake className="text-[0.6rem]" />
                     {locale === 'en' ? 'Official Partner' : locale === 'es' ? 'Socio Oficial' : 'Parceiro Oficial'}
                   </span>
                 </div>
 
-                <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+                <p className="text-sm sm:text-base text-white/70 mb-4 leading-relaxed">
                   {locale === 'en'
                     ? 'PneuJogos (Pneu Studios) is SAA Company\'s game and gamification studio partner, focused on turning learning and engagement into playful experiences. Together, we built Tralingo, an AI-powered gamified training platform, combining SAA\'s AI and data engineering expertise with PneuJogos\' game design know-how.'
                     : locale === 'es'
@@ -454,7 +468,7 @@ export default function SAACompany() {
 
                 <div className="flex flex-wrap gap-1.5">
                   {['AI', 'Games', 'Gamification'].map((tag) => (
-                    <span key={tag} className="px-2.5 py-1 border border-slate-300/60 dark:border-white/15 bg-white/40 dark:bg-white/5 text-slate-700 dark:text-slate-300 rounded-full text-xs font-mono">
+                    <span key={tag} className="px-2.5 py-1 border border-white/15 bg-white/5 text-white/70 rounded-full text-xs font-mono">
                       {tag}
                     </span>
                   ))}

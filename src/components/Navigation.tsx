@@ -102,13 +102,13 @@ export default function Navigation({ locale }: NavigationProps) {
     skills: scrolled
       ? 'bg-[#F4EFE4]/90 dark:bg-[#171316]/90 backdrop-blur-md shadow-md border-b-2 border-[#E33D3D]/50'
       : 'bg-[#F4EFE4]/80 dark:bg-[#171316]/80 backdrop-blur-sm border-b-2 border-[#E33D3D]/25',
-    saa: scrolled
-      ? 'bg-white/90 dark:bg-[#0A1220]/90 backdrop-blur-md shadow-md border-b border-[#1E3A5F]/30 dark:border-[#3B82F6]/30'
-      : 'bg-white/80 dark:bg-[#0A1220]/80 backdrop-blur-sm border-b border-transparent',
+    // SAA e' sempre "liquid glass" escuro, como o resto da pagina
+    saa: 'bg-[#050814]/70 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/10 shadow-md',
   };
 
-  const barText = section === 'projects' ? 'text-[#D7DBE0]' : '';
-  const onDarkBar = section === 'projects' ? 'on-dark-bar' : '';
+  const alwaysDark = section === 'projects' || section === 'saa';
+  const barText = alwaysDark ? 'text-[#D7DBE0]' : '';
+  const onDarkBar = alwaysDark ? 'on-dark-bar' : '';
 
   return (
     <motion.nav
@@ -126,7 +126,7 @@ export default function Navigation({ locale }: NavigationProps) {
                   alt="SAA Logo"
                   fill
                   priority
-                  className={`object-contain dark:brightness-0 dark:invert ${section === 'projects' ? 'brightness-0 invert' : ''}`}
+                  className={`object-contain dark:brightness-0 dark:invert ${alwaysDark ? 'brightness-0 invert' : ''}`}
                 />
               </div>
             </Link>
@@ -194,7 +194,7 @@ export default function Navigation({ locale }: NavigationProps) {
             <ThemeToggle />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`focus:outline-none p-2 transition-colors ${section === 'projects' ? 'text-[#D7DBE0] hover:text-[#5CE1A8]' : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'}`}
+              className={`focus:outline-none p-2 transition-colors ${alwaysDark ? 'text-[#D7DBE0] hover:text-[#5CE1A8]' : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'}`}
               aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
             >
               {isMenuOpen ? (
@@ -209,7 +209,7 @@ export default function Navigation({ locale }: NavigationProps) {
       
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className={`md:hidden shadow-lg ${section === 'projects' ? 'bg-[#0B0E14] border-t border-white/10' : 'bg-white dark:bg-gray-900'}`}>
+        <div className={`md:hidden shadow-lg ${alwaysDark ? 'bg-[#0B0E14] border-t border-white/10' : 'bg-white dark:bg-gray-900'}`}>
           <div className="px-4 pt-2 pb-4 space-y-2 sm:px-6">
             {navItems.map((item) => (
               <Link
@@ -218,7 +218,7 @@ export default function Navigation({ locale }: NavigationProps) {
                 className={`block py-2 px-3 rounded-md text-base font-medium transition-colors ${
                   pathname === item.href
                     ? MOBILE_ACTIVE_BG[item.theme]
-                    : section === 'projects'
+                    : alwaysDark
                     ? 'text-[#D7DBE0] hover:bg-white/10'
                     : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
@@ -227,14 +227,14 @@ export default function Navigation({ locale }: NavigationProps) {
               </Link>
             ))}
             
-            <div className={`flex items-center justify-between pt-4 border-t ${section === 'projects' ? 'border-white/10 text-[#D7DBE0]' : 'border-gray-200 dark:border-gray-700'}`}>
+            <div className={`flex items-center justify-between pt-4 border-t ${alwaysDark ? 'border-white/10 text-[#D7DBE0]' : 'border-gray-200 dark:border-gray-700'}`}>
               <div className="flex space-x-4">
                 <Link
                   href={getLocalePath('pt')}
                   className={`px-3 py-1 rounded-md ${
                     locale === 'pt'
-                      ? (section === 'projects' ? 'bg-white/10 font-medium' : 'bg-gray-200 dark:bg-gray-700 font-medium')
-                      : (section === 'projects' ? 'hover:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800')
+                      ? (alwaysDark ? 'bg-white/10 font-medium' : 'bg-gray-200 dark:bg-gray-700 font-medium')
+                      : (alwaysDark ? 'hover:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800')
                   }`}
                 >
                   PT
@@ -243,8 +243,8 @@ export default function Navigation({ locale }: NavigationProps) {
                   href={getLocalePath('en')}
                   className={`px-3 py-1 rounded-md ${
                     locale === 'en'
-                      ? (section === 'projects' ? 'bg-white/10 font-medium' : 'bg-gray-200 dark:bg-gray-700 font-medium')
-                      : (section === 'projects' ? 'hover:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800')
+                      ? (alwaysDark ? 'bg-white/10 font-medium' : 'bg-gray-200 dark:bg-gray-700 font-medium')
+                      : (alwaysDark ? 'hover:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800')
                   }`}
                 >
                   EN
@@ -253,8 +253,8 @@ export default function Navigation({ locale }: NavigationProps) {
                   href={getLocalePath('es')}
                   className={`px-3 py-1 rounded-md ${
                     locale === 'es'
-                      ? (section === 'projects' ? 'bg-white/10 font-medium' : 'bg-gray-200 dark:bg-gray-700 font-medium')
-                      : (section === 'projects' ? 'hover:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800')
+                      ? (alwaysDark ? 'bg-white/10 font-medium' : 'bg-gray-200 dark:bg-gray-700 font-medium')
+                      : (alwaysDark ? 'hover:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800')
                   }`}
                 >
                   ES
@@ -266,7 +266,7 @@ export default function Navigation({ locale }: NavigationProps) {
                   href="https://github.com/samueldk12"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={section === 'projects' ? 'text-[#D7DBE0] hover:text-white' : 'text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white'}
+                  className={alwaysDark ? 'text-[#D7DBE0] hover:text-white' : 'text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white'}
                 >
                   <FaGithub className="h-6 w-6" />
                 </a>
