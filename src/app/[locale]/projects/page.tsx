@@ -140,7 +140,7 @@ export default function Projects() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0B0E14] text-[#D7DBE0] font-mono">
+    <main className="min-h-screen bg-[#F6F8FA] dark:bg-[#0B0E14] text-[#1F2328] dark:text-[#D7DBE0] font-mono">
       <Navigation locale={loc} />
 
       <div className="container mx-auto px-4 pt-24 pb-20 max-w-5xl">
@@ -149,22 +149,22 @@ export default function Projects() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="rounded-lg border border-white/10 bg-[#11151C] shadow-2xl overflow-hidden mb-10"
+          className="rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#11151C] shadow-2xl overflow-hidden mb-10"
         >
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-[#151A22]">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-black/10 dark:border-white/10 bg-[#F0F2F5] dark:bg-[#151A22]">
             <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
             <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
             <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
-            <span className="ml-3 text-xs text-[#8A94A6]">samuel@saa-company:~/projects</span>
+            <span className="ml-3 text-xs text-[#656D76] dark:text-[#8A94A6]">samuel@saa-company:~/projects</span>
           </div>
           <div className="p-5 sm:p-8">
-            <p className="text-[#5CE1A8] text-sm mb-2">
+            <p className="text-emerald-600 dark:text-[#5CE1A8] text-sm mb-2">
               $ gh repo list samueldk12 --sort updated
             </p>
-            <h1 className="text-2xl sm:text-4xl font-bold text-white mb-3 tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-bold text-[#1F2328] dark:text-white mb-3 tracking-tight">
               {t.projects?.title || (loc === 'en' ? 'My Projects' : loc === 'es' ? 'Mis Proyectos' : 'Meus Projetos')}
             </h1>
-            <p className="text-sm sm:text-base text-[#8A94A6] max-w-2xl">
+            <p className="text-sm sm:text-base text-[#656D76] dark:text-[#8A94A6] max-w-2xl">
               {t.projects?.subtitle || (loc === 'en'
                 ? 'A live pull from GitHub — recent work in development and data engineering.'
                 : loc === 'es'
@@ -173,23 +173,23 @@ export default function Projects() {
             </p>
 
             {/* Busca funcional estilo linha de comando */}
-            <div className="mt-6 flex items-center gap-2 rounded-md border border-white/10 bg-[#0B0E14] px-3 py-2.5 focus-within:border-[#5CE1A8]/60 transition-colors">
-              <span className="text-[#5CE1A8]">$</span>
-              <FaSearch className="text-[#8A94A6] text-xs" />
+            <div className="mt-6 flex items-center gap-2 rounded-md border border-black/10 dark:border-white/10 bg-white dark:bg-[#0B0E14] px-3 py-2.5 focus-within:border-emerald-600/60 dark:focus-within:border-[#5CE1A8]/60 transition-colors">
+              <span className="text-emerald-600 dark:text-[#5CE1A8]">$</span>
+              <FaSearch className="text-[#656D76] dark:text-[#8A94A6] text-xs" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={loc === 'en' ? 'grep --name --lang --tech ...' : 'grep --nome --lang --tech ...'}
-                className="flex-1 bg-transparent outline-none text-sm text-[#D7DBE0] placeholder:text-[#4B5361]"
+                className="flex-1 bg-transparent outline-none text-sm text-[#1F2328] dark:text-[#D7DBE0] placeholder:text-[#8C959F] dark:text-[#4B5361]"
               />
-              <span className="text-xs text-[#4B5361]">{filteredRepos.length}/{githubRepos.length}</span>
+              <span className="text-xs text-[#8C959F] dark:text-[#4B5361]">{filteredRepos.length}/{githubRepos.length}</span>
             </div>
           </div>
         </motion.div>
 
         {/* Listagem de repositórios */}
         {isLoading ? (
-          <div className="text-[#5CE1A8] text-sm flex items-center gap-2 px-2">
+          <div className="text-emerald-600 dark:text-[#5CE1A8] text-sm flex items-center gap-2 px-2">
             <span>{loc === 'en' ? 'Fetching repositories' : 'Buscando repositórios'}</span>
             <span className="cursor-blink" />
           </div>
@@ -198,7 +198,7 @@ export default function Projects() {
             bash: gh: {loc === 'en' ? 'failed to fetch repositories' : 'falha ao buscar repositórios'} ({error})
           </div>
         ) : (
-          <motion.div initial="hidden" animate="visible" className="divide-y divide-white/5 border border-white/10 rounded-lg overflow-hidden bg-[#11151C]">
+          <motion.div initial="hidden" animate="visible" className="divide-y divide-black/5 dark:divide-white/5 border border-black/10 dark:border-white/10 rounded-lg overflow-hidden bg-white dark:bg-[#11151C]">
             {filteredRepos.map((project, index) => (
               <motion.button
                 key={project.id}
@@ -207,28 +207,28 @@ export default function Projects() {
                 transition={{ duration: 0.3, delay: Math.min(index * 0.04, 0.4) }}
                 aria-label={formatProjectName(project.name)}
                 onClick={() => openProjectModal(project)}
-                className="w-full text-left px-4 sm:px-5 py-4 hover:bg-white/[0.04] transition-colors group"
+                className="w-full text-left px-4 sm:px-5 py-4 hover:bg-black/[0.03] dark:hover:bg-white/[0.04] transition-colors group"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
                   <div className="flex items-center gap-2 min-w-0">
                     <FaCircle style={{ color: languageColor(project.language) }} className="text-[8px] shrink-0" />
-                    <span className="text-[#D7DBE0] font-semibold group-hover:text-white truncate">
+                    <span className="text-[#1F2328] dark:text-[#D7DBE0] font-semibold group-hover:text-black dark:group-hover:text-white truncate">
                       {formatProjectName(project.name)}
                     </span>
-                    <span className="text-xs text-[#4B5361] hidden sm:inline">{project.language || '—'}</span>
+                    <span className="text-xs text-[#8C959F] dark:text-[#4B5361] hidden sm:inline">{project.language || '—'}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-[#8A94A6] shrink-0">
+                  <div className="flex items-center gap-3 text-xs text-[#656D76] dark:text-[#8A94A6] shrink-0">
                     <span className="flex items-center gap-1"><FaStar className="text-[10px]" />{project.stargazers_count}</span>
                     <span className="flex items-center gap-1"><FaCodeBranch className="text-[10px]" />{project.forks_count}</span>
                     <span>{relativeTime(project.updated_at, loc)}</span>
                   </div>
                 </div>
-                <p className="text-sm text-[#8A94A6] pl-4">
-                  <span className="text-[#4B5361]">// </span>{project.description}
+                <p className="text-sm text-[#656D76] dark:text-[#8A94A6] pl-4">
+                  <span className="text-[#8C959F] dark:text-[#4B5361]">// </span>{project.description}
                 </p>
                 <div className="flex flex-wrap gap-1.5 mt-2 pl-4">
                   {project.technologies.map((tech: string) => (
-                    <span key={tech} className="text-[0.7rem] text-[#5CE1A8]/90 bg-[#5CE1A8]/10 border border-[#5CE1A8]/20 rounded px-1.5 py-0.5">
+                    <span key={tech} className="text-[0.7rem] text-emerald-700 dark:text-[#5CE1A8]/90 bg-emerald-600/10 dark:bg-[#5CE1A8]/10 border border-emerald-600/25 dark:border-[#5CE1A8]/20 rounded px-1.5 py-0.5">
                       #{tech.toLowerCase().replace(/\s+/g, '-')}
                     </span>
                   ))}
@@ -236,7 +236,7 @@ export default function Projects() {
               </motion.button>
             ))}
             {filteredRepos.length === 0 && (
-              <p className="px-5 py-8 text-sm text-[#4B5361]">
+              <p className="px-5 py-8 text-sm text-[#8C959F] dark:text-[#4B5361]">
                 {loc === 'en' ? 'No matches for your query.' : 'Nenhum resultado para essa busca.'}
               </p>
             )}
@@ -249,10 +249,10 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="mt-10 rounded-lg border border-white/10 bg-[#11151C] p-6 sm:p-8 text-center"
+          className="mt-10 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#11151C] p-6 sm:p-8 text-center"
         >
-          <p className="text-[#5CE1A8] text-sm mb-2">$ open github.com/samueldk12</p>
-          <p className="text-sm text-[#8A94A6] mb-5 max-w-xl mx-auto">
+          <p className="text-emerald-600 dark:text-[#5CE1A8] text-sm mb-2">$ open github.com/samueldk12</p>
+          <p className="text-sm text-[#656D76] dark:text-[#8A94A6] mb-5 max-w-xl mx-auto">
             {t.projects?.githubInvite || (loc === 'en'
               ? 'Check out my GitHub for more projects and open source contributions.'
               : loc === 'es'
@@ -263,7 +263,7 @@ export default function Projects() {
             href="https://github.com/samueldk12"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#5CE1A8] text-[#0B0E14] font-semibold text-sm hover:bg-[#7CEBBB] transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-emerald-600 text-white dark:bg-[#5CE1A8] dark:text-[#0B0E14] font-semibold text-sm hover:bg-emerald-500 dark:hover:bg-[#7CEBBB] transition-colors"
           >
             <FaGithub />
             {t.projects?.visitGithub || 'Visitar GitHub'}
@@ -287,14 +287,14 @@ export default function Projects() {
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.25 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl max-h-[85vh] overflow-hidden rounded-lg border border-white/10 bg-[#11151C] shadow-2xl flex flex-col"
+              className="w-full max-w-2xl max-h-[85vh] overflow-hidden rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#11151C] shadow-2xl flex flex-col"
             >
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-[#151A22]">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-black/10 dark:border-white/10 bg-[#F0F2F5] dark:bg-[#151A22]">
                 <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
                 <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
                 <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
-                <span className="ml-3 text-xs text-[#8A94A6] truncate">{formatProjectName(selectedProject.name)}/README.md</span>
-                <button onClick={closeProjectModal} className="ml-auto text-[#8A94A6] hover:text-white" aria-label="Fechar">
+                <span className="ml-3 text-xs text-[#656D76] dark:text-[#8A94A6] truncate">{formatProjectName(selectedProject.name)}/README.md</span>
+                <button onClick={closeProjectModal} className="ml-auto text-[#656D76] dark:text-[#8A94A6] hover:text-black dark:hover:text-white" aria-label="Fechar">
                   <FaTimes />
                 </button>
               </div>
@@ -302,27 +302,27 @@ export default function Projects() {
               <div className="p-5 sm:p-7 overflow-y-auto">
                 <div className="flex items-center gap-2 mb-4">
                   <FaCircle style={{ color: languageColor(selectedProject.language) }} className="text-[10px]" />
-                  <h2 className="text-xl sm:text-2xl font-bold text-white">
+                  <h2 className="text-xl sm:text-2xl font-bold text-[#1F2328] dark:text-white">
                     {formatProjectName(selectedProject.name)}
                   </h2>
                 </div>
 
-                <p className="text-sm text-[#D7DBE0]/90 mb-6">
-                  <span className="text-[#5CE1A8]">// </span>{selectedProject.description}
+                <p className="text-sm text-[#1F2328]/80 dark:text-[#D7DBE0]/90 mb-6">
+                  <span className="text-emerald-600 dark:text-[#5CE1A8]">// </span>{selectedProject.description}
                 </p>
 
                 <div className="grid grid-cols-3 gap-3 mb-6">
-                  <div className="rounded-md border border-white/10 p-3 text-center">
-                    <div className="text-white font-bold">{selectedProject.stargazers_count}</div>
-                    <div className="text-[0.65rem] text-[#8A94A6] uppercase tracking-wide">{t.projects?.stars || 'Stars'}</div>
+                  <div className="rounded-md border border-black/10 dark:border-white/10 p-3 text-center">
+                    <div className="text-[#1F2328] dark:text-white font-bold">{selectedProject.stargazers_count}</div>
+                    <div className="text-[0.65rem] text-[#656D76] dark:text-[#8A94A6] uppercase tracking-wide">{t.projects?.stars || 'Stars'}</div>
                   </div>
-                  <div className="rounded-md border border-white/10 p-3 text-center">
-                    <div className="text-white font-bold">{selectedProject.forks_count}</div>
-                    <div className="text-[0.65rem] text-[#8A94A6] uppercase tracking-wide">{t.projects?.forks || 'Forks'}</div>
+                  <div className="rounded-md border border-black/10 dark:border-white/10 p-3 text-center">
+                    <div className="text-[#1F2328] dark:text-white font-bold">{selectedProject.forks_count}</div>
+                    <div className="text-[0.65rem] text-[#656D76] dark:text-[#8A94A6] uppercase tracking-wide">{t.projects?.forks || 'Forks'}</div>
                   </div>
-                  <div className="rounded-md border border-white/10 p-3 text-center">
-                    <div className="text-white font-bold truncate">{selectedProject.language || '—'}</div>
-                    <div className="text-[0.65rem] text-[#8A94A6] uppercase tracking-wide">{loc === 'en' ? 'Language' : 'Linguagem'}</div>
+                  <div className="rounded-md border border-black/10 dark:border-white/10 p-3 text-center">
+                    <div className="text-[#1F2328] dark:text-white font-bold truncate">{selectedProject.language || '—'}</div>
+                    <div className="text-[0.65rem] text-[#656D76] dark:text-[#8A94A6] uppercase tracking-wide">{loc === 'en' ? 'Language' : 'Linguagem'}</div>
                   </div>
                 </div>
 
@@ -331,7 +331,7 @@ export default function Projects() {
                     <button
                       key={tech}
                       onClick={() => setSelectedSkill(tech)}
-                      className="text-xs text-[#5CE1A8] bg-[#5CE1A8]/10 border border-[#5CE1A8]/20 rounded px-2 py-1 hover:bg-[#5CE1A8]/20 transition-colors"
+                      className="text-xs text-emerald-600 dark:text-[#5CE1A8] bg-emerald-600/10 dark:bg-[#5CE1A8]/10 border border-emerald-600/25 dark:border-[#5CE1A8]/20 rounded px-2 py-1 hover:bg-emerald-600/20 dark:hover:bg-[#5CE1A8]/20 transition-colors"
                     >
                       #{tech.toLowerCase().replace(/\s+/g, '-')}
                     </button>
@@ -343,7 +343,7 @@ export default function Projects() {
                     href={selectedProject.html_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#5CE1A8] text-[#0B0E14] font-semibold text-sm hover:bg-[#7CEBBB] transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-emerald-600 text-white dark:bg-[#5CE1A8] dark:text-[#0B0E14] font-semibold text-sm hover:bg-emerald-500 dark:hover:bg-[#7CEBBB] transition-colors"
                   >
                     <FaGithub /> {t.projects?.viewOnGithub || 'Ver no GitHub'}
                   </a>
@@ -352,7 +352,7 @@ export default function Projects() {
                       href={selectedProject.homepage}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-white/15 text-[#D7DBE0] font-semibold text-sm hover:border-white/30 transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-black/15 dark:border-white/15 text-[#1F2328] dark:text-[#D7DBE0] font-semibold text-sm hover:border-black/30 dark:hover:border-white/30 transition-colors"
                     >
                       <FaExternalLinkAlt className="text-xs" /> {loc === 'en' ? 'Live site' : 'Site'}
                     </a>
@@ -379,26 +379,26 @@ export default function Projects() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md rounded-lg border border-white/10 bg-[#11151C] p-6"
+              className="w-full max-w-md rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#11151C] p-6"
             >
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold text-white">#{selectedSkill.toLowerCase().replace(/\s+/g, '-')}</h3>
-                <button onClick={() => setSelectedSkill(null)} className="text-[#8A94A6] hover:text-white">
+                <h3 className="text-lg font-bold text-[#1F2328] dark:text-white">#{selectedSkill.toLowerCase().replace(/\s+/g, '-')}</h3>
+                <button onClick={() => setSelectedSkill(null)} className="text-[#656D76] dark:text-[#8A94A6] hover:text-black dark:hover:text-white">
                   <FaTimes />
                 </button>
               </div>
-              <p className="text-xs uppercase tracking-wide text-[#8A94A6] mb-3">
+              <p className="text-xs uppercase tracking-wide text-[#656D76] dark:text-[#8A94A6] mb-3">
                 {loc === 'en' ? 'Experience with this skill' : 'Experiência com esta habilidade'}
               </p>
               <div className="space-y-3">
                 {experiencesForSkill.length > 0 ? experiencesForSkill.map((exp, idx) => (
-                  <div key={idx} className="border border-white/10 rounded-md p-3">
-                    <div className="font-semibold text-white text-sm">{exp.company}</div>
-                    <div className="text-xs text-[#8A94A6]">{exp.position}</div>
-                    <div className="text-[0.7rem] text-[#4B5361]">{exp.period}</div>
+                  <div key={idx} className="border border-black/10 dark:border-white/10 rounded-md p-3">
+                    <div className="font-semibold text-[#1F2328] dark:text-white text-sm">{exp.company}</div>
+                    <div className="text-xs text-[#656D76] dark:text-[#8A94A6]">{exp.position}</div>
+                    <div className="text-[0.7rem] text-[#8C959F] dark:text-[#4B5361]">{exp.period}</div>
                   </div>
                 )) : (
-                  <p className="text-sm text-[#4B5361]">—</p>
+                  <p className="text-sm text-[#8C959F] dark:text-[#4B5361]">—</p>
                 )}
               </div>
             </motion.div>

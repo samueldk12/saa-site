@@ -101,8 +101,10 @@ const COMPETENCY_COLOR: Record<string, { bg: string; text: string }> = {
   yellow: { bg: 'bg-yellow-500', text: 'text-yellow-500' },
 };
 
-// Painel de "ficha de RPG" — moldura com cantos em L e brilho neon,
-// reaproveitado em todos os blocos da pagina (atributos, missoes, etc).
+// Painel de "ficha de RPG" — moldura com cantos em L e brilho.
+// Claro = manuscrito iluminado (tinta ambar/rubi sobre pergaminho);
+// escuro = neon cyber (ciano/roxo/ambar sobre preto). Mesma estrutura,
+// duas peles.
 const RpgPanel = ({
   children,
   className = '',
@@ -112,16 +114,26 @@ const RpgPanel = ({
   className?: string;
   glow?: 'cyan' | 'purple' | 'amber';
 }) => {
-  const ring = glow === 'purple' ? 'border-purple-400/70' : glow === 'amber' ? 'border-amber-400/70' : 'border-cyan-400/70';
+  const ring =
+    glow === 'purple'
+      ? 'border-rose-700/70 dark:border-purple-400/70'
+      : glow === 'amber'
+      ? 'border-amber-700/70 dark:border-amber-400/70'
+      : 'border-amber-800/70 dark:border-cyan-400/70';
   const shadow =
     glow === 'purple'
-      ? 'shadow-[0_0_30px_-8px_rgba(168,85,247,0.35)]'
+      ? 'shadow-[0_2px_10px_-4px_rgba(159,18,57,0.25)] dark:shadow-[0_0_30px_-8px_rgba(168,85,247,0.35)]'
       : glow === 'amber'
-      ? 'shadow-[0_0_30px_-8px_rgba(245,158,11,0.35)]'
-      : 'shadow-[0_0_30px_-8px_rgba(34,211,238,0.35)]';
-  const border = glow === 'purple' ? 'border-purple-500/25' : glow === 'amber' ? 'border-amber-500/25' : 'border-cyan-500/25';
+      ? 'shadow-[0_2px_10px_-4px_rgba(180,83,9,0.25)] dark:shadow-[0_0_30px_-8px_rgba(245,158,11,0.35)]'
+      : 'shadow-[0_2px_10px_-4px_rgba(146,64,14,0.25)] dark:shadow-[0_0_30px_-8px_rgba(34,211,238,0.35)]';
+  const border =
+    glow === 'purple'
+      ? 'border-rose-800/30 dark:border-purple-500/25'
+      : glow === 'amber'
+      ? 'border-amber-800/30 dark:border-amber-500/25'
+      : 'border-amber-900/30 dark:border-cyan-500/25';
   return (
-    <div className={`relative rounded-sm border ${border} bg-[#0D0D14]/90 backdrop-blur-sm ${shadow} ${className}`}>
+    <div className={`relative rounded-sm border ${border} bg-[#FBF6EA]/95 dark:bg-[#0D0D14]/90 backdrop-blur-sm ${shadow} ${className}`}>
       <span className={`absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 ${ring}`} />
       <span className={`absolute -top-px -right-px w-3 h-3 border-t-2 border-r-2 ${ring}`} />
       <span className={`absolute -bottom-px -left-px w-3 h-3 border-b-2 border-l-2 ${ring}`} />
@@ -397,12 +409,12 @@ export default function About() {
     {
       year: "2024",
       achievement: locale === 'en' ? "Designed a scalable data pipeline used by major government agencies" : "Projetou um pipeline de dados escalável utilizado por grandes agências governamentais",
-      icon: <FaDatabaseIcon className="text-purple-500" />
+      icon: <FaDatabaseIcon className="text-rose-800 dark:text-purple-500" />
     },
     {
       year: "2023",
       achievement: locale === 'en' ? "Optimized ETL processes resulting in 70% performance improvement" : "Otimizou processos de ETL resultando em 70% de melhoria de desempenho",
-      icon: <FaBolt className="text-amber-500" />
+      icon: <FaBolt className="text-amber-800 dark:text-amber-500" />
     },
     {
       year: "2022",
@@ -480,7 +492,7 @@ export default function About() {
   const characterLevel = workExperience.length;
 
   return (
-    <main className="min-h-screen rpg-bg text-gray-200 overflow-x-hidden">
+    <main className="min-h-screen rpg-bg text-stone-800 dark:text-gray-200 overflow-x-hidden">
       <Navigation locale={locale} />
 
       {/* Hero — cabeçalho da ficha de personagem */}
@@ -490,14 +502,14 @@ export default function About() {
           animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <div className="absolute right-0 top-0 w-full h-full bg-gradient-to-br from-purple-600/30 to-fuchsia-600/20 blur-3xl rounded-full"></div>
+          <div className="absolute right-0 top-0 w-full h-full bg-gradient-to-br from-rose-400/15 dark:from-purple-600/30 to-fuchsia-600/20 blur-3xl rounded-full"></div>
         </motion.div>
         <motion.div
           className="absolute -bottom-20 left-0 -z-10 w-[500px] h-[500px] opacity-25"
           animate={{ x: [0, -20, 0], y: [0, 20, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <div className="absolute w-full h-full bg-gradient-to-tr from-cyan-500/30 to-blue-600/20 blur-3xl rounded-full"></div>
+          <div className="absolute w-full h-full bg-gradient-to-tr from-amber-600/15 dark:from-cyan-500/30 to-blue-600/20 blur-3xl rounded-full"></div>
         </motion.div>
 
         <div className="container mx-auto px-4">
@@ -519,7 +531,7 @@ export default function About() {
                     </linearGradient>
                   </defs>
                 </svg>
-                <div className="absolute inset-3 rounded-full overflow-hidden border-2 border-cyan-400/60 shadow-[0_0_35px_-5px_rgba(34,211,238,0.5)]">
+                <div className="absolute inset-3 rounded-full overflow-hidden border-2 border-amber-700/60 dark:border-cyan-400/60 shadow-[0_0_35px_-5px_rgba(34,211,238,0.5)]">
                   <Image
                     src="/images/profile.jpg"
                     alt={t.home?.profileAlt || "Foto de perfil de Samuel Apolinário Arão"}
@@ -528,35 +540,35 @@ export default function About() {
                     className="object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-black border border-purple-400/60 text-[0.65rem] font-mono text-purple-300 whitespace-nowrap">
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-[#EFE3CC] dark:bg-black border border-rose-700/60 dark:border-purple-400/60 text-[0.65rem] font-mono text-rose-700 dark:text-purple-300 whitespace-nowrap">
                   {locale === 'en' ? `LVL ${characterLevel}` : `NÍVEL ${characterLevel}`}
                 </div>
               </motion.div>
 
               <div className="text-center md:text-left flex-1">
-                <span className="inline-block text-[0.65rem] font-mono uppercase tracking-[0.25em] text-cyan-400 mb-2">
+                <span className="inline-block text-[0.65rem] font-mono uppercase tracking-[0.25em] text-amber-700 dark:text-cyan-400 mb-2">
                   {locale === 'en' ? '[ Character Sheet ]' : '[ Ficha de Personagem ]'}
                 </span>
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
-                  className="font-serif text-4xl md:text-6xl font-bold mb-3 text-white rpg-glow-text"
+                  className="font-serif text-4xl md:text-6xl font-bold mb-3 text-stone-900 dark:text-white rpg-glow-text"
                 >
                   Samuel Apolinário Arão
                 </motion.h1>
-                <p className="text-sm sm:text-base text-purple-300 font-mono mb-5">
+                <p className="text-sm sm:text-base text-rose-700 dark:text-purple-300 font-mono mb-5">
                   {locale === 'en' ? 'Data Engineer · Backend Class' : 'Engenheiro de Dados · Classe Backend'}
                 </p>
 
                 <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm border border-cyan-500/30 bg-cyan-500/5 text-cyan-300 text-xs font-mono">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-800/5 dark:bg-cyan-500/5 text-amber-800 dark:text-cyan-300 text-xs font-mono">
                     <FaBriefcase className="text-[0.7rem]" /> MPMG
                   </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm border border-purple-500/30 bg-purple-500/5 text-purple-300 text-xs font-mono">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm border border-rose-800/30 dark:border-purple-500/30 bg-rose-800/5 dark:bg-purple-500/5 text-rose-700 dark:text-purple-300 text-xs font-mono">
                     <FaLocation className="text-[0.7rem]" /> Minas Gerais, BR
                   </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm border border-amber-500/30 bg-amber-500/5 text-amber-300 text-xs font-mono">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm border border-amber-800/30 dark:border-amber-500/30 bg-amber-800/5 dark:bg-amber-500/5 text-amber-700 dark:text-amber-300 text-xs font-mono">
                     <FaGrad className="text-[0.7rem]" /> {t.home?.postgrad || "Pós graduado em IA"}
                   </span>
                 </div>
@@ -566,7 +578,7 @@ export default function About() {
                     href="https://github.com/samueldk12"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-cyan-500/30 bg-black/40 text-cyan-300 hover:bg-cyan-500/10 hover:shadow-[0_0_15px_-2px_rgba(34,211,238,0.6)] transition-all"
+                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-100/70 dark:bg-black/40 text-amber-800 dark:text-cyan-300 hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 hover:shadow-[0_0_15px_-2px_rgba(34,211,238,0.6)] transition-all"
                   >
                     <FaGithub />
                   </a>
@@ -574,13 +586,13 @@ export default function About() {
                     href="https://www.linkedin.com/in/samuel-arao/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-cyan-500/30 bg-black/40 text-cyan-300 hover:bg-cyan-500/10 hover:shadow-[0_0_15px_-2px_rgba(34,211,238,0.6)] transition-all"
+                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-100/70 dark:bg-black/40 text-amber-800 dark:text-cyan-300 hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 hover:shadow-[0_0_15px_-2px_rgba(34,211,238,0.6)] transition-all"
                   >
                     <FaLinkedin />
                   </a>
                   <a
                     href="mailto:samuel.arao@gmail.com"
-                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-cyan-500/30 bg-black/40 text-cyan-300 hover:bg-cyan-500/10 hover:shadow-[0_0_15px_-2px_rgba(34,211,238,0.6)] transition-all"
+                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-100/70 dark:bg-black/40 text-amber-800 dark:text-cyan-300 hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 hover:shadow-[0_0_15px_-2px_rgba(34,211,238,0.6)] transition-all"
                   >
                     <FaEnvelope />
                   </a>
@@ -596,10 +608,10 @@ export default function About() {
               className="mb-10"
             >
               <RpgPanel glow="purple" className="p-6 sm:p-8">
-                <span className="text-[0.65rem] font-mono uppercase tracking-widest text-purple-400 mb-3 block">
+                <span className="text-[0.65rem] font-mono uppercase tracking-widest text-rose-800 dark:text-purple-400 mb-3 block">
                   {locale === 'en' ? '// Lore' : '// Lore'}
                 </span>
-                <div className="prose prose-invert prose-sm sm:prose-base max-w-none text-gray-300">
+                <div className="prose prose-invert prose-sm sm:prose-base max-w-none text-stone-600 dark:text-gray-300">
                   <SkillsText
                     text={t.about?.description || ""}
                     locale={locale}
@@ -623,9 +635,9 @@ export default function About() {
                 { href: '#contact', icon: <FaEnvelope />, label: t.about?.contactInfo || (locale === 'en' ? 'Contact' : 'Contato'), glow: 'purple' as const },
               ].map((item) => (
                 <a key={item.href} href={item.href} className="col-span-1">
-                  <RpgPanel glow={item.glow} className="h-full px-3 py-3 flex items-center gap-2.5 hover:bg-white/5 transition-colors">
+                  <RpgPanel glow={item.glow} className="h-full px-3 py-3 flex items-center gap-2.5 hover:bg-amber-900/5 dark:hover:bg-white/5 transition-colors">
                     <span className={item.glow === 'purple' ? 'text-purple-400' : item.glow === 'amber' ? 'text-amber-400' : 'text-cyan-400'}>{item.icon}</span>
-                    <span className="text-xs sm:text-sm font-medium text-gray-200 truncate">{item.label}</span>
+                    <span className="text-xs sm:text-sm font-medium text-stone-800 dark:text-gray-200 truncate">{item.label}</span>
                   </RpgPanel>
                 </a>
               ))}
@@ -636,7 +648,7 @@ export default function About() {
 
       {/* Marquee de feitos lendários — pausa ao passar o mouse */}
       <section
-        className="relative py-4 bg-black border-y border-purple-500/20 overflow-hidden -skew-y-1 my-4"
+        className="relative py-4 bg-[#EFE3CC] dark:bg-black border-y border-rose-800/20 dark:border-purple-500/20 overflow-hidden -skew-y-1 my-4"
         onMouseEnter={() => setMarqueePaused(true)}
         onMouseLeave={() => setMarqueePaused(false)}
       >
@@ -645,11 +657,11 @@ export default function About() {
             className={`flex gap-10 whitespace-nowrap animate-marquee ${marqueePaused ? '[animation-play-state:paused]' : ''}`}
           >
             {[...careerMilestones, ...careerMilestones].map((m, i) => (
-              <span key={i} className="inline-flex items-center gap-3 text-sm sm:text-base text-gray-300 hover:text-white transition-colors cursor-default">
+              <span key={i} className="inline-flex items-center gap-3 text-sm sm:text-base text-stone-600 dark:text-gray-300 hover:text-stone-900 dark:hover:text-white transition-colors cursor-default">
                 <span className="text-lg">{m.icon}</span>
-                <span className="font-mono text-cyan-400 font-bold">{m.year}</span>
+                <span className="font-mono text-amber-700 dark:text-cyan-400 font-bold">{m.year}</span>
                 <span>{m.achievement}</span>
-                <span className="text-purple-500/60 ml-6">❖</span>
+                <span className="text-rose-700/60 dark:text-purple-500/60 ml-6">❖</span>
               </span>
             ))}
           </div>
@@ -666,10 +678,10 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
-            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-cyan-400">
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-amber-700 dark:text-cyan-400">
               {locale === 'en' ? '// Attributes' : '// Atributos'}
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 dark:text-white mt-1">
               {locale === 'en' ? 'Where I bring the most energy' : 'Onde eu entrego mais energia'}
             </h2>
           </motion.div>
@@ -688,14 +700,14 @@ export default function About() {
                 >
                   <Link href={`/${locale}/skills/${category}/${slug}`} className="group block">
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="flex items-center gap-2 font-medium text-gray-200 group-hover:text-white transition-colors">
+                      <span className="flex items-center gap-2 font-medium text-stone-800 dark:text-gray-200 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
                         <span className={style.text}>{area.icon}</span>
                         {area.name}
-                        <FaExternalLinkAlt className="text-[0.6rem] text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <FaExternalLinkAlt className="text-[0.6rem] text-stone-500 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </span>
-                      <span className="font-mono text-sm text-gray-400">{area.value}%</span>
+                      <span className="font-mono text-sm text-stone-500 dark:text-gray-400">{area.value}%</span>
                     </div>
-                    <div className="h-2.5 rounded-sm bg-white/5 border border-white/10 overflow-hidden group-hover:border-cyan-400/40 transition-colors">
+                    <div className="h-2.5 rounded-sm bg-amber-900/5 dark:bg-white/5 border border-amber-900/10 dark:border-white/10 overflow-hidden group-hover:border-amber-700/40 dark:group-hover:border-cyan-400/40 transition-colors">
                       <motion.div
                         className={`h-full rounded-sm ${style.bg}`}
                         initial={{ width: 0 }}
@@ -722,13 +734,13 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-cyan-400">
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-amber-700 dark:text-cyan-400">
               {locale === 'en' ? '// Quest Log' : '// Registro de Missões'}
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mt-1 mb-3">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-stone-900 dark:text-white mt-1 mb-3">
               {t.about?.timeline || "Linha do Tempo"}
             </h2>
-            <p className="text-gray-400 text-sm sm:text-base">
+            <p className="text-stone-500 dark:text-gray-400 text-sm sm:text-base">
               {locale === 'en'
                 ? "My professional journey and key milestones"
                 : "Minha jornada profissional e marcos importantes"}
@@ -740,13 +752,13 @@ export default function About() {
             <div className="absolute right-4 -top-12 flex gap-2">
               <button
                 onClick={() => setTimelineZoom(prev => Math.min(prev + 0.2, 2))}
-                className="p-2 rounded-sm border border-cyan-500/30 bg-black/40 text-cyan-300 hover:bg-cyan-500/10 transition-all"
+                className="p-2 rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-100/70 dark:bg-black/40 text-amber-800 dark:text-cyan-300 hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 transition-all"
               >
                 <FaPlus />
               </button>
               <button
                 onClick={() => setTimelineZoom(prev => Math.max(prev - 0.2, 0.5))}
-                className="p-2 rounded-sm border border-cyan-500/30 bg-black/40 text-cyan-300 hover:bg-cyan-500/10 transition-all"
+                className="p-2 rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-100/70 dark:bg-black/40 text-amber-800 dark:text-cyan-300 hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 transition-all"
               >
                 <FaMinus />
               </button>
@@ -781,7 +793,7 @@ export default function About() {
                 }}
               >
                 {/* Linha central */}
-                <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-cyan-500/60 via-purple-500/60 to-amber-500/60 top-1/2 -translate-y-1/2"></div>
+                <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-amber-700/50 dark:from-cyan-500/60 via-rose-700/50 dark:via-purple-500/60 to-amber-700/50 dark:to-amber-500/60 top-1/2 -translate-y-1/2"></div>
 
                 {/* Eventos da linha do tempo */}
                 <div className="flex items-center gap-16">
@@ -797,19 +809,19 @@ export default function About() {
 
                       const getIconColor = (type: string) => {
                         switch(type) {
-                          case 'experience': return 'text-cyan-400';
-                          case 'education': return 'text-purple-400';
-                          case 'certification': return 'text-amber-400';
-                          default: return 'text-gray-400';
+                          case 'experience': return 'text-amber-700 dark:text-cyan-400';
+                          case 'education': return 'text-rose-800 dark:text-purple-400';
+                          case 'certification': return 'text-amber-800 dark:text-amber-400';
+                          default: return 'text-stone-500 dark:text-gray-400';
                         }
                       };
 
                       const getBgColor = (type: string) => {
                         switch(type) {
-                          case 'experience': return 'hover:bg-cyan-500/10 border-cyan-400/40';
-                          case 'education': return 'hover:bg-purple-500/10 border-purple-400/40';
-                          case 'certification': return 'hover:bg-amber-500/10 border-amber-400/40';
-                          default: return 'hover:bg-gray-500/10 border-gray-400/40';
+                          case 'experience': return 'hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 border-amber-700/40 dark:border-cyan-400/40';
+                          case 'education': return 'hover:bg-rose-800/10 dark:hover:bg-purple-500/10 border-rose-700/40 dark:border-purple-400/40';
+                          case 'certification': return 'hover:bg-amber-800/10 dark:hover:bg-amber-500/10 border-amber-700/40 dark:border-amber-400/40';
+                          default: return 'hover:bg-stone-400/10 dark:hover:bg-gray-500/10 border-stone-400/40 dark:border-gray-400/40';
                         }
                       };
 
@@ -828,31 +840,31 @@ export default function About() {
                           className={`relative ${index % 2 === 0 ? '-top-32' : 'top-32'}`}
                         >
                           {/* Linha vertical conectora */}
-                          <div className={`absolute left-1/2 w-px h-24 ${index % 2 === 0 ? 'top-full' : 'bottom-full'} bg-white/10`}></div>
+                          <div className={`absolute left-1/2 w-px h-24 ${index % 2 === 0 ? 'top-full' : 'bottom-full'} bg-amber-900/10 dark:bg-white/10`}></div>
 
                           {/* Botão do evento */}
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setSelectedTimelineItem({ type, data: item })}
-                            className={`relative group w-32 p-4 rounded-sm border ${getBgColor(type)} bg-black/50 backdrop-blur-sm transition-all`}
+                            className={`relative group w-32 p-4 rounded-sm border ${getBgColor(type)} bg-[#FBF6EA]/90 dark:bg-black/50 backdrop-blur-sm transition-all`}
                           >
                             <div className="flex flex-col items-center gap-2">
-                              <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                              <div className="w-12 h-12 rounded-full bg-amber-900/5 dark:bg-white/5 border border-amber-900/10 dark:border-white/10 flex items-center justify-center">
                                 {getIcon(type)}
                               </div>
-                              <span className="text-sm font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis w-full text-gray-200">
+                              <span className="text-sm font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis w-full text-stone-800 dark:text-gray-200">
                                 {'company' in item ? item.company :
                                  'degree' in item ? item.degree :
                                  item.name}
                               </span>
-                              <span className="text-xs text-gray-500 font-mono">
+                              <span className="text-xs text-stone-500 dark:text-gray-500 font-mono">
                                 {'period' in item ? item.period.split('-')[0] : item.year}
                               </span>
                             </div>
 
                             {/* Tooltip */}
-                            <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-black border border-white/10 text-white text-xs rounded-sm p-2 w-48 z-10 left-1/2 -translate-x-1/2 pointer-events-none">
+                            <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-[#EFE3CC] dark:bg-black border border-amber-900/10 dark:border-white/10 text-stone-900 dark:text-white text-xs rounded-sm p-2 w-48 z-10 left-1/2 -translate-x-1/2 pointer-events-none">
                               {'company' in item ? `${item.position} at ${item.company}` :
                                'degree' in item ? `${item.degree} at ${item.institution}` :
                                `${item.name} - ${item.issuer}`}
@@ -898,10 +910,10 @@ export default function About() {
       <section id="experience" className="py-20 relative scroll-mt-20">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
-            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-cyan-400">
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-amber-700 dark:text-cyan-400">
               {locale === 'en' ? '// Guild History' : '// Histórico de Guildas'}
             </span>
-            <h2 className="font-serif text-3xl font-bold text-white mt-1">
+            <h2 className="font-serif text-3xl font-bold text-stone-900 dark:text-white mt-1">
               {t.about?.experience || ""}
             </h2>
           </div>
@@ -928,11 +940,11 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-purple-400">
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-rose-800 dark:text-purple-400">
               {locale === 'en' ? '// Training Grounds' : '// Escolas de Treinamento'}
             </span>
-            <h2 className="font-serif text-3xl font-bold text-white mt-1">
-              <FaGrad className="inline-block mr-3 text-2xl text-purple-400" />
+            <h2 className="font-serif text-3xl font-bold text-stone-900 dark:text-white mt-1">
+              <FaGrad className="inline-block mr-3 text-2xl text-rose-800 dark:text-purple-400" />
               {t.about?.educationSection || t.about?.education}
             </h2>
           </motion.div>
@@ -955,11 +967,11 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-amber-400">
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-amber-800 dark:text-amber-400">
               {locale === 'en' ? '// Achievements' : '// Conquistas'}
             </span>
-            <h2 className="font-serif text-3xl font-bold text-white mt-1">
-              <FaCertificate className="inline-block mr-3 text-2xl text-amber-400" />
+            <h2 className="font-serif text-3xl font-bold text-stone-900 dark:text-white mt-1">
+              <FaCertificate className="inline-block mr-3 text-2xl text-amber-800 dark:text-amber-400" />
               {t.about?.certifications || ""}
             </h2>
           </motion.div>
@@ -982,11 +994,11 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-purple-400">
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-rose-800 dark:text-purple-400">
               {locale === 'en' ? '// Send a Raven' : '// Envie um Corvo'}
             </span>
-            <h2 className="font-serif text-3xl font-bold text-white mt-1">
-              <FaEnvelope className="inline-block mr-3 text-2xl text-purple-400" />
+            <h2 className="font-serif text-3xl font-bold text-stone-900 dark:text-white mt-1">
+              <FaEnvelope className="inline-block mr-3 text-2xl text-rose-800 dark:text-purple-400" />
               {t.about?.contactInfo || "Contato"}
             </h2>
           </motion.div>
@@ -995,14 +1007,14 @@ export default function About() {
             <RpgPanel glow="cyan" className="p-6 sm:p-8">
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-sm border border-cyan-500/30 bg-cyan-500/5 flex items-center justify-center">
-                    <FaEnvelope className="text-xl text-cyan-400" />
+                  <div className="w-12 h-12 rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-800/5 dark:bg-cyan-500/5 flex items-center justify-center">
+                    <FaEnvelope className="text-xl text-amber-700 dark:text-cyan-400" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-white">Email</h3>
+                    <h3 className="text-base font-semibold text-stone-900 dark:text-white">Email</h3>
                     <a
                       href={`mailto:${contactInfo.email}`}
-                      className="text-cyan-300 hover:text-cyan-200 hover:underline text-sm"
+                      className="text-amber-800 dark:text-cyan-300 hover:text-amber-900 dark:hover:text-cyan-200 hover:underline text-sm"
                     >
                       {contactInfo.email}
                     </a>
@@ -1010,14 +1022,14 @@ export default function About() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-sm border border-cyan-500/30 bg-cyan-500/5 flex items-center justify-center">
-                    <FaPhone className="text-xl text-cyan-400" />
+                  <div className="w-12 h-12 rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-800/5 dark:bg-cyan-500/5 flex items-center justify-center">
+                    <FaPhone className="text-xl text-amber-700 dark:text-cyan-400" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-white">{t.home?.phone || "Telefone"}</h3>
+                    <h3 className="text-base font-semibold text-stone-900 dark:text-white">{t.home?.phone || "Telefone"}</h3>
                     <a
                       href={`tel:${contactInfo.phone}`}
-                      className="text-cyan-300 hover:text-cyan-200 hover:underline text-sm"
+                      className="text-amber-800 dark:text-cyan-300 hover:text-amber-900 dark:hover:text-cyan-200 hover:underline text-sm"
                     >
                       {contactInfo.phone}
                     </a>
@@ -1025,12 +1037,12 @@ export default function About() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-sm border border-cyan-500/30 bg-cyan-500/5 flex items-center justify-center">
-                    <FaLocation className="text-xl text-cyan-400" />
+                  <div className="w-12 h-12 rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-800/5 dark:bg-cyan-500/5 flex items-center justify-center">
+                    <FaLocation className="text-xl text-amber-700 dark:text-cyan-400" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-white">{t.home?.location || "Localização"}</h3>
-                    <p className="text-gray-400 text-sm">
+                    <h3 className="text-base font-semibold text-stone-900 dark:text-white">{t.home?.location || "Localização"}</h3>
+                    <p className="text-stone-500 dark:text-gray-400 text-sm">
                       Minas Gerais, Brasil
                     </p>
                   </div>
@@ -1041,16 +1053,16 @@ export default function About() {
             <RpgPanel glow="purple" className="p-6 sm:p-8">
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-sm border border-purple-500/30 bg-purple-500/5 flex items-center justify-center">
-                    <FaLinkedin className="text-xl text-purple-400" />
+                  <div className="w-12 h-12 rounded-sm border border-rose-800/30 dark:border-purple-500/30 bg-rose-800/5 dark:bg-purple-500/5 flex items-center justify-center">
+                    <FaLinkedin className="text-xl text-rose-800 dark:text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-white">LinkedIn</h3>
+                    <h3 className="text-base font-semibold text-stone-900 dark:text-white">LinkedIn</h3>
                     <a
                       href={`https://www.linkedin.com/in/${contactInfo.linkedin.replace('@', '')}/`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-purple-300 hover:text-purple-200 hover:underline text-sm"
+                      className="text-rose-700 dark:text-purple-300 hover:text-rose-900 dark:hover:text-purple-200 hover:underline text-sm"
                     >
                       {contactInfo.linkedin}
                     </a>
@@ -1058,16 +1070,16 @@ export default function About() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-sm border border-purple-500/30 bg-purple-500/5 flex items-center justify-center">
-                    <FaGithub className="text-xl text-purple-400" />
+                  <div className="w-12 h-12 rounded-sm border border-rose-800/30 dark:border-purple-500/30 bg-rose-800/5 dark:bg-purple-500/5 flex items-center justify-center">
+                    <FaGithub className="text-xl text-rose-800 dark:text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-white">GitHub</h3>
+                    <h3 className="text-base font-semibold text-stone-900 dark:text-white">GitHub</h3>
                     <a
                       href={`https://github.com/${contactInfo.github.replace('@', '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-purple-300 hover:text-purple-200 hover:underline text-sm"
+                      className="text-rose-700 dark:text-purple-300 hover:text-rose-900 dark:hover:text-purple-200 hover:underline text-sm"
                     >
                       {contactInfo.github}
                     </a>
@@ -1075,16 +1087,16 @@ export default function About() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-sm border border-amber-500/30 bg-amber-500/5 flex items-center justify-center">
-                    <FaDownload className="text-xl text-amber-400" />
+                  <div className="w-12 h-12 rounded-sm border border-amber-800/30 dark:border-amber-500/30 bg-amber-800/5 dark:bg-amber-500/5 flex items-center justify-center">
+                    <FaDownload className="text-xl text-amber-800 dark:text-amber-400" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-white">{t.about?.curriculum || t.home?.curriculum || "Currículo"}</h3>
+                    <h3 className="text-base font-semibold text-stone-900 dark:text-white">{t.about?.curriculum || t.home?.curriculum || "Currículo"}</h3>
                     <a
                       href={`/files/curriculo_${locale === 'pt' ? 'pt' : 'en'}.pdf`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 hover:underline text-sm"
+                      className="text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-200 hover:underline text-sm"
                     >
                       {t.about?.downloadCV || t.home?.downloadCV}
                     </a>
@@ -1117,20 +1129,20 @@ const ExperienceCard = ({ experience, t, locale }: ExperienceCardProps) => {
     >
       <RpgPanel glow="cyan" className="p-6">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-12 h-12 rounded-full border-2 border-cyan-400/60 bg-black/40 flex items-center justify-center text-cyan-300 shadow-[0_0_15px_-3px_rgba(34,211,238,0.5)]">
+          <div className="w-12 h-12 rounded-full border-2 border-amber-700/60 dark:border-cyan-400/60 bg-amber-100/70 dark:bg-black/40 flex items-center justify-center text-amber-800 dark:text-cyan-300 shadow-[0_0_15px_-3px_rgba(34,211,238,0.5)]">
             <span className="text-lg font-bold font-mono">{experience.company[0]}</span>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-white">{experience.position}</h3>
-            <p className="text-base text-cyan-300">{experience.company}</p>
-            <p className="text-xs text-gray-500 font-mono flex items-center gap-2">
-              <FaCalendarAlt className="text-cyan-500" />
+            <h3 className="text-lg font-semibold text-stone-900 dark:text-white">{experience.position}</h3>
+            <p className="text-base text-amber-800 dark:text-cyan-300">{experience.company}</p>
+            <p className="text-xs text-stone-500 dark:text-gray-500 font-mono flex items-center gap-2">
+              <FaCalendarAlt className="text-amber-700 dark:text-cyan-500" />
               {experience.period}
             </p>
           </div>
         </div>
 
-        <p className="text-gray-400 text-sm mb-4">
+        <p className="text-stone-500 dark:text-gray-400 text-sm mb-4">
           <SkillsText text={experience.description} locale={locale} />
         </p>
 
@@ -1138,7 +1150,7 @@ const ExperienceCard = ({ experience, t, locale }: ExperienceCardProps) => {
           {Array.from(new Set(experience.technologies)).map((tech, index) => (
             <span
               key={index}
-              className="px-2.5 py-1 border border-cyan-500/25 bg-cyan-500/5 text-cyan-300 rounded-sm text-xs font-mono"
+              className="px-2.5 py-1 border border-amber-800/25 dark:border-cyan-500/25 bg-amber-800/5 dark:bg-cyan-500/5 text-amber-800 dark:text-cyan-300 rounded-sm text-xs font-mono"
             >
               {tech}
             </span>
@@ -1159,17 +1171,17 @@ const EducationCard = ({ education, t }: EducationCardProps) => (
   >
     <RpgPanel glow="purple" className="p-6 h-full">
       <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-full border-2 border-purple-400/60 bg-black/40 flex items-center justify-center text-purple-300 shrink-0 shadow-[0_0_15px_-3px_rgba(168,85,247,0.5)]">
+        <div className="w-12 h-12 rounded-full border-2 border-rose-700/60 dark:border-purple-400/60 bg-amber-100/70 dark:bg-black/40 flex items-center justify-center text-rose-700 dark:text-purple-300 shrink-0 shadow-[0_0_15px_-3px_rgba(168,85,247,0.5)]">
           <FaGrad className="text-xl" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-white mb-1">{education.degree}</h3>
-          <p className="text-purple-300 text-sm">{education.institution}</p>
-          <p className="text-xs text-gray-500 font-mono flex items-center gap-2 mt-1">
-            <FaCalendarAlt className="text-purple-500" />
+          <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-1">{education.degree}</h3>
+          <p className="text-rose-700 dark:text-purple-300 text-sm">{education.institution}</p>
+          <p className="text-xs text-stone-500 dark:text-gray-500 font-mono flex items-center gap-2 mt-1">
+            <FaCalendarAlt className="text-rose-800 dark:text-purple-500" />
             {education.period}
           </p>
-          <p className="text-sm text-gray-400 mt-2">{education.focus}</p>
+          <p className="text-sm text-stone-500 dark:text-gray-400 mt-2">{education.focus}</p>
         </div>
       </div>
     </RpgPanel>
@@ -1202,14 +1214,14 @@ const CertificationCard = ({ certification, t }: CertificationCardProps) => {
     >
       <RpgPanel glow="amber" className="p-6 h-full">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-full border-2 border-amber-400/60 bg-black/40 flex items-center justify-center text-amber-300 shrink-0 shadow-[0_0_15px_-3px_rgba(245,158,11,0.5)]">
+          <div className="w-12 h-12 rounded-full border-2 border-amber-700/60 dark:border-amber-400/60 bg-amber-100/70 dark:bg-black/40 flex items-center justify-center text-amber-700 dark:text-amber-300 shrink-0 shadow-[0_0_15px_-3px_rgba(245,158,11,0.5)]">
             {getIssuerIcon(certification.issuer)}
           </div>
           <div>
-            <h3 className="text-base font-semibold text-white mb-1">{certification.name}</h3>
-            <p className="text-amber-300 text-sm">{certification.issuer}</p>
-            <p className="text-xs text-gray-500 font-mono flex items-center gap-2 mt-1">
-              <FaCalendarAlt className="w-3 h-3 text-amber-500" />
+            <h3 className="text-base font-semibold text-stone-900 dark:text-white mb-1">{certification.name}</h3>
+            <p className="text-amber-700 dark:text-amber-300 text-sm">{certification.issuer}</p>
+            <p className="text-xs text-stone-500 dark:text-gray-500 font-mono flex items-center gap-2 mt-1">
+              <FaCalendarAlt className="w-3 h-3 text-amber-800 dark:text-amber-500" />
               {certification.year}
             </p>
             {certification.certificate_url && (
@@ -1217,7 +1229,7 @@ const CertificationCard = ({ certification, t }: CertificationCardProps) => {
                 href={certification.certificate_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 mt-2 text-sm"
+                className="inline-flex items-center gap-2 text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 mt-2 text-sm"
               >
                 <FaExternalLinkAlt className="w-3 h-3" />
                 {t.about?.view_certificate || "Ver Certificado"}

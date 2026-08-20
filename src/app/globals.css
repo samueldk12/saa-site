@@ -479,16 +479,28 @@ body {
   @apply container mx-auto px-4 sm:px-6 lg:px-8;
 }
 
-/* About page — ficha de RPG cyber-medieval */
+/* About page — ficha de RPG cyber-medieval. Claro = pergaminho
+   envelhecido (manuscrito iluminado); escuro = grid neon cyber. */
 .rpg-bg {
+  background-color: #F4EDE0;
+  background-image:
+    linear-gradient(rgba(146, 64, 14, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(146, 64, 14, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.dark .rpg-bg {
   background-color: #08080c;
   background-image:
     linear-gradient(rgba(34, 211, 238, 0.06) 1px, transparent 1px),
     linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
-  background-size: 48px 48px;
 }
 
 .rpg-glow-text {
+  text-shadow: 0 1px 0 rgba(146, 64, 14, 0.15);
+}
+
+.dark .rpg-glow-text {
   text-shadow: 0 0 24px rgba(168, 85, 247, 0.45), 0 0 4px rgba(168, 85, 247, 0.3);
 }
 
