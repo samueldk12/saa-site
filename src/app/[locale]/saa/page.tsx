@@ -31,7 +31,7 @@ export default function SAACompany() {
         ? 'Tralingo es una plataforma de entrenamiento gamificada impulsada por IA, creada en asociación con PneuJogos (Pneu Studios). Genera trayectos de aprendizaje personalizados a partir de cualquier contenido: sube un PDF del temario de una oposición o de tus apuntes y la IA lo transforma en lecciones y quizzes dinámicos de alta retención. Los usuarios ganan XP, mantienen rachas diarias y compiten en rankings globales, ya sea preparando oposiciones y exámenes de ingreso (vestibulares/ENEM) o aprendiendo un nuevo hobby como idiomas, programación, música o cocina. Tralingo también ofrece una solución dedicada para que las empresas capaciten a sus equipos con trayectos por departamento, rankings corporativos e informes de desempeño.'
         : 'O Tralingo é uma plataforma de treinamento gamificada com IA, criada em parceria com a PneuJogos (Pneu Studios). Ele gera trilhas de aprendizado personalizadas a partir de qualquer conteúdo — basta subir um PDF de edital ou de uma apostila para a IA transformar o material em lições e simulados dinâmicos e de alta retenção. Os usuários ganham XP, mantêm ofensivas diárias e competem em rankings globais, seja se preparando para concursos públicos e vestibulares/ENEM, seja aprendendo um novo hobby como idiomas, programação, música ou culinária. O Tralingo também oferece uma solução dedicada para empresas treinarem equipes com trilhas por departamento, ranking corporativo e relatórios de desempenho.',
       url: 'https://tralingo.com.br/',
-      icon: <img src="/images/tralingo-logo.png" alt="Tralingo" className="w-8 h-8" />,
+      icon: <img src="/images/tralingo-logo.png" alt="Tralingo" className="w-8 h-8 object-contain" />,
       color: 'emerald',
       gradient: 'from-emerald-400 to-teal-600',
       bgLight: 'bg-emerald-50/80',
@@ -40,7 +40,7 @@ export default function SAACompany() {
       partnership: 'PneuJogos (Pneu Studios)',
       partnerName: 'PneuJogos',
       image: '/images/tralingo-logo.png',
-      partnerIcon: <img src="/images/pneujogos-logo.svg" alt="PneuJogos" className="w-6 h-6" />,
+      partnerIcon: <img src="/images/pneujogos-logo.jpeg" alt="PneuJogos" className="w-6 h-6 object-contain rounded" />,
       showPartnerTag: true,
     },
     {
@@ -57,7 +57,7 @@ export default function SAACompany() {
         ? 'Venda es una plataforma de ventas brasileña que combina un CRM, prospección activa y un copiloto de IA para equipos comerciales. Permite buscar en la base de datos de la Receita Federal de Brasil, con más de 50 millones de empresas, filtrando por sector, tamaño y ubicación, dar seguimiento a los leads en un embudo de ventas Kanban visual y generar guiones de abordaje persuasivos con un copiloto de IA impulsado por Google Gemini, usando metodologías como SPIN Selling y Sandler. WhatsApp y correo electrónico están integrados en la plataforma, junto con automatizaciones por disparadores para seguimientos y nutrición de leads.'
         : 'O Venda é uma plataforma de vendas brasileira que combina CRM, prospecção ativa e um copiloto de IA para equipes comerciais. Ele permite buscar na base da Receita Federal, com mais de 50 milhões de empresas, filtrando por segmento, porte e localização, acompanhar leads em um funil de vendas Kanban visual e gerar roteiros de abordagem persuasivos com um copiloto de IA baseado no Google Gemini, usando metodologias como SPIN Selling e Sandler. WhatsApp e e-mail já vêm integrados à plataforma, além de automações por gatilhos para follow-ups e nutrição de leads.',
       url: 'https://venda-app-six.vercel.app/',
-      icon: <img src="/images/venda-logo.png" alt="Venda" className="w-8 h-8" />,
+      icon: <img src="/images/venda-logo.png" alt="Venda" className="w-8 h-8 object-contain" />,
       color: 'amber',
       gradient: 'from-amber-400 to-orange-600',
       bgLight: 'bg-amber-50/80',
@@ -79,7 +79,7 @@ export default function SAACompany() {
         ? 'Esta landing page fue creada para Rozenir Apolinário Gonzaga, delineante técnica de edificaciones y consultora de ventas de Belo Horizonte, MG. Presenta sus tres frentes de trabajo en un solo lugar: Belleza, con perfumería, maquillaje y cuidados para piel y cuerpo de marcas de confianza; Bienestar, con seguros, planes de salud y crédito para objetivos personales y empresariales; y Construcción, con diseño técnico de edificaciones y apoyo para la restitución de impuestos pagados en la construcción de la casa. La página centraliza sus canales de contacto — WhatsApp, Instagram y LinkedIn — para que los clientes puedan hablar con ella directamente y recibir un atendimiento personalizado.'
         : 'Esta landing page foi criada para a Rozenir Apolinário Gonzaga, desenhista técnica de edificações e consultora de vendas de Belo Horizonte, MG. Ela reúne suas três frentes de atuação em um só lugar: Beleza, com perfumaria, maquiagem e cuidados para pele e corpo de marcas confiáveis; Bem-estar, com seguros, planos de saúde e crédito para realizações pessoais e empresariais; e Construção, com desenho técnico de edificações e apoio para a restituição de impostos pagos na construção da casa. A página centraliza seus canais de contato — WhatsApp, Instagram e LinkedIn — para que os clientes falem diretamente com ela e tenham um atendimento personalizado.',
       url: 'https://lading-page-rozenir.vercel.app/',
-      icon: <img src="/images/rozenir-logo.png" alt="Rozenir" className="w-8 h-8" />,
+      icon: <img src="/images/rozenir-logo.png" alt="Rozenir" className="w-8 h-8 object-contain" />,
       color: 'blue',
       gradient: 'from-blue-400 to-indigo-600',
       bgLight: 'bg-blue-50/80',
@@ -586,7 +586,7 @@ export default function SAACompany() {
             <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-8">
               <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full bg-teal-50 dark:bg-teal-900/20 p-3 sm:p-4 flex items-center justify-center shrink-0">
                 <img
-                  src="/images/pneujogos-logo.svg"
+                  src="/images/pneujogos-logo.jpeg"
                   alt="PneuJogos"
                   className="w-full h-full object-contain"
                 />
