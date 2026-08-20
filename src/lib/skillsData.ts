@@ -49,7 +49,7 @@ export const workExperienceFromAbout = [
     position: "Assessor (Engenheiro de Dados)",
     period: "Setembro de 2025 - Presente",
     description: "Atuando principalmente como Engenheiro de Dados, responsável pelo desenvolvimento e implementação de pipelines de dados, processos de ETL e construção de arquiteturas de dados escaláveis. Desenvolvimento de soluções de automação, projetos de integração de dados e APIs performáticas com foco em boas práticas e código limpo. Trabalho com grandes volumes de dados, incluindo iniciativas junto ao Ministério Público de Minas Gerais (MPMG).",
-    technologies: ["Python", "SQL", "Apache Airflow", "Apache Spark", "AWS", "FastAPI", "Docker", "Apache Hadoop", "Apache Druid", "Apache NiFi", "Web Scraping", "PostgreSQL", "Data Engineering", "Apache Hive", "Data Lakes", "Elasticsearch", "Microservices", "CI/CD", "Jenkins", "Clean Architecture", "TDD", "Linux", "Web Security"]
+    technologies: ["Python", "SQL", "SQL Server", "Apache Airflow", "Apache Spark", "AWS", "FastAPI", "Node.js", "React", "Docker", "Apache Hadoop", "Apache Druid", "Apache NiFi", "Apache Kafka", "Web Scraping", "PostgreSQL", "Data Engineering", "Apache Hive", "Data Lakes", "Elasticsearch", "Microservices", "CI/CD", "Jenkins", "Clean Architecture", "TDD", "Linux", "Web Security", "Computer Vision"]
   },
   {
     company: "Kriptos",
@@ -176,21 +176,21 @@ export const allSkills = [
   "PYTHON", "PHP", "NODE.JS", "TYPESCRIPT", "GO", "JAVASCRIPT",
   
   // Engenharia de Dados
-  "ETL", "APACHE SPARK", "APACHE AIRFLOW", "APACHE HADOOP", 
-  "APACHE NIFI", "APACHE HIVE", "DATA LAKES", "WEB SCRAPING", 
+  "ETL", "APACHE SPARK", "APACHE AIRFLOW", "APACHE HADOOP",
+  "APACHE NIFI", "APACHE HIVE", "APACHE KAFKA", "DATA LAKES", "WEB SCRAPING",
   "ELASTICSEARCH", "DATA ENGINEERING",
-  
+
   // Inteligência Artificial
   "MACHINE LEARNING", "DEEP LEARNING", "GAN", "COMPUTER VISION", "NLP",
-  
+
   // Bancos de Dados
-  "POSTGRESQL", "MYSQL", "MONGODB", "REDIS",
-  
+  "POSTGRESQL", "MYSQL", "MONGODB", "REDIS", "SQL SERVER",
+
   // Web & APIs
-  "FASTAPI", "REST APIS", "GRAPHQL", "MICROSERVICES",
-  
+  "FASTAPI", "REST APIS", "GRAPHQL", "MICROSERVICES", "REACT", "NEXT.JS", "VITE",
+
   // DevOps & Cloud
-  "DOCKER", "KUBERNETES", "AWS", "CI/CD", "JENKINS", 
+  "DOCKER", "KUBERNETES", "AWS", "CLOUDFLARE", "CI/CD", "JENKINS",
   "PROMETHEUS", "GRAFANA",
   
   // Arquitetura & Metodologias
@@ -338,6 +338,12 @@ const technologyMapping: Record<string, string> = {
   'apache airflow': 'Apache Airflow',
   'kafka': 'Apache Kafka',
   'apache kafka': 'Apache Kafka',
+  'vite': 'Vite',
+  'vitejs': 'Vite',
+  'vite.js': 'Vite',
+  'cloudflare': 'Cloudflare',
+  'gemini': 'Gemini',
+  'google gemini': 'Gemini',
 
   // Web e Frontend
   'html': 'HTML',

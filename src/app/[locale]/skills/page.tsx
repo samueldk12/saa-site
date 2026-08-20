@@ -15,16 +15,37 @@ import {
   FaTimes,
   FaBolt,
   FaBuilding,
-  FaHandshake
+  FaHandshake,
+  FaRocket
 } from 'react-icons/fa';
 import { useState } from 'react';
 import { getLocalizedSkillData, allSkills, getExperiencesForSkill, getProjectsForSkill } from '@/lib/skillsData';
 
-// Parcerias da SAA Company que declaram usar tecnologias de uma categoria —
-// so' entra aqui o que e' realmente afirmado na pagina da SAA, sem inventar
-// stack tecnica que nao foi confirmada.
-const CATEGORY_PARTNERSHIP: Partial<Record<string, { name: string; partner: string; url: string }>> = {
-  ai: { name: 'Tralingo', partner: 'PneuJogos', url: 'https://tralingo.com.br/' },
+// Produtos da SAA Company que usam cada skill especifica — mapeado por
+// tecnologia real declarada (nao por categoria inteira), so' com o que
+// foi confirmado. `partner` so' aparece quando ha' uma parceria de fato
+// (hoje, so' o Tralingo, com a PneuJogos); Venda e Rozenir sao produtos
+// da propria SAA, sem parceiro externo.
+type SaaLink = { name: string; url: string; partner?: string };
+
+const SKILL_SAA_LINKS: Partial<Record<string, SaaLink[]>> = {
+  'FastAPI': [{ name: 'Tralingo', url: 'https://tralingo.com.br/', partner: 'PneuJogos' }],
+  'React': [
+    { name: 'Tralingo', url: 'https://tralingo.com.br/', partner: 'PneuJogos' },
+    { name: 'Rozenir', url: 'https://lading-page-rozenir.vercel.app/' },
+  ],
+  'Vite': [{ name: 'Tralingo', url: 'https://tralingo.com.br/', partner: 'PneuJogos' }],
+  'PostgreSQL': [
+    { name: 'Tralingo', url: 'https://tralingo.com.br/', partner: 'PneuJogos' },
+    { name: 'Venda', url: 'https://venda-app-six.vercel.app/' },
+  ],
+  'AWS': [{ name: 'Venda', url: 'https://venda-app-six.vercel.app/' }],
+  'Next.js': [{ name: 'Venda', url: 'https://venda-app-six.vercel.app/' }],
+  'Cloudflare': [{ name: 'Venda', url: 'https://venda-app-six.vercel.app/' }],
+  'Natural Language Processing': [
+    { name: 'Venda', url: 'https://venda-app-six.vercel.app/' },
+    { name: 'Rozenir', url: 'https://lading-page-rozenir.vercel.app/' },
+  ],
 };
 
 const joinNames = (names: string[], locale: string) => {
@@ -48,11 +69,11 @@ const getSkillCategories = (locale: string) => ([
 // Ordem de exibição das skills dentro de cada categoria
 const CATEGORY_SKILL_NAMES: Record<string, string[]> = {
   languages: ['PYTHON', 'PHP', 'TYPESCRIPT', 'GO', 'JAVASCRIPT'],
-  data: ['DATA ENGINEERING', 'ETL', 'APACHE SPARK', 'APACHE AIRFLOW', 'APACHE HADOOP', 'APACHE NIFI', 'APACHE HIVE', 'DATA LAKES', 'WEB SCRAPING'],
+  data: ['DATA ENGINEERING', 'ETL', 'APACHE SPARK', 'APACHE AIRFLOW', 'APACHE HADOOP', 'APACHE NIFI', 'APACHE HIVE', 'APACHE KAFKA', 'DATA LAKES', 'WEB SCRAPING'],
   ai: ['MACHINE LEARNING', 'DEEP LEARNING', 'GAN', 'COMPUTER VISION', 'NLP'],
-  databases: ['POSTGRESQL', 'MYSQL', 'MONGODB', 'REDIS', 'ELASTICSEARCH'],
-  web: ['FASTAPI', 'REST APIS', 'GRAPHQL', 'MICROSERVICES', 'NODE.JS'],
-  devops: ['DOCKER', 'KUBERNETES', 'AWS', 'CI/CD', 'JENKINS', 'PROMETHEUS', 'GRAFANA'],
+  databases: ['POSTGRESQL', 'MYSQL', 'MONGODB', 'REDIS', 'SQL SERVER', 'ELASTICSEARCH'],
+  web: ['FASTAPI', 'REST APIS', 'GRAPHQL', 'MICROSERVICES', 'NODE.JS', 'REACT', 'NEXT.JS', 'VITE'],
+  devops: ['DOCKER', 'KUBERNETES', 'AWS', 'CLOUDFLARE', 'CI/CD', 'JENKINS', 'PROMETHEUS', 'GRAFANA'],
   architecture: ['CLEAN ARCHITECTURE', 'PERFORMANCE', 'AGILE', 'TDD'],
   security: ['WEB SECURITY', 'PENETRATION TESTING', 'LINUX', 'SSRF', 'CRYPTOGRAPHY', 'API SECURITY', 'CYBERSECURITY'],
 };
@@ -175,7 +196,9 @@ export default function Skills() {
               {skillsInCategory.map((skillData) => {
                 const hasService = skillData.experiences.length > 0;
                 const hasPersonal = skillData.projects.length > 0;
-                const partnership = CATEGORY_PARTNERSHIP[activeCategory];
+                const saaLinks = SKILL_SAA_LINKS[skillData.normalizedSkill] || [];
+                const hasPartnership = saaLinks.some(l => l.partner);
+                const hasSaaProduct = saaLinks.some(l => !l.partner);
                 return (
                   <motion.button
                     key={skillData.normalizedSkill}
@@ -202,10 +225,16 @@ export default function Skills() {
                           {locale === 'en' ? 'Personal' : locale === 'es' ? 'Personal' : 'Pessoal'}
                         </span>
                       )}
-                      {partnership && (
+                      {hasPartnership && (
                         <span className="inline-flex items-center gap-1 text-[0.6rem] sm:text-[0.65rem] font-bold uppercase border border-[#E33D3D] text-[#E33D3D] px-1.5 py-0.5">
                           <FaHandshake className="text-[0.55rem]" />
                           {locale === 'en' ? 'Partnership' : locale === 'es' ? 'Asociación' : 'Parceria'}
+                        </span>
+                      )}
+                      {hasSaaProduct && (
+                        <span className="inline-flex items-center gap-1 text-[0.6rem] sm:text-[0.65rem] font-bold uppercase border border-[#171316]/50 dark:border-[#F5F1E8]/50 text-[#171316] dark:text-[#F5F1E8] px-1.5 py-0.5">
+                          <FaRocket className="text-[0.55rem]" />
+                          SAA
                         </span>
                       )}
                     </div>
@@ -258,7 +287,7 @@ export default function Skills() {
               {(() => {
                 const companies = Array.from(new Set(experiencesForSkill.map(e => e.company)));
                 const personalProjects = projectsForSkill.map(p => p.name);
-                const partnership = CATEGORY_PARTNERSHIP[activeCategory];
+                const saaLinks = SKILL_SAA_LINKS[selectedSkillData.normalizedSkill] || [];
                 const sentenceParts: string[] = [];
                 if (companies.length > 0) {
                   sentenceParts.push(
@@ -278,7 +307,7 @@ export default function Skills() {
                       : `em projetos pessoais como ${joinNames(personalProjects, locale)}`
                   );
                 }
-                if (sentenceParts.length === 0 && !partnership) return null;
+                if (sentenceParts.length === 0 && saaLinks.length === 0) return null;
                 return (
                   <div className="mb-6 border-2 border-[#171316] dark:border-[#F5F1E8] bg-white dark:bg-[#171316] p-3 sm:p-4 comic-panel-sm">
                     {sentenceParts.length > 0 && (
@@ -287,21 +316,32 @@ export default function Skills() {
                         {sentenceParts.join(locale === 'en' ? '; and ' : locale === 'es' ? '; y ' : '; e ')}.
                       </p>
                     )}
-                    {partnership && (
-                      <a
-                        href={partnership.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-2 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#E33D3D] hover:underline"
-                      >
-                        <FaHandshake className="text-[0.7rem]" />
-                        {locale === 'en'
-                          ? `Also present in ${partnership.name}, a partnership with ${partnership.partner}`
-                          : locale === 'es'
-                          ? `También presente en ${partnership.name}, una asociación con ${partnership.partner}`
-                          : `Também presente no ${partnership.name}, parceria com a ${partnership.partner}`}
-                        →
-                      </a>
+                    {saaLinks.length > 0 && (
+                      <div className="mt-2 flex flex-col gap-1.5">
+                        {saaLinks.map((link) => (
+                          <a
+                            key={link.name}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold hover:underline w-fit ${link.partner ? 'text-[#E33D3D]' : 'text-[#171316] dark:text-[#F5F1E8]'}`}
+                          >
+                            {link.partner ? <FaHandshake className="text-[0.7rem]" /> : <FaRocket className="text-[0.7rem]" />}
+                            {link.partner
+                              ? (locale === 'en'
+                                  ? `Also present in ${link.name}, a partnership with ${link.partner}`
+                                  : locale === 'es'
+                                  ? `También presente en ${link.name}, una asociación con ${link.partner}`
+                                  : `Também presente no ${link.name}, parceria com a ${link.partner}`)
+                              : (locale === 'en'
+                                  ? `Also present in ${link.name}, a SAA Company product`
+                                  : locale === 'es'
+                                  ? `También presente en ${link.name}, un producto de SAA Company`
+                                  : `Também presente no ${link.name}, produto da SAA Company`)}
+                            →
+                          </a>
+                        ))}
+                      </div>
                     )}
                   </div>
                 );

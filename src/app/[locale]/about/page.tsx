@@ -175,7 +175,7 @@ export default function About() {
       description: locale === 'en' 
         ? "Working primarily as a Data Engineer, responsible for developing and implementing data pipelines, ETL processes, and building scalable data architecture. Creating automation solutions, data integration projects and high-performance APIs with focus on best practices and clean code. Working with large data volumes, including initiatives with the Public Ministry of Minas Gerais (MPMG)."
         : "Atuando principalmente como Engenheiro de Dados, responsável pelo desenvolvimento e implementação de pipelines de dados, processos de ETL e construção de arquiteturas de dados escaláveis. Desenvolvimento de soluções de automação, projetos de integração de dados e APIs performáticas com foco em boas práticas e código limpo. Trabalho com grandes volumes de dados, incluindo iniciativas junto ao Ministério Público de Minas Gerais (MPMG).",
-      technologies: ["Python", "SQL", "Apache Airflow", "Apache Spark", "AWS", "FastAPI", "Docker", "Apache Hadoop", "Apache Druid", "Apache NiFi", "Web Scraping", "PostgreSQL", "Data Engineering", "Apache Hive", "Data Lakes", "Elasticsearch", "Microservices", "CI/CD", "Jenkins", "Clean Architecture", "TDD", "Linux", "Web Security"]
+      technologies: ["Python", "SQL", "SQL Server", "Apache Airflow", "Apache Spark", "AWS", "FastAPI", "Node.js", "React", "Docker", "Apache Hadoop", "Apache Druid", "Apache NiFi", "Apache Kafka", "Web Scraping", "PostgreSQL", "Data Engineering", "Apache Hive", "Data Lakes", "Elasticsearch", "Microservices", "CI/CD", "Jenkins", "Clean Architecture", "TDD", "Linux", "Web Security", "Computer Vision"]
     },
     {
       company: "Kriptos",
