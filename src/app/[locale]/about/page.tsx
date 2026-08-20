@@ -90,6 +90,17 @@ interface CertificationCardProps {
   t: TranslationType;
 }
 
+// Mapa estático de cor -> classes Tailwind literais. Evita o bug de
+// classes dinâmicas (bg-${cor}-500) que o compilador nunca gera.
+const COMPETENCY_COLOR: Record<string, { bg: string; text: string }> = {
+  blue: { bg: 'bg-blue-500', text: 'text-blue-500' },
+  purple: { bg: 'bg-purple-500', text: 'text-purple-500' },
+  red: { bg: 'bg-red-500', text: 'text-red-500' },
+  green: { bg: 'bg-green-500', text: 'text-green-500' },
+  amber: { bg: 'bg-amber-500', text: 'text-amber-500' },
+  yellow: { bg: 'bg-yellow-500', text: 'text-yellow-500' },
+};
+
 export default function About() {
   const params = useParams();
   const locale = params.locale as string;
@@ -436,9 +447,9 @@ export default function About() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-black text-gray-800 dark:text-white">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-black text-gray-800 dark:text-white overflow-x-hidden">
       <Navigation locale={locale} />
-      
+
       {/* Hero Section */}
       <section className="relative py-24 overflow-hidden">
         {/* Background decoration */}
@@ -446,18 +457,29 @@ export default function About() {
           <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-transparent dark:from-gray-900/50 dark:to-transparent"></div>
           <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#2a2a3c_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
         </div>
-        <div className="absolute top-0 right-0 -z-10 w-[800px] h-[600px] opacity-20">
-          <div className="absolute right-0 top-0 w-full h-full bg-gradient-to-br from-blue-500/30 to-purple-500/30 dark:from-blue-500/10 dark:to-purple-500/10 blur-3xl rounded-full"></div>
-        </div>
-        
+        <motion.div
+          className="absolute top-0 right-0 -z-10 w-[800px] h-[600px] opacity-30"
+          animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <div className="absolute right-0 top-0 w-full h-full bg-gradient-to-br from-blue-500/40 to-purple-500/40 dark:from-blue-500/15 dark:to-purple-500/15 blur-3xl rounded-full"></div>
+        </motion.div>
+        <motion.div
+          className="absolute -bottom-20 left-0 -z-10 w-[500px] h-[500px] opacity-20"
+          animate={{ x: [0, -20, 0], y: [0, 20, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <div className="absolute w-full h-full bg-gradient-to-tr from-amber-400/40 to-red-400/30 dark:from-amber-500/10 dark:to-red-500/10 blur-3xl rounded-full"></div>
+        </motion.div>
+
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             {/* Header Content */}
             <div className="text-center mb-16">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 0, y: 20, rotate: -2 }}
+                animate={{ opacity: 1, y: 0, rotate: 0 }}
+                transition={{ duration: 0.6, type: 'spring', bounce: 0.35 }}
               >
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400">
                   {t.about?.title || "Sobre Mim"}
@@ -583,6 +605,72 @@ export default function About() {
                 </div>
               </a>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Marquee de marcos de carreira — leitura rápida e cinética */}
+      <section className="relative py-4 bg-gray-900 dark:bg-black overflow-hidden -skew-y-1 my-4">
+        <div className="skew-y-1">
+          <motion.div
+            className="flex gap-10 whitespace-nowrap"
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+          >
+            {[...careerMilestones, ...careerMilestones].map((m, i) => (
+              <span key={i} className="inline-flex items-center gap-3 text-sm sm:text-base text-gray-200">
+                <span className="text-lg">{m.icon}</span>
+                <span className="font-mono text-amber-400 font-bold">{m.year}</span>
+                <span>{m.achievement}</span>
+                <span className="text-gray-600 ml-6">/</span>
+              </span>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Competências — barras cinéticas que preenchem ao entrar em cena */}
+      <section className="py-16 bg-white dark:bg-gray-800/50 relative scroll-mt-20">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <motion.h2
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-2xl sm:text-3xl font-bold mb-8 -rotate-1 inline-block"
+          >
+            {locale === 'en' ? 'Where I bring the most energy' : 'Onde eu entrego mais energia'}
+          </motion.h2>
+          <div className="grid sm:grid-cols-2 gap-x-10 gap-y-6">
+            {competencyAreas.map((area, index) => {
+              const style = COMPETENCY_COLOR[area.color] || COMPETENCY_COLOR.blue;
+              return (
+                <motion.div
+                  key={area.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                >
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="flex items-center gap-2 font-medium text-gray-800 dark:text-gray-200">
+                      <span className={style.text}>{area.icon}</span>
+                      {area.name}
+                    </span>
+                    <span className="font-mono text-sm text-gray-500 dark:text-gray-400">{area.value}%</span>
+                  </div>
+                  <div className="h-2.5 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                    <motion.div
+                      className={`h-full rounded-full ${style.bg}`}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${area.value}%` }}
+                      viewport={{ once: true, margin: '-60px' }}
+                      transition={{ duration: 0.9, delay: index * 0.05, ease: 'easeOut' }}
+                    />
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -966,12 +1054,13 @@ interface ExperienceCardProps {
 
 const ExperienceCard = ({ experience, t, locale }: ExperienceCardProps) => {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700"
+      whileHover={{ y: -4, rotate: -0.5 }}
+      className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700 border-l-4 border-l-blue-500"
     >
       <div className="flex items-center gap-4 mb-4">
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white">
@@ -1011,7 +1100,8 @@ const EducationCard = ({ education, t }: EducationCardProps) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5 }}
-    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700"
+    whileHover={{ y: -4, rotate: 0.5 }}
+    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700 border-l-4 border-l-green-500"
   >
     <div className="flex items-start gap-4">
       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white">
@@ -1066,6 +1156,7 @@ const CertificationCard = ({ certification, t }: CertificationCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
+      whileHover={{ y: -4, rotate: -0.5, scale: 1.02 }}
       className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700"
     >
       <div className="flex items-start gap-4">
