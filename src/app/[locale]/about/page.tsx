@@ -555,6 +555,19 @@ export default function About() {
       if (cue?.company) {
         const company = cue.company;
         setNarratedCompanies(prev => (prev.has(company) ? prev : new Set(prev).add(company)));
+        // mostra embaixo os detalhes da empresa que esta' sendo narrada
+        // agora, sem precisar clicar no card. Quando ha' mais de um cargo
+        // na mesma empresa (ex: 4mti), pega o mais antigo — e' sobre ele
+        // que a narracao fala nesse trecho da historia
+        const matchedExperience = workExperience
+          .filter(e => e.company === company)
+          .sort((a, b) => {
+            const yearOf = (exp: typeof a) => parseInt((exp.period.match(/\d{4}/) || ['9999'])[0]);
+            return yearOf(a) - yearOf(b);
+          })[0];
+        if (matchedExperience) {
+          setSelectedTimelineItem({ type: 'experience', data: matchedExperience });
+        }
       }
     }
 
@@ -581,6 +594,7 @@ export default function About() {
     setCaptionText('');
     setActiveCompany(null);
     setNarratedCompanies(new Set());
+    setSelectedTimelineItem(null);
     stampedRef.current = new Set();
     setStampedItems(new Set());
     waypointsRef.current = buildNarrationWaypoints();
