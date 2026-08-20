@@ -13,10 +13,26 @@ import {
   FaLaptopCode,
   FaBrain,
   FaTimes,
-  FaBolt
+  FaBolt,
+  FaBuilding,
+  FaHandshake
 } from 'react-icons/fa';
 import { useState } from 'react';
 import { getLocalizedSkillData, allSkills, getExperiencesForSkill, getProjectsForSkill } from '@/lib/skillsData';
+
+// Parcerias da SAA Company que declaram usar tecnologias de uma categoria —
+// so' entra aqui o que e' realmente afirmado na pagina da SAA, sem inventar
+// stack tecnica que nao foi confirmada.
+const CATEGORY_PARTNERSHIP: Partial<Record<string, { name: string; partner: string; url: string }>> = {
+  ai: { name: 'Tralingo', partner: 'PneuJogos', url: 'https://tralingo.com.br/' },
+};
+
+const joinNames = (names: string[], locale: string) => {
+  if (names.length === 0) return '';
+  if (names.length === 1) return names[0];
+  const and = locale === 'en' ? 'and' : locale === 'es' ? 'y' : 'e';
+  return `${names.slice(0, -1).join(', ')} ${and} ${names[names.length - 1]}`;
+};
 
 const getSkillCategories = (locale: string) => ([
   { id: 'languages', nameKey: 'languages', icon: <FaCode />, descriptionKey: 'languages_description' },
@@ -156,25 +172,52 @@ export default function Skills() {
               animate="visible"
               className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 content-start"
             >
-              {skillsInCategory.map((skillData) => (
-                <motion.button
-                  key={skillData.normalizedSkill}
-                  variants={itemVariants}
-                  aria-label={skillData.skill}
-                  onClick={() => setSelectedSkill(skillData.normalizedSkill)}
-                  className="text-left bg-white dark:bg-[#211c22] border-2 border-[#171316] dark:border-[#F5F1E8] comic-panel-sm p-4 hover:-translate-y-1 hover:translate-x-0.5 transition-transform duration-150"
-                >
-                  <span className="font-black uppercase text-sm sm:text-base text-[#171316] dark:text-[#F5F1E8] leading-tight block mb-3">
-                    {skillData.skill}
-                  </span>
+              {skillsInCategory.map((skillData) => {
+                const hasService = skillData.experiences.length > 0;
+                const hasPersonal = skillData.projects.length > 0;
+                const partnership = CATEGORY_PARTNERSHIP[activeCategory];
+                return (
+                  <motion.button
+                    key={skillData.normalizedSkill}
+                    variants={itemVariants}
+                    aria-label={skillData.skill}
+                    onClick={() => setSelectedSkill(skillData.normalizedSkill)}
+                    className="text-left bg-white dark:bg-[#211c22] border-2 border-[#171316] dark:border-[#F5F1E8] comic-panel-sm p-4 hover:-translate-y-1 hover:translate-x-0.5 transition-transform duration-150"
+                  >
+                    <span className="font-black uppercase text-sm sm:text-base text-[#171316] dark:text-[#F5F1E8] leading-tight block mb-3">
+                      {skillData.skill}
+                    </span>
 
-                  <div className="flex items-center gap-3 font-mono text-[0.65rem] sm:text-xs text-[#171316]/70 dark:text-[#F5F1E8]/70 border-t-2 border-dashed border-[#171316]/20 dark:border-[#F5F1E8]/20 pt-2.5">
-                    <span>{skillData.stats.yearsOfExperience}{locale === 'en' ? 'y' : 'a'}</span>
-                    <span>·</span>
-                    <span>{skillData.stats.projectCount} {locale === 'en' ? (skillData.stats.projectCount === 1 ? 'project' : 'projects') : (skillData.stats.projectCount === 1 ? 'projeto' : 'projetos')}</span>
-                  </div>
-                </motion.button>
-              ))}
+                    {/* Onde uso — chips factuais, sem nota de nivel */}
+                    <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
+                      {hasService && (
+                        <span className="inline-flex items-center gap-1 text-[0.6rem] sm:text-[0.65rem] font-bold uppercase border border-[#171316]/50 dark:border-[#F5F1E8]/50 text-[#171316] dark:text-[#F5F1E8] px-1.5 py-0.5">
+                          <FaBuilding className="text-[0.55rem]" />
+                          {locale === 'en' ? 'Service' : locale === 'es' ? 'Servicio' : 'Serviço'}
+                        </span>
+                      )}
+                      {hasPersonal && (
+                        <span className="inline-flex items-center gap-1 text-[0.6rem] sm:text-[0.65rem] font-bold uppercase border border-[#171316]/50 dark:border-[#F5F1E8]/50 text-[#171316] dark:text-[#F5F1E8] px-1.5 py-0.5">
+                          <FaCode className="text-[0.55rem]" />
+                          {locale === 'en' ? 'Personal' : locale === 'es' ? 'Personal' : 'Pessoal'}
+                        </span>
+                      )}
+                      {partnership && (
+                        <span className="inline-flex items-center gap-1 text-[0.6rem] sm:text-[0.65rem] font-bold uppercase border border-[#E33D3D] text-[#E33D3D] px-1.5 py-0.5">
+                          <FaHandshake className="text-[0.55rem]" />
+                          {locale === 'en' ? 'Partnership' : locale === 'es' ? 'Asociación' : 'Parceria'}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-3 font-mono text-[0.65rem] sm:text-xs text-[#171316]/70 dark:text-[#F5F1E8]/70 border-t-2 border-dashed border-[#171316]/20 dark:border-[#F5F1E8]/20 pt-2.5">
+                      <span>{skillData.stats.yearsOfExperience}{locale === 'en' ? 'y' : 'a'}</span>
+                      <span>·</span>
+                      <span>{skillData.stats.projectCount} {locale === 'en' ? (skillData.stats.projectCount === 1 ? 'project' : 'projects') : (skillData.stats.projectCount === 1 ? 'projeto' : 'projetos')}</span>
+                    </div>
+                  </motion.button>
+                );
+              })}
             </motion.div>
           </div>
         </div>
@@ -205,11 +248,64 @@ export default function Skills() {
                 <FaTimes />
               </button>
 
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-3 mb-4">
                 <h3 className="text-2xl sm:text-3xl font-black uppercase text-[#171316] dark:text-[#F5F1E8]">
                   {selectedSkillData.skill}
                 </h3>
               </div>
+
+              {/* Onde eu uso — frase factual, sem nota de nivel */}
+              {(() => {
+                const companies = Array.from(new Set(experiencesForSkill.map(e => e.company)));
+                const personalProjects = projectsForSkill.map(p => p.name);
+                const partnership = CATEGORY_PARTNERSHIP[activeCategory];
+                const sentenceParts: string[] = [];
+                if (companies.length > 0) {
+                  sentenceParts.push(
+                    locale === 'en'
+                      ? `professionally at ${joinNames(companies, locale)}`
+                      : locale === 'es'
+                      ? `profesionalmente en ${joinNames(companies, locale)}`
+                      : `profissionalmente na ${joinNames(companies, locale)}`
+                  );
+                }
+                if (personalProjects.length > 0) {
+                  sentenceParts.push(
+                    locale === 'en'
+                      ? `in personal projects like ${joinNames(personalProjects, locale)}`
+                      : locale === 'es'
+                      ? `en proyectos personales como ${joinNames(personalProjects, locale)}`
+                      : `em projetos pessoais como ${joinNames(personalProjects, locale)}`
+                  );
+                }
+                if (sentenceParts.length === 0 && !partnership) return null;
+                return (
+                  <div className="mb-6 border-2 border-[#171316] dark:border-[#F5F1E8] bg-white dark:bg-[#171316] p-3 sm:p-4 comic-panel-sm">
+                    {sentenceParts.length > 0 && (
+                      <p className="text-sm sm:text-base text-[#171316] dark:text-[#F5F1E8]">
+                        <span className="font-black">{locale === 'en' ? 'Where I use it: ' : locale === 'es' ? 'Dónde lo uso: ' : 'Onde eu uso: '}</span>
+                        {sentenceParts.join(locale === 'en' ? '; and ' : locale === 'es' ? '; y ' : '; e ')}.
+                      </p>
+                    )}
+                    {partnership && (
+                      <a
+                        href={partnership.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#E33D3D] hover:underline"
+                      >
+                        <FaHandshake className="text-[0.7rem]" />
+                        {locale === 'en'
+                          ? `Also present in ${partnership.name}, a partnership with ${partnership.partner}`
+                          : locale === 'es'
+                          ? `También presente en ${partnership.name}, una asociación con ${partnership.partner}`
+                          : `Também presente no ${partnership.name}, parceria com a ${partnership.partner}`}
+                        →
+                      </a>
+                    )}
+                  </div>
+                );
+              })()}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
