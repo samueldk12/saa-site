@@ -365,28 +365,22 @@ export default function SAACompany() {
                   : 'A SAA Company foi criada para entregar soluções modernas para desafios empresariais. A empresa se especializa em IA, engenharia de dados, desenvolvimento de aplicações web e desenvolvimento de jogos, com foco em abordagens tecnológicas inovadoras para cada projeto.'}
               </p>
 
-              {/* Areas de atuacao — icones separados, so' um hover contando
-                  que ha' experiencia real naquela area (sem abrir nada) */}
-              <div className="flex flex-wrap items-center gap-2">
+              {/* Areas de atuacao — so' icones, sem texto fixo; o hover
+                  mostra o nome da area num tooltip simples, sem animacao */}
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-xs font-mono uppercase tracking-widest text-slate-500 dark:text-white/50">
+                  {locale === 'en' ? 'Areas of expertise:' : locale === 'es' ? 'Áreas de actuación:' : 'Áreas de atuação:'}
+                </span>
                 {capabilities.map((c) => (
                   <div key={c.label} className="group relative">
-                    <motion.div
-                      whileHover={{ y: -3, scale: 1.06 }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                      className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10 hover:border-blue-600/30 dark:hover:border-[#4FA8FF]/40 transition-colors cursor-default"
-                    >
-                      <span className="text-base text-blue-600 dark:text-[#4FA8FF]">{c.icon}</span>
-                      <span className="text-[0.65rem] text-slate-700 dark:text-white/80 whitespace-nowrap">{c.label}</span>
-                    </motion.div>
+                    <div className="w-9 h-9 flex items-center justify-center rounded-lg border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10 hover:border-blue-600/30 dark:hover:border-[#4FA8FF]/40 transition-colors text-base text-blue-600 dark:text-[#4FA8FF]">
+                      {c.icon}
+                    </div>
 
                     {/* Tooltip */}
-                    <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 scale-95 translate-y-1 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-150 z-20 whitespace-nowrap px-3 py-1.5 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs shadow-lg">
-                      {locale === 'en'
-                        ? `I have experience in ${c.label}`
-                        : locale === 'es'
-                        ? `Tengo experiencia en ${c.label}`
-                        : `Tenho experiência em ${c.label}`}
-                      <span className="absolute left-1/2 -translate-x-1/2 top-full w-2 h-2 bg-slate-900 dark:bg-white rotate-45 -mt-1" />
+                    <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-20 whitespace-nowrap px-2.5 py-1 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs shadow-lg">
+                      {c.label}
+                      <span className="absolute left-1/2 -translate-x-1/2 top-full w-1.5 h-1.5 bg-slate-900 dark:bg-white rotate-45 -mt-0.5" />
                     </div>
                   </div>
                 ))}
