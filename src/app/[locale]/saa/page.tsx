@@ -293,15 +293,15 @@ export default function SAACompany() {
     );
   };
 
-  // Cada capacidade aponta para o produto SAA que melhor a representa —
-  // clicar abre o detalhe daquele projeto.
+  // Areas de atuacao da SAA — apenas competencias, sem link pra projeto
+  // especifico. O hover mostra que ha' experiencia real naquela area.
   const capabilities = [
-    { label: 'AI', icon: <FaBrain />, projectId: 'venda' },
-    { label: locale === 'en' ? 'Data' : 'Dados', icon: <FaDatabase />, projectId: 'venda' },
-    { label: 'Web', icon: <FaCode />, projectId: 'rozenir' },
-    { label: 'Game', icon: <FaGamepad />, projectId: 'tralingo' },
-    { label: 'Marketing', icon: <FaBolt />, projectId: 'venda' },
-    { label: locale === 'en' ? 'Learning' : locale === 'es' ? 'Aprendizaje' : 'Aprendizado', icon: <FaGrad />, projectId: 'tralingo' },
+    { label: 'AI', icon: <FaBrain /> },
+    { label: locale === 'en' ? 'Data' : 'Dados', icon: <FaDatabase /> },
+    { label: 'Web', icon: <FaCode /> },
+    { label: 'Game', icon: <FaGamepad /> },
+    { label: 'Marketing', icon: <FaBolt /> },
+    { label: locale === 'en' ? 'Learning' : locale === 'es' ? 'Aprendizaje' : 'Aprendizado', icon: <FaGrad /> },
   ];
 
   const stats = [
@@ -357,13 +357,40 @@ export default function SAACompany() {
               <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 mb-3 tracking-tight">
                 SAA Company
               </h1>
-              <p className="text-sm sm:text-base text-slate-700 dark:text-white/70 max-w-2xl">
+              <p className="text-sm sm:text-base text-slate-700 dark:text-white/70 max-w-2xl mb-5">
                 {locale === 'en'
                   ? 'SAA Company was created to deliver modern solutions for business challenges. The company specializes in AI, data engineering, web application development, and game development, focusing on innovative technological approaches for each project.'
                   : locale === 'es'
                   ? 'SAA Company fue creada para ofrecer soluciones modernas a desafíos empresariales. La empresa se especializa en IA, ingeniería de datos, desarrollo de aplicaciones web y desarrollo de juegos, con un enfoque en enfoques tecnológicos innovadores para cada proyecto.'
                   : 'A SAA Company foi criada para entregar soluções modernas para desafios empresariais. A empresa se especializa em IA, engenharia de dados, desenvolvimento de aplicações web e desenvolvimento de jogos, com foco em abordagens tecnológicas inovadoras para cada projeto.'}
               </p>
+
+              {/* Areas de atuacao — icones separados, so' um hover contando
+                  que ha' experiencia real naquela area (sem abrir nada) */}
+              <div className="flex flex-wrap items-center gap-2">
+                {capabilities.map((c) => (
+                  <div key={c.label} className="group relative">
+                    <motion.div
+                      whileHover={{ y: -3, scale: 1.06 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                      className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10 hover:border-blue-600/30 dark:hover:border-[#4FA8FF]/40 transition-colors cursor-default"
+                    >
+                      <span className="text-base text-blue-600 dark:text-[#4FA8FF]">{c.icon}</span>
+                      <span className="text-[0.65rem] text-slate-700 dark:text-white/80 whitespace-nowrap">{c.label}</span>
+                    </motion.div>
+
+                    {/* Tooltip */}
+                    <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 scale-95 translate-y-1 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-150 z-20 whitespace-nowrap px-3 py-1.5 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs shadow-lg">
+                      {locale === 'en'
+                        ? `I have experience in ${c.label}`
+                        : locale === 'es'
+                        ? `Tengo experiencia en ${c.label}`
+                        : `Tenho experiência em ${c.label}`}
+                      <span className="absolute left-1/2 -translate-x-1/2 top-full w-2 h-2 bg-slate-900 dark:bg-white rotate-45 -mt-1" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -378,30 +405,13 @@ export default function SAACompany() {
           </div>
         </motion.div>
 
-        {/* Dock de linhas de atuação — capsula de vidro, estilo iOS 26 */}
+        {/* Atalho pra parceria estrategica */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="flex items-center gap-3 mb-10 overflow-x-auto pb-1"
+          className="flex justify-end mb-10"
         >
-          <div className="flex items-center gap-1 sm:gap-2 rounded-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_4px_16px_rgba(15,23,42,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.45)] px-2 py-2 shrink-0">
-            {capabilities.map((c) => {
-              const linkedProject = saaProjects.find(p => p.id === c.projectId);
-              return (
-                <button
-                  key={c.label}
-                  onClick={() => linkedProject && openProjectModal(linkedProject)}
-                  aria-label={`${c.label}${linkedProject ? ` — ${linkedProject.name}` : ''}`}
-                  title={linkedProject?.name}
-                  className="flex flex-col items-center gap-1 px-3 sm:px-4 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
-                >
-                  <span className="text-base text-blue-600 dark:text-[#4FA8FF]">{c.icon}</span>
-                  <span className="text-[0.65rem] text-slate-700 dark:text-white/80 whitespace-nowrap">{c.label}</span>
-                </button>
-              );
-            })}
-          </div>
           <a
             href="#parceria"
             aria-label={locale === 'en' ? 'Jump to partnership' : locale === 'es' ? 'Ir a la asociación' : 'Ir para parceria'}
