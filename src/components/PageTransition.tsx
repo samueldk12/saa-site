@@ -18,18 +18,38 @@ const getSection = (pathname: string | null, locale: string) => {
 
 const isEl = (n: ChildNode): n is HTMLElement => n instanceof HTMLElement;
 
+const MIN_BLOCKS = 3;
+const MAX_BLOCKS = 7;
+
 // Pega os "blocos" de mais alto nivel de uma pagina pra animar um a um.
-// Cada pagina renderiza Navigation + um punhado de <section>/<div> —
-// se so' existir um wrapper unico, desce um nivel pra achar blocos reais.
+// Cada pagina tem um numero bem diferente de secoes (Skills e' so' uma,
+// About tem oito) — sem limitar isso, paginas com poucos blocos ficam
+// com um unico bloco gigante (quebra visualmente) e paginas com muitos
+// blocos esticam a sequencia por segundos. Desce niveis ate' ter pelo
+// menos MIN_BLOCKS, e corta em MAX_BLOCKS pra sequencia nunca esticar
+// demais nem depender do tamanho da pagina.
 function pickBlocks(mountPoint: HTMLElement): HTMLElement[] {
   const root = mountPoint.firstElementChild as HTMLElement | null;
   if (!root) return [];
   let blocks = Array.from(root.children).filter(isEl).filter(el => el.tagName !== 'NAV');
-  if (blocks.length <= 1 && blocks[0]) {
-    const inner = Array.from(blocks[0].children).filter(isEl);
-    if (inner.length > 1) blocks = inner;
+  let depth = 0;
+  while (blocks.length < MIN_BLOCKS && depth < 3) {
+    const source = blocks[0] || root;
+    const inner = Array.from(source.children).filter(isEl);
+    if (inner.length <= 1) break;
+    blocks = inner;
+    depth++;
   }
-  return blocks.length > 0 ? blocks : Array.from(root.children).filter(isEl);
+  if (blocks.length === 0) blocks = [root];
+  return blocks.slice(0, MAX_BLOCKS);
+}
+
+// Incremento de atraso entre blocos, calculado pra' a sequencia inteira
+// (do primeiro ao ultimo bloco comecar) caber dentro de `totalSpan`,
+// independente de quantos blocos a pagina tiver.
+function staggerStep(totalSpan: number, blockCount: number, min = 30, max = 170) {
+  if (blockCount <= 1) return 0;
+  return Math.max(min, Math.min(max, totalSpan / (blockCount - 1)));
 }
 
 function createOverlay(background: string): HTMLDivElement {
@@ -48,6 +68,7 @@ function createOverlay(background: string): HTMLDivElement {
 // montando enquanto "desce a tela".
 function runHomeFall(mountPoint: HTMLElement, cleanups: (() => void)[]) {
   const blocks = pickBlocks(mountPoint);
+  const step = staggerStep(380, blocks.length);
   blocks.forEach((el, i) => {
     const anim = el.animate(
       [
@@ -55,7 +76,7 @@ function runHomeFall(mountPoint: HTMLElement, cleanups: (() => void)[]) {
         { transform: 'translateY(10px)', opacity: 1, offset: 0.7 },
         { transform: 'translateY(0)', opacity: 1 },
       ],
-      { duration: 620, delay: 80 + i * 140, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' }
+      { duration: 500, delay: 60 + i * step, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' }
     );
     cleanups.push(() => anim.cancel());
   });
@@ -65,6 +86,7 @@ function runHomeFall(mountPoint: HTMLElement, cleanups: (() => void)[]) {
 // desfoque -> nitidez, com uma leve variacao de escala.
 function runAboutRender(mountPoint: HTMLElement, cleanups: (() => void)[]) {
   const blocks = pickBlocks(mountPoint);
+  const step = staggerStep(420, blocks.length);
   blocks.forEach((el, i) => {
     const anim = el.animate(
       [
@@ -72,7 +94,7 @@ function runAboutRender(mountPoint: HTMLElement, cleanups: (() => void)[]) {
         { opacity: 0.6, filter: 'blur(4px)', transform: 'scale(0.99)', offset: 0.5 },
         { opacity: 1, filter: 'blur(0px)', transform: 'scale(1)' },
       ],
-      { duration: 560, delay: 60 + i * 130, easing: 'ease-out', fill: 'both' }
+      { duration: 480, delay: 50 + i * step, easing: 'ease-out', fill: 'both' }
     );
     cleanups.push(() => anim.cancel());
   });
@@ -84,9 +106,10 @@ function runAboutRender(mountPoint: HTMLElement, cleanups: (() => void)[]) {
 // literalmente riscando o painel na tela.
 function runSkillsDraw(mountPoint: HTMLElement, cleanups: (() => void)[]) {
   const blocks = pickBlocks(mountPoint);
+  const step = staggerStep(360, blocks.length);
   blocks.forEach((el, i) => {
-    const duration = 480;
-    const delay = 90 + i * 150;
+    const duration = 420;
+    const delay = 60 + i * step;
 
     const anim = el.animate(
       [
@@ -168,13 +191,14 @@ function runProjectsType(mountPoint: HTMLElement, cleanups: (() => void)[]) {
   // a estrutura real comeca a se formar bem cedo, ainda debaixo da chuva
   const revealId = window.setTimeout(() => {
     const blocks = pickBlocks(mountPoint);
+    const step = staggerStep(320, blocks.length);
     blocks.forEach((el, i) => {
       const anim = el.animate(
         [
           { clipPath: 'inset(0 100% 0 0)' },
           { clipPath: 'inset(0 0% 0 0)' },
         ],
-        { duration: 460, delay: i * 110, easing: 'steps(24, end)', fill: 'both' }
+        { duration: 420, delay: i * step, easing: 'steps(24, end)', fill: 'both' }
       );
       cleanups.push(() => anim.cancel());
     });
