@@ -27,8 +27,8 @@ const MOBILE_ACTIVE_BG: Record<string, string> = {
 // Cada idioma ganha as cores da bandeira do seu pais, uma por letra —
 // PT (Brasil: verde/azul), EN (EUA: azul/vermelho), ES (Espanha: vermelho/amarelo).
 const LOCALE_COLORS: Record<'pt' | 'en' | 'es', [string, string]> = {
-  pt: ['#009C3B', '#002776'],
-  en: ['#3C3B6E', '#B22234'],
+  pt: ['#009C3B', '#2563EB'],
+  en: ['#2563EB', '#B22234'],
   es: ['#AA151B', '#F1BF00'],
 };
 
