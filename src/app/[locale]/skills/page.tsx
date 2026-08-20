@@ -16,7 +16,9 @@ import {
   FaBolt,
   FaBuilding,
   FaHandshake,
-  FaRocket
+  FaRocket,
+  FaMousePointer,
+  FaSearch
 } from 'react-icons/fa';
 import { useState } from 'react';
 import { getLocalizedSkillData, allSkills, getExperiencesForSkill, getProjectsForSkill } from '@/lib/skillsData';
@@ -94,6 +96,7 @@ export default function Skills() {
   const t = getTranslations(locale);
   const [activeCategory, setActiveCategory] = useState('languages');
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
 
   const skillCategories = getSkillCategories(locale);
   const activeSkillCategory = skillCategories.find(cat => cat.id === activeCategory)!;
@@ -101,9 +104,23 @@ export default function Skills() {
   const experiencesForSkill = selectedSkill ? getExperiencesForSkill(selectedSkill) : [];
   const projectsForSkill = selectedSkill ? getProjectsForSkill(selectedSkill) : [];
 
-  const skillsInCategory = (CATEGORY_SKILL_NAMES[activeCategory] || [])
-    .map(name => allSkills.includes(name) ? getLocalizedSkillData(name, locale) : null)
-    .filter(Boolean) as ReturnType<typeof getLocalizedSkillData>[];
+  const isSearching = query.trim().length > 0;
+
+  // Todas as skills rastreadas, para a busca funcionar em qualquer categoria
+  const allSkillsFlat = Object.values(CATEGORY_SKILL_NAMES)
+    .flat()
+    .filter((name, index, arr) => allSkills.includes(name) && arr.indexOf(name) === index)
+    .map(name => getLocalizedSkillData(name, locale));
+
+  const searchResults = isSearching
+    ? allSkillsFlat.filter(s => s.skill.toLowerCase().includes(query.trim().toLowerCase()))
+    : [];
+
+  const skillsInCategory = isSearching
+    ? searchResults
+    : ((CATEGORY_SKILL_NAMES[activeCategory] || [])
+        .map(name => allSkills.includes(name) ? getLocalizedSkillData(name, locale) : null)
+        .filter(Boolean) as ReturnType<typeof getLocalizedSkillData>[]);
 
   const selectedSkillData = selectedSkill ? getLocalizedSkillData(selectedSkill, locale) : null;
 
@@ -129,15 +146,27 @@ export default function Skills() {
             <h1 className="font-black uppercase text-4xl sm:text-6xl md:text-7xl leading-[0.95] tracking-tight text-[#171316] dark:text-[#F5F1E8]">
               {t.skills?.title || 'Minhas Habilidades'}
             </h1>
-            <p className="mt-4 max-w-2xl border-2 border-[#171316] dark:border-[#F5F1E8] bg-white dark:bg-[#211c22] px-4 py-3 text-sm sm:text-base text-[#171316] dark:text-[#F5F1E8] comic-panel-sm">
-              {t.skills?.subtitle || 'Tecnologias e ferramentas que utilizo para criar soluções eficientes'}
-            </p>
+            <div className="mt-4 flex flex-col sm:flex-row gap-3 sm:items-stretch">
+              <p className="flex-1 border-2 border-[#171316] dark:border-[#F5F1E8] bg-white dark:bg-[#211c22] px-4 py-3 text-sm sm:text-base text-[#171316] dark:text-[#F5F1E8] comic-panel-sm">
+                {t.skills?.subtitle || 'Tecnologias e ferramentas que utilizo para criar soluções eficientes'}
+              </p>
+              <div className="relative sm:w-64 shrink-0">
+                <FaSearch className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#171316]/50 dark:text-[#F5F1E8]/50 text-sm" />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={locale === 'en' ? 'Search a technology…' : locale === 'es' ? 'Buscar una tecnología…' : 'Buscar uma tecnologia…'}
+                  aria-label={locale === 'en' ? 'Search a technology' : locale === 'es' ? 'Buscar una tecnología' : 'Buscar uma tecnologia'}
+                  className="w-full h-full border-2 border-[#171316] dark:border-[#F5F1E8] bg-white dark:bg-[#211c22] pl-10 pr-3 py-3 text-sm text-[#171316] dark:text-[#F5F1E8] placeholder:text-[#171316]/40 dark:placeholder:text-[#F5F1E8]/40 comic-panel-sm focus:outline-none focus:border-[#E33D3D]"
+                />
+              </div>
+            </div>
           </motion.div>
 
           {/* Seletor de categorias — abas de gibi */}
-          <div className="flex flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-10">
+          <div className={`flex flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-10 transition-opacity ${isSearching ? 'opacity-40 pointer-events-none' : ''}`}>
             {skillCategories.map((category) => {
-              const isActive = activeCategory === category.id;
+              const isActive = !isSearching && activeCategory === category.id;
               return (
                 <button
                   key={category.id}
@@ -160,22 +189,28 @@ export default function Skills() {
             <div className="md:col-span-1 bg-white dark:bg-[#211c22] border-2 border-[#171316] dark:border-[#F5F1E8] comic-panel p-5 sm:p-6 h-fit">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-full border-2 border-[#171316] dark:border-[#F5F1E8] bg-[#F4EFE4] dark:bg-[#171316] flex items-center justify-center text-xl text-[#171316] dark:text-[#F5F1E8]">
-                  {activeSkillCategory.icon}
+                  {isSearching ? <FaSearch /> : activeSkillCategory.icon}
                 </div>
                 <h2 className="text-lg sm:text-xl font-black uppercase text-[#171316] dark:text-[#F5F1E8]">
-                  {t.skills?.[activeSkillCategory.nameKey] || activeSkillCategory.nameKey}
+                  {isSearching
+                    ? (locale === 'en' ? 'Search results' : locale === 'es' ? 'Resultados de la búsqueda' : 'Resultados da busca')
+                    : (t.skills?.[activeSkillCategory.nameKey] || activeSkillCategory.nameKey)}
                 </h2>
               </div>
 
               <p className="text-sm sm:text-base text-[#171316]/80 dark:text-[#F5F1E8]/80 mb-6">
-                {t.skills?.[activeSkillCategory.descriptionKey] || activeSkillCategory.descriptionKey}
+                {isSearching
+                  ? (locale === 'en' ? `Showing technologies matching “${query.trim()}”.` : locale === 'es' ? `Mostrando tecnologías que coinciden con “${query.trim()}”.` : `Mostrando tecnologias que combinam com “${query.trim()}”.`)
+                  : (t.skills?.[activeSkillCategory.descriptionKey] || activeSkillCategory.descriptionKey)}
               </p>
 
               <div className="border-t-2 border-dashed border-[#171316]/30 dark:border-[#F5F1E8]/30 pt-5">
                 <div className="flex items-center gap-3">
                   <span className="text-3xl font-black text-[#E33D3D]">{skillsInCategory.length}</span>
                   <span className="text-sm text-[#171316]/80 dark:text-[#F5F1E8]/80">
-                    {locale === 'en'
+                    {isSearching
+                      ? (locale === 'en' ? 'technologies found' : locale === 'es' ? 'tecnologías encontradas' : 'tecnologias encontradas')
+                    : locale === 'en'
                       ? 'technologies in this category'
                       : locale === 'es'
                       ? 'tecnologías en esta categoría'
@@ -187,12 +222,18 @@ export default function Skills() {
 
             {/* Grade de skills — cartas colecionáveis */}
             <motion.div
-              key={activeCategory}
+              key={isSearching ? `search-${query.trim()}` : activeCategory}
               variants={containerVariants}
               initial="hidden"
               animate="visible"
               className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 content-start"
             >
+              {isSearching && skillsInCategory.length === 0 && (
+                <div className="sm:col-span-2 border-2 border-dashed border-[#171316]/30 dark:border-[#F5F1E8]/30 p-6 text-center text-sm text-[#171316]/60 dark:text-[#F5F1E8]/60">
+                  <FaSearch className="mx-auto mb-2 text-lg opacity-50" />
+                  {locale === 'en' ? `No technology matches “${query.trim()}”.` : locale === 'es' ? `Ninguna tecnología coincide con “${query.trim()}”.` : `Nenhuma tecnologia encontrada para “${query.trim()}”.`}
+                </div>
+              )}
               {skillsInCategory.map((skillData) => {
                 const hasService = skillData.experiences.length > 0;
                 const hasPersonal = skillData.projects.length > 0;
@@ -205,8 +246,12 @@ export default function Skills() {
                     variants={itemVariants}
                     aria-label={skillData.skill}
                     onClick={() => setSelectedSkill(skillData.normalizedSkill)}
-                    className="text-left bg-white dark:bg-[#211c22] border-2 border-[#171316] dark:border-[#F5F1E8] comic-panel-sm p-4 hover:-translate-y-1 hover:translate-x-0.5 transition-transform duration-150"
+                    className="group relative text-left cursor-pointer bg-white dark:bg-[#211c22] border-2 border-[#171316] dark:border-[#F5F1E8] hover:border-[#E33D3D] dark:hover:border-[#E33D3D] comic-panel-sm p-4 hover:-translate-y-1 hover:translate-x-0.5 transition-all duration-150"
                   >
+                    <span className="absolute -top-2.5 -right-2.5 w-7 h-7 flex items-center justify-center rounded-full bg-[#E33D3D] text-white border-2 border-[#171316] dark:border-[#F5F1E8] opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-150">
+                      <FaMousePointer className="text-[0.7rem]" />
+                    </span>
+
                     <span className="font-black uppercase text-sm sm:text-base text-[#171316] dark:text-[#F5F1E8] leading-tight block mb-3">
                       {skillData.skill}
                     </span>
