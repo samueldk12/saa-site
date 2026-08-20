@@ -248,6 +248,31 @@ const RUNNERS: Record<string, (mp: HTMLElement, c: (() => void)[]) => void> = {
   saa: runSaaSpotlight,
 };
 
+// Som tematico por secao — toca junto com a animacao de entrada. No
+// primeiro carregamento da pagina o navegador bloqueia autoplay com som
+// (sem gesto do usuario ainda) e a Promise so' falha silenciosamente,
+// entao so' soa mesmo em navegacoes reais (clique em link).
+const SOUNDS: Record<string, string> = {
+  home: '/sounds/page-home.wav',
+  about: '/sounds/page-about.wav',
+  skills: '/sounds/page-skills.wav',
+  projects: '/sounds/page-projects.wav',
+  saa: '/sounds/page-saa.wav',
+};
+
+function playThemeSound(section: string, cleanups: (() => void)[]) {
+  const src = SOUNDS[section];
+  if (!src) return;
+  try {
+    const audio = new Audio(src);
+    audio.volume = 0.45;
+    audio.play().catch(() => {});
+    cleanups.push(() => { audio.pause(); });
+  } catch {
+    // ambiente sem suporte a audio — ignora
+  }
+}
+
 function TransitionStage({ pathname, section, children }: { pathname: string; section: string; children: ReactNode }) {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -256,6 +281,7 @@ function TransitionStage({ pathname, section, children }: { pathname: string; se
     const cleanups: (() => void)[] = [];
     const runner = RUNNERS[section] || runHomeFall;
     runner(mountRef.current, cleanups);
+    playThemeSound(section, cleanups);
     return () => cleanups.forEach(fn => fn());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);

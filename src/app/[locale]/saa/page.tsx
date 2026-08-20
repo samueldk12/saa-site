@@ -3,7 +3,7 @@
 import { getTranslations } from '@/lib/getTranslations';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '@/components/Navigation';
-import { FaGlobe, FaBuilding, FaInfoCircle, FaExternalLinkAlt, FaHandshake, FaBrain, FaDatabase, FaCode, FaGamepad, FaBolt, FaGraduationCap as FaGrad } from 'react-icons/fa';
+import { FaGlobe, FaBuilding, FaInfoCircle, FaExternalLinkAlt, FaHandshake, FaBrain, FaDatabase, FaCode, FaGamepad, FaBolt, FaGraduationCap as FaGrad, FaEnvelope, FaPhone, FaLinkedin, FaGithub } from 'react-icons/fa';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';
@@ -116,8 +116,8 @@ export default function SAACompany() {
           <div className="p-2.5 rounded-xl bg-black/5 dark:bg-white/10 backdrop-blur-sm flex items-center justify-center relative">
             {project.icon}
             {project.showPartnerTag && (
-              <div className="absolute -bottom-2 -right-2 bg-blue-600 dark:bg-[#4FA8FF] rounded-full w-6 h-6 flex items-center justify-center border-2 border-white/80 dark:border-black/40">
-                <FaHandshake className="text-slate-900 dark:text-white text-xs" />
+              <div className="absolute -bottom-2 -right-2 bg-white dark:bg-[#0B0C0E] rounded-full w-6 h-6 flex items-center justify-center border-2 border-blue-600 dark:border-[#4FA8FF]">
+                <FaHandshake className="text-blue-600 dark:text-[#4FA8FF] text-xs" />
               </div>
             )}
           </div>
@@ -197,8 +197,8 @@ export default function SAACompany() {
                 <div className="p-3 rounded-xl bg-black/5 dark:bg-white/10 backdrop-blur-sm mr-4 flex items-center justify-center relative">
                   {project.icon}
                   {project.showPartnerTag && (
-                    <div className="absolute -bottom-2 -right-2 bg-blue-600 dark:bg-[#4FA8FF] rounded-full w-7 h-7 flex items-center justify-center border-2 border-white/80 dark:border-black/40">
-                      <FaHandshake className="text-sm text-slate-900 dark:text-white" />
+                    <div className="absolute -bottom-2 -right-2 bg-white dark:bg-[#0B0C0E] rounded-full w-7 h-7 flex items-center justify-center border-2 border-blue-600 dark:border-[#4FA8FF]">
+                      <FaHandshake className="text-sm text-blue-600 dark:text-[#4FA8FF]" />
                     </div>
                   )}
                 </div>
@@ -485,6 +485,67 @@ export default function SAACompany() {
                   ))}
                 </div>
               </div>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Seção de Contato */}
+        <section id="contato" className="mt-14 scroll-mt-24">
+          <div className="flex items-center gap-3 mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+              {locale === 'en' ? 'Get in Touch' : locale === 'es' ? 'Contacto' : 'Contato'}
+            </h2>
+            <div className="h-px flex-1 bg-black/5 dark:bg-white/10" />
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.4 }}
+            className="relative rounded-[32px] overflow-hidden border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_4px_16px_rgba(15,23,42,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-6 sm:p-8"
+          >
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/40 to-transparent" />
+            <p className="text-sm sm:text-base text-slate-700 dark:text-white/70 mb-6 max-w-2xl">
+              {locale === 'en'
+                ? "Interested in a partnership or a project with SAA Company? Reach out through any of the channels below."
+                : locale === 'es'
+                ? '¿Interesado en una asociación o un proyecto con SAA Company? Contáctanos por cualquiera de los canales de abajo.'
+                : 'Interessado em uma parceria ou um projeto com a SAA Company? Fale por qualquer um dos canais abaixo.'}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <a
+                href="mailto:samuel.arao@gmail.com"
+                className="flex items-center gap-3 rounded-xl border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/5 px-4 py-3 hover:bg-black/5 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/25 transition-colors"
+              >
+                <FaEnvelope className="text-blue-600 dark:text-[#4FA8FF]" />
+                <span className="text-sm text-slate-700 dark:text-white/80 truncate">samuel.arao@gmail.com</span>
+              </a>
+              <a
+                href="tel:+5531991442175"
+                className="flex items-center gap-3 rounded-xl border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/5 px-4 py-3 hover:bg-black/5 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/25 transition-colors"
+              >
+                <FaPhone className="text-blue-600 dark:text-[#4FA8FF]" />
+                <span className="text-sm text-slate-700 dark:text-white/80">+55 31 99144-2175</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/samuel-arao/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 rounded-xl border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/5 px-4 py-3 hover:bg-black/5 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/25 transition-colors"
+              >
+                <FaLinkedin className="text-blue-600 dark:text-[#4FA8FF]" />
+                <span className="text-sm text-slate-700 dark:text-white/80">@samuel-arao</span>
+              </a>
+              <a
+                href="https://github.com/samueldk12"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 rounded-xl border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/5 px-4 py-3 hover:bg-black/5 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/25 transition-colors"
+              >
+                <FaGithub className="text-blue-600 dark:text-[#4FA8FF]" />
+                <span className="text-sm text-slate-700 dark:text-white/80">@samueldk12</span>
+              </a>
             </div>
           </motion.div>
         </section>
