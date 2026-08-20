@@ -32,8 +32,8 @@ import {
   FaCalendarAlt,
   FaExternalLinkAlt,
   FaPhone,
-  FaPlus,
-  FaMinus
+  FaPlay,
+  FaPause
 } from "react-icons/fa";
 import { SiApachespark, SiApacheairflow, SiPostgresql, SiElasticsearch, SiGo, SiPython, SiTypescript } from 'react-icons/si';
 import Link from 'next/link';
@@ -152,11 +152,13 @@ export default function About() {
   const [activeTimelineItem, setActiveTimelineItem] = useState<number | null>(null);
   const [selectedTimelineItem, setSelectedTimelineItem] = useState<{ type: string; data: any } | null>(null);
   const [marqueePaused, setMarqueePaused] = useState(false);
-  const [timelineZoom, setTimelineZoom] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [isNarrating, setIsNarrating] = useState(false);
   const timelineRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const narrationFrameRef = useRef<number | null>(null);
 
   const handleSkillClick = (skill: string) => {
     setSelectedSkill(skill);
@@ -451,6 +453,48 @@ export default function About() {
     const walk = (x - startX) * 2;
     timelineRef.current.scrollLeft = scrollLeft - walk;
   };
+
+  // Sincroniza a rolagem da timeline com o andamento do audio — a linha
+  // do tempo "anda" da esquerda pra direita conforme a narracao avanca.
+  const stepNarration = () => {
+    const audio = audioRef.current;
+    const track = timelineRef.current;
+    if (!audio || !track || !audio.duration) {
+      narrationFrameRef.current = requestAnimationFrame(stepNarration);
+      return;
+    }
+    const progress = Math.min(audio.currentTime / audio.duration, 1);
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    track.scrollLeft = maxScroll * progress;
+    if (!audio.paused && !audio.ended) {
+      narrationFrameRef.current = requestAnimationFrame(stepNarration);
+    }
+  };
+
+  const toggleNarration = () => {
+    const audio = audioRef.current;
+    const track = timelineRef.current;
+    if (!audio) return;
+
+    if (isNarrating) {
+      audio.pause();
+      setIsNarrating(false);
+      if (narrationFrameRef.current) cancelAnimationFrame(narrationFrameRef.current);
+      return;
+    }
+
+    if (track) track.scrollLeft = 0;
+    audio.currentTime = 0;
+    audio.play().catch(() => setIsNarrating(false));
+    setIsNarrating(true);
+    narrationFrameRef.current = requestAnimationFrame(stepNarration);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (narrationFrameRef.current) cancelAnimationFrame(narrationFrameRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     // Função para rolagem suave
@@ -748,19 +792,25 @@ export default function About() {
           </motion.div>
 
           <div className="relative">
-            {/* Controles de zoom */}
+            {/* Narracao da historia — toca o audio e a timeline anda sozinha */}
+            <audio
+              ref={audioRef}
+              src={`/audio/timeline-${locale === 'en' || locale === 'es' ? locale : 'pt'}.mp3`}
+              onEnded={() => setIsNarrating(false)}
+              preload="none"
+            />
             <div className="absolute right-4 -top-12 flex gap-2">
               <button
-                onClick={() => setTimelineZoom(prev => Math.min(prev + 0.2, 2))}
-                className="p-2 rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-100/70 dark:bg-black/40 text-amber-800 dark:text-cyan-300 hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 transition-all"
+                onClick={toggleNarration}
+                aria-label={isNarrating
+                  ? (locale === 'en' ? 'Pause narration' : locale === 'es' ? 'Pausar narración' : 'Pausar narração')
+                  : (locale === 'en' ? 'Play narration' : locale === 'es' ? 'Reproducir narración' : 'Ouvir narração')}
+                className="flex items-center gap-2 px-3 py-2 rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-100/70 dark:bg-black/40 text-amber-800 dark:text-cyan-300 hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 transition-all text-xs font-mono uppercase tracking-wide"
               >
-                <FaPlus />
-              </button>
-              <button
-                onClick={() => setTimelineZoom(prev => Math.max(prev - 0.2, 0.5))}
-                className="p-2 rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-100/70 dark:bg-black/40 text-amber-800 dark:text-cyan-300 hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 transition-all"
-              >
-                <FaMinus />
+                {isNarrating ? <FaPause /> : <FaPlay />}
+                {isNarrating
+                  ? (locale === 'en' ? 'Pause' : locale === 'es' ? 'Pausa' : 'Pausar')
+                  : (locale === 'en' ? 'Play story' : locale === 'es' ? 'Reproducir' : 'Ouvir história')}
               </button>
             </div>
 
@@ -781,11 +831,9 @@ export default function About() {
                 msOverflowStyle: 'none'
               }}
             >
-              <div 
+              <div
                 className="relative"
-                style={{ 
-                  transform: `scale(${timelineZoom})`,
-                  transformOrigin: 'center center',
+                style={{
                   width: 'max-content',
                   minWidth: '100%',
                   paddingLeft: '50%',
@@ -799,9 +847,23 @@ export default function About() {
                 <div className="flex items-center gap-16">
                   {[...workExperience, ...education, ...certifications]
                     .sort((a, b) => {
-                      const yearA = parseInt(('period' in a ? a.period : a.year).toString().split('-')[0]);
-                      const yearB = parseInt(('period' in b ? b.period : b.year).toString().split('-')[0]);
-                      return yearB - yearA;
+                      const monthIndex: Record<string, number> = {
+                        janeiro: 0, fevereiro: 1, março: 2, marco: 2, abril: 3, maio: 4, junho: 5,
+                        julho: 6, agosto: 7, setembro: 8, outubro: 9, novembro: 10, dezembro: 11,
+                        january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+                        july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
+                      };
+                      const getSortKey = (item: typeof a) => {
+                        const raw = ('period' in item ? item.period : item.year).toString().toLowerCase();
+                        const yearMatch = raw.match(/\d{4}/);
+                        const year = yearMatch ? parseInt(yearMatch[0]) : 0;
+                        const monthName = Object.keys(monthIndex).find(m => raw.includes(m));
+                        const month = monthName ? monthIndex[monthName] : 0;
+                        return year * 12 + month;
+                      };
+                      // ordem cronologica: mais antigo primeiro (esquerda),
+                      // pra ler como uma historia da esquerda pra direita
+                      return getSortKey(a) - getSortKey(b);
                     })
                     .map((item, index) => {
                       const type = 'company' in item ? 'experience' :

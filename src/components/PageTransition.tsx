@@ -78,27 +78,70 @@ function runAboutRender(mountPoint: HTMLElement, cleanups: (() => void)[]) {
   });
 }
 
-// Skills — cada bloco e' "desenhado" com um traco (clip-path) que varre
-// da esquerda pra direita, com uma leve inclinacao de rabisco.
+// Skills — cada bloco e' "desenhado": um traco (clip-path) varre da
+// esquerda pra direita com uma leve inclinacao de rabisco, e uma ponta
+// de caneta luminosa percorre a borda junto, como se estivesse
+// literalmente riscando o painel na tela.
 function runSkillsDraw(mountPoint: HTMLElement, cleanups: (() => void)[]) {
   const blocks = pickBlocks(mountPoint);
   blocks.forEach((el, i) => {
+    const duration = 480;
+    const delay = 90 + i * 150;
+
     const anim = el.animate(
       [
         { clipPath: 'inset(0 100% 0 0)', transform: 'rotate(-0.6deg)' },
         { clipPath: 'inset(0 0% 0 0)', transform: 'rotate(0deg)' },
       ],
-      { duration: 460, delay: 90 + i * 150, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'both' }
+      { duration, delay, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'both' }
     );
     cleanups.push(() => anim.cancel());
+
+    const wasStatic = getComputedStyle(el).position === 'static';
+    if (wasStatic) el.style.position = 'relative';
+
+    const pen = document.createElement('div');
+    pen.style.position = 'absolute';
+    pen.style.top = '0';
+    pen.style.width = '3px';
+    pen.style.height = '100%';
+    pen.style.background = 'linear-gradient(180deg, transparent, #E33D3D, transparent)';
+    pen.style.boxShadow = '0 0 12px 2px rgba(227,61,61,0.75)';
+    pen.style.pointerEvents = 'none';
+    pen.style.zIndex = '50';
+    el.appendChild(pen);
+
+    const penAnim = pen.animate(
+      [
+        { left: '0%', opacity: 0 },
+        { left: '0%', opacity: 1, offset: 0.03 },
+        { left: '100%', opacity: 1, offset: 0.94 },
+        { left: '100%', opacity: 0 },
+      ],
+      { duration, delay, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'both' }
+    );
+    penAnim.onfinish = () => pen.remove();
+    cleanups.push(() => {
+      penAnim.cancel();
+      pen.remove();
+      if (wasStatic) el.style.position = '';
+    });
   });
 }
 
-// Projects — chuva de 0 e 1 forma o fundo, dissolve pra estrutura atual
-// e so' entao o conteudo real e' "digitado" (varredura da esquerda).
+// Projects — uma chuva de 0 e 1 cai cobrindo a tela, e a estrutura real
+// da pagina ja' vai se formando por baixo enquanto ela ainda cai — os
+// digitos "viram" o layout, em vez de duas etapas separadas.
 function runProjectsType(mountPoint: HTMLElement, cleanups: (() => void)[]) {
-  const overlay = createOverlay('#0B0E14');
+  const overlay = createOverlay('transparent');
   overlay.style.fontFamily = 'var(--font-mono), monospace';
+
+  const backdrop = document.createElement('div');
+  backdrop.style.position = 'absolute';
+  backdrop.style.inset = '0';
+  backdrop.style.background = '#0B0E14';
+  overlay.appendChild(backdrop);
+
   const colWidth = 22;
   const cols = Math.ceil(window.innerWidth / colWidth);
   for (let i = 0; i < cols; i++) {
@@ -112,21 +155,18 @@ function runProjectsType(mountPoint: HTMLElement, cleanups: (() => void)[]) {
     col.style.color = '#5CE1A8';
     col.style.textAlign = 'center';
     col.style.opacity = String(0.3 + Math.random() * 0.55);
-    const len = 22 + Math.floor(Math.random() * 14);
+    const len = 20 + Math.floor(Math.random() * 12);
     col.innerHTML = Array.from({ length: len }, () => (Math.random() > 0.5 ? '1' : '0')).join('<br/>');
     overlay.appendChild(col);
     const anim = col.animate(
       [{ transform: 'translateY(0%)' }, { transform: 'translateY(220%)' }],
-      { duration: 750 + Math.random() * 450, delay: Math.random() * 140, easing: 'linear', fill: 'forwards' }
+      { duration: 650 + Math.random() * 350, delay: Math.random() * 120, easing: 'linear', fill: 'forwards' }
     );
     cleanups.push(() => anim.cancel());
   }
 
-  const timeoutId = window.setTimeout(() => {
-    const fadeOut = overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 260, easing: 'ease-in', fill: 'forwards' });
-    fadeOut.onfinish = () => overlay.remove();
-    cleanups.push(() => overlay.remove());
-
+  // a estrutura real comeca a se formar bem cedo, ainda debaixo da chuva
+  const revealId = window.setTimeout(() => {
     const blocks = pickBlocks(mountPoint);
     blocks.forEach((el, i) => {
       const anim = el.animate(
@@ -134,12 +174,23 @@ function runProjectsType(mountPoint: HTMLElement, cleanups: (() => void)[]) {
           { clipPath: 'inset(0 100% 0 0)' },
           { clipPath: 'inset(0 0% 0 0)' },
         ],
-        { duration: 420, delay: i * 130, easing: 'steps(20, end)', fill: 'both' }
+        { duration: 460, delay: i * 110, easing: 'steps(24, end)', fill: 'both' }
       );
       cleanups.push(() => anim.cancel());
     });
-  }, 620);
-  cleanups.push(() => { window.clearTimeout(timeoutId); overlay.remove(); });
+  }, 180);
+  cleanups.push(() => window.clearTimeout(revealId));
+
+  // o fundo escuro vai sumindo enquanto os digitos ainda caem por cima,
+  // deixando a pagina real "aparecer atraves" da chuva
+  const backdropFade = backdrop.animate(
+    [{ opacity: 1 }, { opacity: 0 }],
+    { duration: 700, delay: 220, easing: 'ease-in', fill: 'forwards' }
+  );
+  cleanups.push(() => backdropFade.cancel());
+
+  const removeId = window.setTimeout(() => overlay.remove(), 1050);
+  cleanups.push(() => { window.clearTimeout(removeId); overlay.remove(); });
 }
 
 // SAA — abertura de show: tudo escuro, um spot circula em torno da logo
