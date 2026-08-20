@@ -9,7 +9,6 @@ import {
   FaDatabase,
   FaServer,
   FaShieldAlt,
-  FaCubes,
   FaLaptopCode,
   FaBrain,
   FaTimes,
@@ -58,25 +57,23 @@ const joinNames = (names: string[], locale: string) => {
 };
 
 const getSkillCategories = (locale: string) => ([
-  { id: 'languages', nameKey: 'languages', icon: <FaCode />, descriptionKey: 'languages_description' },
   { id: 'data', nameKey: 'dataEngineering', icon: <FaDatabase />, descriptionKey: 'dataEngineering_description' },
-  { id: 'ai', nameKey: 'artificialIntelligence', icon: <FaBrain />, descriptionKey: 'artificialIntelligence_description' },
+  { id: 'languages', nameKey: 'languages', icon: <FaCode />, descriptionKey: 'languages_description' },
   { id: 'databases', nameKey: 'databases', icon: <FaDatabase />, descriptionKey: 'databases_description' },
+  { id: 'ai', nameKey: 'artificialIntelligence', icon: <FaBrain />, descriptionKey: 'artificialIntelligence_description' },
   { id: 'web', nameKey: 'webDev', icon: <FaServer />, descriptionKey: 'webDev_description' },
   { id: 'devops', nameKey: 'devops', icon: <FaLaptopCode />, descriptionKey: 'devops_description' },
-  { id: 'architecture', nameKey: 'architecture', icon: <FaCubes />, descriptionKey: 'architecture_description' },
   { id: 'security', nameKey: 'security', icon: <FaShieldAlt />, descriptionKey: 'security_description' },
 ]);
 
 // Ordem de exibição das skills dentro de cada categoria
 const CATEGORY_SKILL_NAMES: Record<string, string[]> = {
   languages: ['PYTHON', 'PHP', 'TYPESCRIPT', 'GO', 'JAVASCRIPT'],
-  data: ['DATA ENGINEERING', 'ETL', 'APACHE SPARK', 'APACHE AIRFLOW', 'APACHE HADOOP', 'APACHE NIFI', 'APACHE HIVE', 'APACHE KAFKA', 'DATA LAKES', 'WEB SCRAPING'],
+  data: ['ETL', 'APACHE SPARK', 'APACHE AIRFLOW', 'APACHE HADOOP', 'APACHE NIFI', 'APACHE HIVE', 'APACHE KAFKA', 'DATA LAKES', 'WEB SCRAPING'],
   ai: ['MACHINE LEARNING', 'DEEP LEARNING', 'GAN', 'COMPUTER VISION', 'NLP'],
   databases: ['POSTGRESQL', 'MYSQL', 'MONGODB', 'REDIS', 'SQL SERVER', 'ELASTICSEARCH'],
   web: ['FASTAPI', 'REST APIS', 'GRAPHQL', 'MICROSERVICES', 'NODE.JS', 'REACT', 'NEXT.JS', 'VITE'],
   devops: ['DOCKER', 'KUBERNETES', 'AWS', 'CLOUDFLARE', 'CI/CD', 'JENKINS', 'PROMETHEUS', 'GRAFANA'],
-  architecture: ['CLEAN ARCHITECTURE', 'PERFORMANCE', 'AGILE', 'TDD'],
   security: ['WEB SECURITY', 'PENETRATION TESTING', 'LINUX', 'SSRF', 'CRYPTOGRAPHY', 'API SECURITY', 'CYBERSECURITY'],
 };
 
@@ -94,7 +91,7 @@ export default function Skills() {
   const params = useParams();
   const locale = params.locale as string;
   const t = getTranslations(locale);
-  const [activeCategory, setActiveCategory] = useState('languages');
+  const [activeCategory, setActiveCategory] = useState('data');
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
   const [query, setQuery] = useState('');
 
@@ -123,6 +120,15 @@ export default function Skills() {
         .filter(Boolean) as ReturnType<typeof getLocalizedSkillData>[]);
 
   const selectedSkillData = selectedSkill ? getLocalizedSkillData(selectedSkill, locale) : null;
+
+  // Rollup de empresas e projetos pessoais de toda a categoria — onde essas
+  // habilidades, no conjunto, ja' foram aplicadas de verdade.
+  const categoryCompanies = Array.from(new Set(
+    skillsInCategory.flatMap(s => s.experiences.map(e => e.company))
+  ));
+  const categoryPersonalProjects = Array.from(new Set(
+    skillsInCategory.flatMap(s => s.projects.map(p => p.name))
+  ));
 
   return (
     <div className="min-h-screen bg-[#F4EFE4] dark:bg-[#171316] halftone-dots">
@@ -218,6 +224,33 @@ export default function Skills() {
                   </span>
                 </div>
               </div>
+
+              {!isSearching && (categoryCompanies.length > 0 || categoryPersonalProjects.length > 0) && (
+                <div className="border-t-2 border-dashed border-[#171316]/30 dark:border-[#F5F1E8]/30 mt-5 pt-5 space-y-3">
+                  {categoryCompanies.length > 0 && (
+                    <div className="flex items-start gap-2">
+                      <FaBuilding className="mt-0.5 shrink-0 text-[#171316]/60 dark:text-[#F5F1E8]/60 text-xs" />
+                      <p className="text-xs sm:text-sm text-[#171316]/80 dark:text-[#F5F1E8]/80">
+                        <span className="font-black uppercase text-[0.65rem] tracking-widest block mb-0.5 text-[#171316] dark:text-[#F5F1E8]">
+                          {locale === 'en' ? 'Experience at' : locale === 'es' ? 'Experiencia en' : 'Experiência na'}
+                        </span>
+                        {joinNames(categoryCompanies, locale)}
+                      </p>
+                    </div>
+                  )}
+                  {categoryPersonalProjects.length > 0 && (
+                    <div className="flex items-start gap-2">
+                      <FaCode className="mt-0.5 shrink-0 text-[#171316]/60 dark:text-[#F5F1E8]/60 text-xs" />
+                      <p className="text-xs sm:text-sm text-[#171316]/80 dark:text-[#F5F1E8]/80">
+                        <span className="font-black uppercase text-[0.65rem] tracking-widest block mb-0.5 text-[#171316] dark:text-[#F5F1E8]">
+                          {locale === 'en' ? 'Personal projects' : locale === 'es' ? 'Proyectos personales' : 'Projetos pessoais'}
+                        </span>
+                        {joinNames(categoryPersonalProjects, locale)}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Grade de skills — cartas colecionáveis */}

@@ -104,7 +104,7 @@ export default function SAACompany() {
   // bordas finas e um único acento (navy), sem cor por projeto.
   const SAAProjectCard = ({ project, index }: { project: any; index: number }) => (
     <motion.div
-      className="group relative rounded-[28px] overflow-hidden flex flex-col h-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:bg-black/[0.04] dark:hover:bg-white/[0.1] hover:border-black/20 dark:hover:border-white/25 hover:-translate-y-1 transition-all duration-300"
+      className="group relative rounded-[28px] overflow-hidden flex flex-col h-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_4px_20px_rgba(15,23,42,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:bg-black/[0.04] dark:hover:bg-white/[0.1] hover:border-black/20 dark:hover:border-white/25 hover:-translate-y-1 transition-all duration-300"
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
@@ -116,8 +116,8 @@ export default function SAACompany() {
           <div className="p-2.5 rounded-xl bg-black/5 dark:bg-white/10 backdrop-blur-sm flex items-center justify-center relative">
             {project.icon}
             {project.showPartnerTag && (
-              <div className="absolute -bottom-1.5 -right-1.5 bg-blue-600 dark:bg-[#4FA8FF] rounded-full w-4 h-4 flex items-center justify-center border-2 border-white/80 dark:border-black/40">
-                <FaHandshake className="text-slate-900 dark:text-white text-[0.5rem]" />
+              <div className="absolute -bottom-2 -right-2 bg-blue-600 dark:bg-[#4FA8FF] rounded-full w-6 h-6 flex items-center justify-center border-2 border-white/80 dark:border-black/40">
+                <FaHandshake className="text-slate-900 dark:text-white text-xs" />
               </div>
             )}
           </div>
@@ -197,8 +197,8 @@ export default function SAACompany() {
                 <div className="p-3 rounded-xl bg-black/5 dark:bg-white/10 backdrop-blur-sm mr-4 flex items-center justify-center relative">
                   {project.icon}
                   {project.showPartnerTag && (
-                    <div className="absolute -bottom-1 -right-1 bg-blue-600 dark:bg-[#4FA8FF] rounded-full w-5 h-5 flex items-center justify-center border-2 border-white/80 dark:border-black/40">
-                      <FaHandshake className="text-[0.55rem] text-slate-900 dark:text-white" />
+                    <div className="absolute -bottom-2 -right-2 bg-blue-600 dark:bg-[#4FA8FF] rounded-full w-7 h-7 flex items-center justify-center border-2 border-white/80 dark:border-black/40">
+                      <FaHandshake className="text-sm text-slate-900 dark:text-white" />
                     </div>
                   )}
                 </div>
@@ -293,13 +293,15 @@ export default function SAACompany() {
     );
   };
 
+  // Cada capacidade aponta para o produto SAA que melhor a representa —
+  // clicar abre o detalhe daquele projeto.
   const capabilities = [
-    { label: 'AI', icon: <FaBrain /> },
-    { label: locale === 'en' ? 'Data' : 'Dados', icon: <FaDatabase /> },
-    { label: 'Web', icon: <FaCode /> },
-    { label: 'Game', icon: <FaGamepad /> },
-    { label: 'Marketing', icon: <FaBolt /> },
-    { label: locale === 'en' ? 'Learning' : locale === 'es' ? 'Aprendizaje' : 'Aprendizado', icon: <FaGrad /> },
+    { label: 'AI', icon: <FaBrain />, projectId: 'venda' },
+    { label: locale === 'en' ? 'Data' : 'Dados', icon: <FaDatabase />, projectId: 'venda' },
+    { label: 'Web', icon: <FaCode />, projectId: 'rozenir' },
+    { label: 'Game', icon: <FaGamepad />, projectId: 'tralingo' },
+    { label: 'Marketing', icon: <FaBolt />, projectId: 'venda' },
+    { label: locale === 'en' ? 'Learning' : locale === 'es' ? 'Aprendizaje' : 'Aprendizado', icon: <FaGrad />, projectId: 'tralingo' },
   ];
 
   const stats = [
@@ -337,7 +339,7 @@ export default function SAACompany() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="relative rounded-[32px] overflow-hidden mb-8 border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+          className="relative rounded-[32px] overflow-hidden mb-8 border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_4px_24px_rgba(15,23,42,0.07)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
         >
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/40 to-transparent" />
           <div className="p-6 sm:p-10 flex flex-col md:flex-row md:items-center gap-8">
@@ -345,7 +347,7 @@ export default function SAACompany() {
               <img
                 src="/images/saa-logo.png"
                 alt="SAA Logo"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain brightness-0 dark:invert"
               />
             </div>
             <div className="flex-1">
@@ -383,18 +385,27 @@ export default function SAACompany() {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="flex items-center gap-3 mb-10 overflow-x-auto pb-1"
         >
-          <div className="flex items-center gap-1 sm:gap-2 rounded-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.45)] px-2 py-2 shrink-0">
-            {capabilities.map((c) => (
-              <div key={c.label} className="flex flex-col items-center gap-1 px-3 sm:px-4 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-default">
-                <span className="text-base text-blue-600 dark:text-[#4FA8FF]">{c.icon}</span>
-                <span className="text-[0.65rem] text-slate-700 dark:text-white/80 whitespace-nowrap">{c.label}</span>
-              </div>
-            ))}
+          <div className="flex items-center gap-1 sm:gap-2 rounded-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_4px_16px_rgba(15,23,42,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.45)] px-2 py-2 shrink-0">
+            {capabilities.map((c) => {
+              const linkedProject = saaProjects.find(p => p.id === c.projectId);
+              return (
+                <button
+                  key={c.label}
+                  onClick={() => linkedProject && openProjectModal(linkedProject)}
+                  aria-label={`${c.label}${linkedProject ? ` — ${linkedProject.name}` : ''}`}
+                  title={linkedProject?.name}
+                  className="flex flex-col items-center gap-1 px-3 sm:px-4 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
+                >
+                  <span className="text-base text-blue-600 dark:text-[#4FA8FF]">{c.icon}</span>
+                  <span className="text-[0.65rem] text-slate-700 dark:text-white/80 whitespace-nowrap">{c.label}</span>
+                </button>
+              );
+            })}
           </div>
           <a
             href="#parceria"
             aria-label={locale === 'en' ? 'Jump to partnership' : locale === 'es' ? 'Ir a la asociación' : 'Ir para parceria'}
-            className="w-12 h-12 shrink-0 rounded-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.45)] flex items-center justify-center text-slate-700 dark:text-white/80 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+            className="w-12 h-12 shrink-0 rounded-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_4px_16px_rgba(15,23,42,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.45)] flex items-center justify-center text-slate-700 dark:text-white/80 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
           >
             <FaHandshake />
           </a>
@@ -437,7 +448,7 @@ export default function SAACompany() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.4 }}
-            className="relative rounded-[32px] overflow-hidden border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-6 sm:p-8"
+            className="relative rounded-[32px] overflow-hidden border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_4px_20px_rgba(15,23,42,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-6 sm:p-8"
           >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/40 to-transparent" />
             <div className="flex flex-col md:flex-row items-start gap-6 sm:gap-8">
