@@ -18,68 +18,74 @@ export default function SAACompany() {
   // Projetos da SAA
   const saaProjects = [
     {
-      id: 'paipeline',
-      name: 'Paipeline',
-      description: locale === 'en' 
-        ? 'AI platform that transforms how companies use artificial intelligence by centralizing the process in a unified, visual, and intelligent flow. It automatically selects the best AI for each step, focusing on efficiency, quality, and cost-effectiveness.' 
+      id: 'tralingo',
+      name: 'Tralingo',
+      description: locale === 'en'
+        ? 'Gamified, AI-powered learning platform that turns any subject — from public exam prep to new hobbies — into personalized daily lessons with XP, streaks, and rankings.'
         : locale === 'es'
-        ? 'Plataforma de IA que transforma cómo las empresas utilizan la inteligencia artificial, centralizando el proceso en un flujo unificado, visual e inteligente. Selecciona automáticamente la mejor IA para cada etapa, con foco en eficiencia, calidad y costo-beneficio.'
-        : 'Plataforma de IA que transforma como empresas utilizam inteligência artificial, centralizando o processo em um fluxo unificado, visual e inteligente. Seleciona automaticamente a melhor IA para cada etapa, com foco em eficiência, qualidade e custo-benefício.',
+        ? 'Plataforma de aprendizaje gamificada impulsada por IA que convierte cualquier tema, desde oposiciones hasta nuevos hobbies, en lecciones diarias personalizadas con XP, rachas y rankings.'
+        : 'Plataforma de aprendizado gamificada com IA que transforma qualquer assunto, de concursos públicos a novos hobbies, em lições diárias personalizadas com XP, ofensivas e rankings.',
       fullDescription: locale === 'en'
-        ? 'pAIpeline is a Wersam project born with the mission to transform how companies use artificial intelligence, making its application as accessible and strategic as any other essential resource. The platform solves the challenge of dealing with multiple AI tools, complex interfaces, and unpredictable results by centralizing the entire process in a unified, visual, and intelligent flow. Its goal is to allow data—whether documents, images, or any other format—to go through customized pipelines that automatically choose the best AI for each step, always focusing on efficiency, quality of results, and cost-effectiveness. By treating AI as a commodity, pAIpeline enables companies of any size to leverage the full potential of their data with predictability, control, and scalability.'
+        ? 'Tralingo is an AI-powered gamified training platform built in partnership with PneuJogos (Pneu Studios). It generates personalized learning tracks from any content — upload a PDF of an exam syllabus or class notes and the AI turns it into dynamic, high-retention lessons and quizzes. Users earn XP, keep daily streaks, and compete on global rankings, whether preparing for public exams (concursos) and college entrance exams (ENEM/vestibulares) or picking up a new hobby like languages, programming, music, or cooking. Tralingo also offers a dedicated solution for companies to train teams with department-based tracks, corporate rankings, and performance reports.'
         : locale === 'es'
-        ? 'pAIpeline es un proyecto de Wersam que nace con la misión de transformar la forma en que las empresas utilizan la inteligencia artificial, haciendo que su aplicación sea tan accesible y estratégica como cualquier otro recurso esencial. La plataforma resuelve el desafío de lidiar con múltiples herramientas de IA, interfaces complejas y resultados impredecibles al centralizar todo el proceso en un flujo unificado, visual e inteligente. Su objetivo es permitir que los datos, ya sean documentos, imágenes o cualquier otro formato, pasen por pipelines personalizados que eligen automáticamente la mejor IA para cada etapa, siempre con foco en eficiencia, calidad de resultados y costo-beneficio. Al tratar la IA como un commodity, pAIpeline permite que empresas de cualquier tamaño aprovechen todo el potencial de sus datos con previsibilidad, control y escalabilidad.'
-        : 'O pAIpeline é um projeto da Wersam que nasce com a missão de transformar a forma como empresas utilizam inteligência artificial, tornando sua aplicação tão acessível e estratégica quanto qualquer outro recurso essencial. A plataforma resolve o desafio de lidar com múltiplas ferramentas de IA, interfaces complexas e resultados imprevisíveis ao centralizar todo o processo em um fluxo unificado, visual e inteligente. Seu objetivo é permitir que dados — sejam documentos, imagens ou qualquer outro formato — passem por pipelines personalizados que escolhem automaticamente a melhor IA para cada etapa, sempre com foco em eficiência, qualidade dos resultados e custo-benefício. Ao tratar a IA como uma comodity, o pAIpeline permite que empresas de qualquer porte aproveitem todo o potencial dos dados com previsibilidade, controle e escalabilidade.',
-      url: 'https://www.paipeline.com.br/',
-      icon: <img src="/images/pipeline-logo.png" alt="Paipeline" className="w-8 h-8" />,
+        ? 'Tralingo es una plataforma de entrenamiento gamificada impulsada por IA, creada en asociación con PneuJogos (Pneu Studios). Genera trayectos de aprendizaje personalizados a partir de cualquier contenido: sube un PDF del temario de una oposición o de tus apuntes y la IA lo transforma en lecciones y quizzes dinámicos de alta retención. Los usuarios ganan XP, mantienen rachas diarias y compiten en rankings globales, ya sea preparando oposiciones y exámenes de ingreso (vestibulares/ENEM) o aprendiendo un nuevo hobby como idiomas, programación, música o cocina. Tralingo también ofrece una solución dedicada para que las empresas capaciten a sus equipos con trayectos por departamento, rankings corporativos e informes de desempeño.'
+        : 'O Tralingo é uma plataforma de treinamento gamificada com IA, criada em parceria com a PneuJogos (Pneu Studios). Ele gera trilhas de aprendizado personalizadas a partir de qualquer conteúdo — basta subir um PDF de edital ou de uma apostila para a IA transformar o material em lições e simulados dinâmicos e de alta retenção. Os usuários ganham XP, mantêm ofensivas diárias e competem em rankings globais, seja se preparando para concursos públicos e vestibulares/ENEM, seja aprendendo um novo hobby como idiomas, programação, música ou culinária. O Tralingo também oferece uma solução dedicada para empresas treinarem equipes com trilhas por departamento, ranking corporativo e relatórios de desempenho.',
+      url: 'https://tralingo.com.br/',
+      icon: <img src="/images/tralingo-logo.png" alt="Tralingo" className="w-8 h-8" />,
       color: 'emerald',
       gradient: 'from-emerald-400 to-teal-600',
       bgLight: 'bg-emerald-50/80',
       bgDark: 'bg-emerald-900/20',
-      technologies: ['AI', 'Data Pipeline', 'Automation'],
-      partnership: 'WerSam (Samuel + Weverton Miranda)',
-      image: '/images/pipeline-logo.png',
-      partnerIcon: <img src="/images/wersam-logo.png" alt="WerSam" className="w-6 h-6" />,
+      technologies: ['AI', 'Gamification', 'Education'],
+      partnership: 'PneuJogos (Pneu Studios)',
+      partnerName: 'PneuJogos',
+      image: '/images/tralingo-logo.png',
+      partnerIcon: <img src="/images/pneujogos-logo.svg" alt="PneuJogos" className="w-6 h-6" />,
       showPartnerTag: true,
     },
     {
-      id: 'altpaiper',
-      name: 'Alt-Paiper',
+      id: 'venda',
+      name: 'Venda',
       description: locale === 'en'
-        ? 'AI-assisted document creation platform that offers multiple levels of assistance, from blank templates to complete documents. Ideal for academic, legal or technical writing.' 
+        ? 'Sales CRM with active CNPJ prospecting and an AI copilot that helps commercial teams find and close new customers.'
         : locale === 'es'
-        ? 'Plataforma de creación de documentos con IA que ofrece múltiples niveles de asistencia, desde plantillas en blanco hasta documentos completos. Ideal para redacción académica, jurídica o técnica.'
-        : 'Plataforma de criação de documentos com IA que oferece múltiplos níveis de assistência, desde templates em branco até documentos completos. Ideal para redação acadêmica, jurídica ou técnica.',
+        ? 'CRM de ventas con prospección activa de CNPJ y un copiloto de IA que ayuda a los equipos comerciales a encontrar y cerrar nuevos clientes.'
+        : 'CRM de vendas com prospecção ativa por CNPJ e um copiloto de IA que ajuda equipes comerciais a encontrar e fechar novos clientes.',
       fullDescription: locale === 'en'
-        ? 'Alt-Paiper is a document creation and editing platform powered by artificial intelligence. It offers different levels of assistance to help users create their documents - from blank documents with formatting guidelines, to AI-generated roadmaps for studies, to complete document generation based on a given topic. The platform is designed to assist in academic, legal, and technical writing, allowing users to choose the level of AI assistance they need for each project.' 
+        ? 'Venda is a Brazilian sales platform that combines a CRM, active prospecting, and an AI copilot for commercial teams. It lets you search Brazil\'s Federal Revenue database of more than 50 million companies by industry, size, and location, track leads through a visual Kanban sales funnel, and generate persuasive outreach scripts with an AI copilot powered by Google Gemini, using methodologies like SPIN Selling and Sandler. WhatsApp and email are built into the platform, along with trigger-based automations for follow-ups and lead nurturing.'
         : locale === 'es'
-        ? 'Alt-Paiper es una plataforma de creación y edición de documentos asistida por inteligencia artificial. Ofrece diferentes niveles de asistencia para ayudar a los usuarios a crear sus documentos - desde documentos en blanco con normas de formato, pasando por hojas de ruta de estudios generadas por IA, hasta la generación completa de documentos basados en un tema proporcionado. La plataforma está diseñada para ayudar en la redacción académica, jurídica y técnica, permitiendo a los usuarios elegir el nivel de asistencia de IA que necesitan para cada proyecto.'
-        : 'Alt-Paiper é uma plataforma de criação e edição de documentos assistida por inteligência artificial. Ela oferece diferentes níveis de assistência para ajudar os usuários a criar seus documentos - desde documentos em branco com normas de formatação, passando por roadmaps de estudos gerados por IA, até a geração completa de documentos com base em um tema fornecido. A plataforma é projetada para auxiliar na redação acadêmica, jurídica e técnica, permitindo que os usuários escolham o nível de assistência de IA que precisam para cada projeto.',
-      url: 'https://paiper-brown.vercel.app/',
-      icon: <img src="/images/altpaiper-logo.png" alt="Alt-Paiper" className="w-8 h-8" />,
+        ? 'Venda es una plataforma de ventas brasileña que combina un CRM, prospección activa y un copiloto de IA para equipos comerciales. Permite buscar en la base de datos de la Receita Federal de Brasil, con más de 50 millones de empresas, filtrando por sector, tamaño y ubicación, dar seguimiento a los leads en un embudo de ventas Kanban visual y generar guiones de abordaje persuasivos con un copiloto de IA impulsado por Google Gemini, usando metodologías como SPIN Selling y Sandler. WhatsApp y correo electrónico están integrados en la plataforma, junto con automatizaciones por disparadores para seguimientos y nutrición de leads.'
+        : 'O Venda é uma plataforma de vendas brasileira que combina CRM, prospecção ativa e um copiloto de IA para equipes comerciais. Ele permite buscar na base da Receita Federal, com mais de 50 milhões de empresas, filtrando por segmento, porte e localização, acompanhar leads em um funil de vendas Kanban visual e gerar roteiros de abordagem persuasivos com um copiloto de IA baseado no Google Gemini, usando metodologias como SPIN Selling e Sandler. WhatsApp e e-mail já vêm integrados à plataforma, além de automações por gatilhos para follow-ups e nutrição de leads.',
+      url: 'https://venda-app-six.vercel.app/',
+      icon: <img src="/images/venda-logo.png" alt="Venda" className="w-8 h-8" />,
       color: 'amber',
       gradient: 'from-amber-400 to-orange-600',
       bgLight: 'bg-amber-50/80',
       bgDark: 'bg-amber-900/20',
-      technologies: ['AI', 'Document Generation', 'Academic Writing'],
-      image: '/images/altpaiper-logo.png'
+      technologies: ['AI', 'CRM', 'Automation'],
+      image: '/images/venda-logo.png'
     },
     {
-      id: 'ondetrabalho',
-      name: 'Onde Trabalho',
+      id: 'rozenir',
+      name: 'Rozenir',
       description: locale === 'en'
-        ? 'Anonymous forum for people to discuss their work environment, debate the future of work, and report workplace harassment.' 
+        ? 'Personal landing page for Rozenir Apolinário Gonzaga, a Belo Horizonte-based reseller and consultant offering beauty products, wellness plans, and construction-related services.'
         : locale === 'es'
-        ? 'Foro anónimo para que las personas hablen sobre su ambiente de trabajo, debatan sobre el futuro del trabajo y reporten acoso laboral.'
-        : 'Fórum para pessoas falarem sobre o ambiente de trabalho, o que fazem, debaterem sobre o futuro do trabalho, reportarem sobre assédios e afins, tudo de forma anônima.',
-      url: 'https://ondetrabalho.com.br/',
-      icon: <img src="/images/ondetrabalho-logo.png" alt="Onde Trabalho" className="w-8 h-8" />,
+        ? 'Landing page personal de Rozenir Apolinário Gonzaga, revendedora y consultora de Belo Horizonte que ofrece productos de belleza, planes de bienestar y servicios relacionados con la construcción.'
+        : 'Landing page pessoal da Rozenir Apolinário Gonzaga, revendedora e consultora de Belo Horizonte que oferece produtos de beleza, planos de bem-estar e serviços ligados à construção civil.',
+      fullDescription: locale === 'en'
+        ? 'This landing page was built for Rozenir Apolinário Gonzaga, a technical building designer and sales consultant based in Belo Horizonte, MG. It presents her three lines of work in one place: Beauty, with perfumery, makeup, and skin and body care from trusted brands; Well-being, with insurance, health plans, and credit for personal and business goals; and Construction, with technical building design and tax-refund support for home construction expenses. The page centralizes her contact channels — WhatsApp, Instagram, and LinkedIn — so clients can reach her directly for personalized service.'
+        : locale === 'es'
+        ? 'Esta landing page fue creada para Rozenir Apolinário Gonzaga, delineante técnica de edificaciones y consultora de ventas de Belo Horizonte, MG. Presenta sus tres frentes de trabajo en un solo lugar: Belleza, con perfumería, maquillaje y cuidados para piel y cuerpo de marcas de confianza; Bienestar, con seguros, planes de salud y crédito para objetivos personales y empresariales; y Construcción, con diseño técnico de edificaciones y apoyo para la restitución de impuestos pagados en la construcción de la casa. La página centraliza sus canales de contacto — WhatsApp, Instagram y LinkedIn — para que los clientes puedan hablar con ella directamente y recibir un atendimiento personalizado.'
+        : 'Esta landing page foi criada para a Rozenir Apolinário Gonzaga, desenhista técnica de edificações e consultora de vendas de Belo Horizonte, MG. Ela reúne suas três frentes de atuação em um só lugar: Beleza, com perfumaria, maquiagem e cuidados para pele e corpo de marcas confiáveis; Bem-estar, com seguros, planos de saúde e crédito para realizações pessoais e empresariais; e Construção, com desenho técnico de edificações e apoio para a restituição de impostos pagos na construção da casa. A página centraliza seus canais de contato — WhatsApp, Instagram e LinkedIn — para que os clientes falem diretamente com ela e tenham um atendimento personalizado.',
+      url: 'https://lading-page-rozenir.vercel.app/',
+      icon: <img src="/images/rozenir-logo.png" alt="Rozenir" className="w-8 h-8" />,
       color: 'blue',
       gradient: 'from-blue-400 to-indigo-600',
       bgLight: 'bg-blue-50/80',
       bgDark: 'bg-blue-900/20',
-      technologies: ['Forum', 'Community', 'Workplace'],
-      image: '/images/ondetrabalho-logo.png'
+      technologies: ['Web', 'Landing Page', 'Business'],
+      image: '/images/rozenir-logo.png'
     }
   ];
 
@@ -176,14 +182,14 @@ export default function SAACompany() {
           </motion.h2>
           {project.showPartnerTag ? (
             <div className="flex items-center text-[0.65rem] sm:text-xs text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full">
-              <span>WerSam</span>
+              <span>{project.partnerName}</span>
             </div>
           ) : project.partnerIcon && (
             <div className="flex items-center text-[0.65rem] sm:text-xs text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full">
               <div className="w-3 h-3 sm:w-4 sm:h-4 mr-1">
                 {project.partnerIcon}
               </div>
-              <span>WerSam</span>
+              <span>{project.partnerName}</span>
             </div>
           )}
         </div>
@@ -277,7 +283,7 @@ export default function SAACompany() {
                     {project.name}
                     {project.showPartnerTag && (
                       <div className="flex items-center text-xs sm:text-sm text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-2 py-0.5 sm:px-2 sm:py-1 rounded-full">
-                        <span>WerSam</span>
+                        <span>{project.partnerName}</span>
                       </div>
                     )}
                   </h2>
@@ -289,7 +295,7 @@ export default function SAACompany() {
                         <div className="w-4 h-4 sm:w-5 sm:h-5 mr-1">
                           {project.partnerIcon}
                         </div>
-                        <span className="font-medium">WerSam Project</span>
+                        <span className="font-medium">{project.partnerName} Project</span>
                       </div>
                     )}
                   </div>
@@ -488,6 +494,30 @@ export default function SAACompany() {
                     Game
                   </span>
                 </motion.span>
+                <motion.span
+                  className="px-3 py-1.5 sm:px-4 sm:py-2 bg-pink-500/20 dark:bg-pink-900/30 text-pink-100 dark:text-pink-300 rounded-lg text-xs sm:text-sm font-medium backdrop-blur-sm border border-pink-400/30 dark:border-pink-700/30"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <span className="flex items-center gap-1 sm:gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 sm:w-5 sm:h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46" />
+                    </svg>
+                    Marketing
+                  </span>
+                </motion.span>
+                <motion.span
+                  className="px-3 py-1.5 sm:px-4 sm:py-2 bg-yellow-500/20 dark:bg-yellow-900/30 text-yellow-100 dark:text-yellow-300 rounded-lg text-xs sm:text-sm font-medium backdrop-blur-sm border border-yellow-400/30 dark:border-yellow-700/30"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <span className="flex items-center gap-1 sm:gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 sm:w-5 sm:h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                    </svg>
+                    {locale === 'en' ? 'Learning' : locale === 'es' ? 'Aprendizaje' : 'Aprendizado'}
+                  </span>
+                </motion.span>
               </div>
             </div>
           </motion.div>
@@ -527,7 +557,7 @@ export default function SAACompany() {
           </div>
         </motion.section>
         
-        {/* Seção de Parceria WerSam */}
+        {/* Seção de Parceria PneuJogos */}
         <motion.section 
           className="mb-12 sm:mb-20"
           initial={{ opacity: 0 }}
@@ -546,7 +576,7 @@ export default function SAACompany() {
             </h2>
           </motion.div>
           
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -555,34 +585,34 @@ export default function SAACompany() {
           >
             <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-8">
               <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full bg-teal-50 dark:bg-teal-900/20 p-3 sm:p-4 flex items-center justify-center shrink-0">
-                <img 
-                  src="/images/wersam-logo.png" 
-                  alt="WerSam" 
+                <img
+                  src="/images/pneujogos-logo.svg"
+                  alt="PneuJogos"
                   className="w-full h-full object-contain"
                 />
               </div>
-              
+
               <div>
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3 mb-3 sm:mb-4 text-center sm:text-left">
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">WerSam</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">PneuJogos</h3>
                   <span className="bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300 px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-medium flex items-center gap-1">
                     <FaHandshake className="text-xs" />
                     {locale === 'en' ? 'Partnership' : locale === 'es' ? 'Asociación' : 'Parceria'}
                   </span>
                 </div>
-                
+
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-4 text-center sm:text-left">
                   {locale === 'en'
-                    ? 'WerSam is a collaborative partnership between Samuel and Weverton Miranda, focused on AI and pipeline solutions. Together, we combine our expertise to deliver cutting-edge technology solutions.'
+                    ? 'PneuJogos (Pneu Studios) is SAA Company\'s game and gamification studio partner, focused on turning learning and engagement into playful experiences. Together, we built Tralingo, an AI-powered gamified training platform, combining SAA\'s AI and data engineering expertise with PneuJogos\' game design know-how.'
                     : locale === 'es'
-                    ? 'WerSam es una asociación colaborativa entre Samuel y Weverton Miranda, enfocada en soluciones de IA y pipelines. Juntos, combinamos nuestra experiencia para ofrecer soluciones tecnológicas de vanguardia.'
-                    : 'WerSam é uma parceria colaborativa entre Samuel e Weverton Miranda, focada em soluções de IA e pipelines. Juntos, combinamos nossa expertise para entregar soluções tecnológicas de ponta.'}
+                    ? 'PneuJogos (Pneu Studios) es el estudio de juegos y gamificación socio de SAA Company, enfocado en transformar el aprendizaje y el engagement en experiencias lúdicas. Juntos, desarrollamos Tralingo, una plataforma de entrenamiento gamificada con IA, uniendo la experiencia de SAA en IA e ingeniería de datos al know-how de game design de PneuJogos.'
+                    : 'A PneuJogos (Pneu Studios) é a parceira de jogos e gamificação da SAA Company, focada em transformar aprendizado e engajamento em experiências lúdicas. Juntos, desenvolvemos o Tralingo, uma plataforma de treinamento gamificada com IA, unindo a expertise da SAA em IA e engenharia de dados ao know-how de game design da PneuJogos.'}
                 </p>
-                
+
                 <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                   <span className="px-2 py-1 sm:px-3 sm:py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 rounded-full text-xs font-medium">AI</span>
-                  <span className="px-2 py-1 sm:px-3 sm:py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300 rounded-full text-xs font-medium">Data Pipeline</span>
-                  <span className="px-2 py-1 sm:px-3 sm:py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-xs font-medium">Collaboration</span>
+                  <span className="px-2 py-1 sm:px-3 sm:py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300 rounded-full text-xs font-medium">Games</span>
+                  <span className="px-2 py-1 sm:px-3 sm:py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-xs font-medium">Gamification</span>
                 </div>
               </div>
             </div>
