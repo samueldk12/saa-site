@@ -15,6 +15,16 @@ interface NavigationProps {
   locale: string;
 }
 
+// Cor de fundo do item ativo no menu mobile, por tema de pagina — mapa
+// estatico para evitar classes Tailwind dinamicas que o compilador nao gera.
+const MOBILE_ACTIVE_BG: Record<string, string> = {
+  'theme-home': 'bg-gray-900 dark:bg-white dark:text-gray-900 text-white',
+  'theme-about': 'bg-indigo-600 text-white',
+  'theme-projects': 'bg-emerald-600 text-white',
+  'theme-skills': 'bg-[#E33D3D] text-white',
+  'theme-saa': 'bg-[#1E3A5F] text-white',
+};
+
 export default function Navigation({ locale }: NavigationProps) {
   const t = getTranslations(locale);
   const pathname = usePathname();
@@ -59,34 +69,64 @@ export default function Navigation({ locale }: NavigationProps) {
   };
 
   const navItems = [
-    { href: `/${locale}`, label: t.navigation.home },
-    { href: `/${locale}/about`, label: t.navigation.about },
-    { href: `/${locale}/projects`, label: t.navigation.projects },
-    { href: `/${locale}/skills`, label: t.navigation.skills },
-    { href: `/${locale}/saa`, label: 'SAA Company' },
+    { href: `/${locale}`, label: t.navigation.home, theme: 'theme-home' },
+    { href: `/${locale}/about`, label: t.navigation.about, theme: 'theme-about' },
+    { href: `/${locale}/projects`, label: t.navigation.projects, theme: 'theme-projects' },
+    { href: `/${locale}/skills`, label: t.navigation.skills, theme: 'theme-skills' },
+    { href: `/${locale}/saa`, label: 'SAA Company', theme: 'theme-saa' },
   ];
+
+  // O header adota a identidade visual da pagina atual — nao so o link
+  // ativo, a barra inteira muda de tom conforme a secao em que se esta.
+  const getSection = () => {
+    if (!pathname) return 'home';
+    const withoutLocale = locale && pathname.startsWith(`/${locale}`)
+      ? pathname.replace(`/${locale}`, '') || '/'
+      : pathname;
+    if (withoutLocale.startsWith('/about')) return 'about';
+    if (withoutLocale.startsWith('/projects')) return 'projects';
+    if (withoutLocale.startsWith('/skills')) return 'skills';
+    if (withoutLocale.startsWith('/saa')) return 'saa';
+    return 'home';
+  };
+  const section = getSection();
+
+  const barAppearance: Record<string, string> = {
+    home: scrolled
+      ? 'bg-[#FAF9F6]/90 dark:bg-[#0B0C0E]/90 backdrop-blur-md shadow-md border-b border-gray-200 dark:border-gray-800'
+      : 'bg-[#FAF9F6]/80 dark:bg-[#0B0C0E]/80 backdrop-blur-sm border-b border-transparent',
+    about: scrolled
+      ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md border-b border-indigo-300/40 dark:border-indigo-500/30'
+      : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-transparent',
+    projects: 'bg-[#0B0E14]/95 backdrop-blur-md border-b border-[#5CE1A8]/25 shadow-md',
+    skills: scrolled
+      ? 'bg-[#F4EFE4]/90 dark:bg-[#171316]/90 backdrop-blur-md shadow-md border-b-2 border-[#E33D3D]/50'
+      : 'bg-[#F4EFE4]/80 dark:bg-[#171316]/80 backdrop-blur-sm border-b-2 border-[#E33D3D]/25',
+    saa: scrolled
+      ? 'bg-white/90 dark:bg-[#0A1220]/90 backdrop-blur-md shadow-md border-b border-[#1E3A5F]/30 dark:border-[#3B82F6]/30'
+      : 'bg-white/80 dark:bg-[#0A1220]/80 backdrop-blur-sm border-b border-transparent',
+  };
+
+  const barText = section === 'projects' ? 'text-[#D7DBE0]' : '';
+  const onDarkBar = section === 'projects' ? 'on-dark-bar' : '';
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md'
-          : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm'
-      }`}
+      className={`fixed top-0 w-full z-50 transition-colors duration-500 ${barAppearance[section]} ${barText}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link href={`/${locale}`} className="flex items-center">
               <div className="relative h-10 w-36 sm:h-12 sm:w-40 md:h-16 md:w-52">
-                <Image 
-                  src="/images/logo.svg" 
-                  alt="SAA Logo" 
+                <Image
+                  src="/images/logo.svg"
+                  alt="SAA Logo"
                   fill
                   priority
-                  className="object-contain dark:brightness-0 dark:invert"
+                  className={`object-contain dark:brightness-0 dark:invert ${section === 'projects' ? 'brightness-0 invert' : ''}`}
                 />
               </div>
             </Link>
@@ -99,7 +139,7 @@ export default function Navigation({ locale }: NavigationProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`nav-link text-sm lg:text-base ${pathname === item.href ? 'nav-link-active' : ''}`}
+                  className={`nav-link ${item.theme} text-sm lg:text-base ${pathname === item.href ? 'nav-link-active' : ''}`}
                 >
                   {item.label}
                 </Link>
@@ -110,19 +150,19 @@ export default function Navigation({ locale }: NavigationProps) {
             <div className="flex items-center space-x-2">
               <Link
                 href={getLocalePath('pt')}
-                  className={`nav-link text-sm ${locale === 'pt' ? 'font-bold' : 'font-normal'}`}
+                  className={`nav-link ${onDarkBar} text-sm ${locale === 'pt' ? 'font-bold' : 'font-normal'}`}
               >
                 PT
               </Link>
               <Link
                 href={getLocalePath('en')}
-                  className={`nav-link text-sm ${locale === 'en' ? 'font-bold' : 'font-normal'}`}
+                  className={`nav-link ${onDarkBar} text-sm ${locale === 'en' ? 'font-bold' : 'font-normal'}`}
               >
                 EN
               </Link>
               <Link
                 href={getLocalePath('es')}
-                  className={`nav-link text-sm ${locale === 'es' ? 'font-bold' : 'font-normal'}`}
+                  className={`nav-link ${onDarkBar} text-sm ${locale === 'es' ? 'font-bold' : 'font-normal'}`}
               >
                 ES
               </Link>
@@ -133,7 +173,7 @@ export default function Navigation({ locale }: NavigationProps) {
                 href="https://github.com/samueldk12"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="nav-link"
+                className={`nav-link ${onDarkBar}`}
               >
                 <FaGithub className="text-xl" />
               </a>
@@ -141,20 +181,20 @@ export default function Navigation({ locale }: NavigationProps) {
                 href="https://www.linkedin.com/in/samuel-arao/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="nav-link"
+                className={`nav-link ${onDarkBar}`}
               >
                 <FaLinkedin className="text-xl" />
               </a>
             </div>
             </div>
           </div>
-          
+
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-4">
             <ThemeToggle />
-            <button 
+            <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none p-2"
+              className={`focus:outline-none p-2 transition-colors ${section === 'projects' ? 'text-[#D7DBE0] hover:text-[#5CE1A8]' : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'}`}
               aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
             >
               {isMenuOpen ? (
@@ -169,15 +209,17 @@ export default function Navigation({ locale }: NavigationProps) {
       
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-900 shadow-lg">
+        <div className={`md:hidden shadow-lg ${section === 'projects' ? 'bg-[#0B0E14] border-t border-white/10' : 'bg-white dark:bg-gray-900'}`}>
           <div className="px-4 pt-2 pb-4 space-y-2 sm:px-6">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`block py-2 px-3 rounded-md text-base font-medium ${
+                className={`block py-2 px-3 rounded-md text-base font-medium transition-colors ${
                   pathname === item.href
-                    ? 'bg-blue-600 text-white'
+                    ? MOBILE_ACTIVE_BG[item.theme]
+                    : section === 'projects'
+                    ? 'text-[#D7DBE0] hover:bg-white/10'
                     : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
               >
@@ -185,14 +227,14 @@ export default function Navigation({ locale }: NavigationProps) {
               </Link>
             ))}
             
-            <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className={`flex items-center justify-between pt-4 border-t ${section === 'projects' ? 'border-white/10 text-[#D7DBE0]' : 'border-gray-200 dark:border-gray-700'}`}>
               <div className="flex space-x-4">
                 <Link
                   href={getLocalePath('pt')}
                   className={`px-3 py-1 rounded-md ${
                     locale === 'pt'
-                      ? 'bg-gray-200 dark:bg-gray-700 font-medium'
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                      ? (section === 'projects' ? 'bg-white/10 font-medium' : 'bg-gray-200 dark:bg-gray-700 font-medium')
+                      : (section === 'projects' ? 'hover:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800')
                   }`}
                 >
                   PT
@@ -201,8 +243,8 @@ export default function Navigation({ locale }: NavigationProps) {
                   href={getLocalePath('en')}
                   className={`px-3 py-1 rounded-md ${
                     locale === 'en'
-                      ? 'bg-gray-200 dark:bg-gray-700 font-medium'
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                      ? (section === 'projects' ? 'bg-white/10 font-medium' : 'bg-gray-200 dark:bg-gray-700 font-medium')
+                      : (section === 'projects' ? 'hover:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800')
                   }`}
                 >
                   EN
@@ -211,20 +253,20 @@ export default function Navigation({ locale }: NavigationProps) {
                   href={getLocalePath('es')}
                   className={`px-3 py-1 rounded-md ${
                     locale === 'es'
-                      ? 'bg-gray-200 dark:bg-gray-700 font-medium'
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                      ? (section === 'projects' ? 'bg-white/10 font-medium' : 'bg-gray-200 dark:bg-gray-700 font-medium')
+                      : (section === 'projects' ? 'hover:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800')
                   }`}
                 >
                   ES
                 </Link>
               </div>
-              
+
               <div className="flex space-x-4">
                 <a
                   href="https://github.com/samueldk12"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
+                  className={section === 'projects' ? 'text-[#D7DBE0] hover:text-white' : 'text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white'}
                 >
                   <FaGithub className="h-6 w-6" />
                 </a>

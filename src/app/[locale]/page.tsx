@@ -175,7 +175,7 @@ export default function Home() {
       <Navigation locale={locale} />
 
       {/* Hero Section — sóbrio, tipografia como protagonista */}
-      <section className="relative min-h-screen flex items-center overflow-hidden border-b border-gray-200 dark:border-gray-800">
+      <section className="relative min-h-screen flex items-center overflow-hidden border-b border-gray-200 dark:border-gray-700/70">
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:64px_64px]"></div>
 
         <div className="container mx-auto px-4 py-24 flex flex-col lg:flex-row items-center justify-between gap-12">
@@ -250,12 +250,13 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            className="lg:w-2/5 flex justify-center z-10"
+            className="relative lg:w-2/5 flex justify-center z-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-gray-300 dark:border-gray-700 grayscale hover:grayscale-0 transition-all duration-700 ease-out">
+            <div className="hidden dark:block absolute inset-0 m-auto w-64 h-64 md:w-80 md:h-80 rounded-full bg-blue-500/10 blur-3xl -z-10" />
+            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 grayscale hover:grayscale-0 transition-all duration-700 ease-out">
               <Image
                 src="/images/profile.jpg"
                 alt={t.home?.profileAlt || "Foto de perfil de Samuel Apolinário Arão"}
@@ -278,14 +279,94 @@ export default function Home() {
           whileHover={{ y: 5 }}
         >
           <div className="flex flex-col items-center">
-            <span className="text-xs font-mono uppercase tracking-widest text-gray-500 dark:text-gray-500 mb-2">{t.home?.scrollDown || "Role para baixo"}</span>
+            <span className="text-xs font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">{t.home?.scrollDown || "Role para baixo"}</span>
             <FaChevronDown className="text-gray-400 dark:text-gray-600 animate-bounce" />
           </div>
         </motion.div>
       </section>
 
       {/* Expertise Section — grade sóbria, um único acento */}
-      <section id="expertise" className="py-24 bg-white dark:bg-[#101114] relative border-b border-gray-200 dark:border-gray-800">
+      {/* Current Experience Section */}
+      <section className="py-24 bg-[#FAF9F6] dark:bg-[#0B0C0E] relative">
+        <div className="container mx-auto px-4">
+          <motion.div
+            className="border border-gray-200 dark:border-gray-700/70 rounded-sm overflow-hidden bg-white dark:bg-[#14161A]"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <div className="flex flex-col md:flex-row">
+              <div className="md:w-1/3 bg-[#171B24] dark:bg-gradient-to-br dark:from-[#16213A] dark:to-[#0B1220] p-8 md:p-12 text-white">
+                <span className="text-xs font-mono uppercase tracking-widest text-gray-400">01</span>
+                <h2 className="font-serif text-2xl sm:text-3xl font-semibold mt-2 mb-6">{t.home?.latestExperience || "Experiência Atual"}</h2>
+                <div className="flex items-center mb-6">
+                  <div className="border border-white/20 p-3 rounded-sm mr-4">
+                    <FaBriefcase className="text-xl" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">MPMG</h3>
+                    <p className="text-gray-400 text-sm">{locale === 'en' ? 'Senior Data Engineering' : 'Engenheiro de dados'}</p>
+                  </div>
+                </div>
+                <div className="mb-6 text-sm text-gray-400 space-y-1.5">
+                  <div>Minas Gerais, Brasil</div>
+                  <div className="font-mono">{locale === 'en' ? 'September 2025 - Present' : 'Setembro de 2025 - Presente'}</div>
+                </div>
+                <Link
+                  href={`/${locale}/about`}
+                  className="mt-6 inline-flex items-center gap-2 text-sm text-white border-b border-white/30 hover:border-white pb-0.5 transition-colors"
+                >
+                  <span>{t.home?.viewFullHistory || "Ver histórico completo"}</span>
+                  <FaArrowRight className="text-xs" />
+                </Link>
+              </div>
+
+              <div className="md:w-2/3 p-8 md:p-12">
+                <h3 className="text-xl font-bold mb-6 text-gray-800 dark:text-white">
+                  {locale === 'en' ? 'data engineering' : 'Engenheiro de dados'}
+                </h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+                  <SkillsText
+                    text={t.home?.currentExperienceDescription || "Atuando principalmente como Engenheiro de Dados, responsável pelo desenvolvimento e implementação de pipelines de dados, processos de ETL e construção de arquiteturas de dados escaláveis. Desenvolvimento de soluções de automação, projetos de integração de dados e APIs performáticas com foco em boas práticas e código limpo. Trabalho com grandes volumes de dados, incluindo iniciativas junto ao Ministério Público de Minas Gerais (MPMG)."}
+                    locale={locale}
+                  />
+                </p>
+
+                <h4 className="text-xs font-mono uppercase tracking-widest mb-4 text-gray-500 dark:text-gray-400">{t.home?.tools || "Ferramentas"}</h4>
+                <div className="flex flex-wrap gap-2">
+                  <SkillBadge skill="PYTHON" category="languages" level="advanced" noLink={true}>Python</SkillBadge>
+                  <SkillBadge skill="SQL" category="languages" level="intermediate" noLink={true}>SQL</SkillBadge>
+                  <SkillBadge skill="APACHE AIRFLOW" category="data" level="intermediate" noLink={true}>Airflow</SkillBadge>
+                  <SkillBadge skill="APACHE SPARK" category="data" level="advanced" noLink={true}>Spark</SkillBadge>
+                  <SkillBadge skill="AWS" category="devops" level="beginner" noLink={true}>AWS</SkillBadge>
+                  <SkillBadge skill="FASTAPI" category="web" level="intermediate" noLink={true}>FastAPI</SkillBadge>
+                  <SkillBadge skill="DOCKER" category="devops" level="advanced" noLink={true}>Docker</SkillBadge>
+                  <SkillBadge skill="APACHE HADOOP" category="data" level="advanced" noLink={true}>Hadoop</SkillBadge>
+                  <SkillBadge skill="APACHE DRUID" category="data" level="intermediate" noLink={true}>Druid</SkillBadge>
+                  <SkillBadge skill="APACHE NIFI" category="data" level="intermediate" noLink={true}>NiFi</SkillBadge>
+                  <SkillBadge skill="WEB SCRAPING" category="data" level="advanced" noLink={true}>Web Scraping</SkillBadge>
+                  <SkillBadge skill="POSTGRESQL" category="databases" level="advanced" noLink={true}>PostgreSQL</SkillBadge>
+                  <SkillBadge skill="DATA ENGINEERING" category="data" level="intermediate" noLink={true}>Data Engineering</SkillBadge>
+                  <SkillBadge skill="APACHE HIVE" category="data" level="intermediate" noLink={true}>Hive</SkillBadge>
+                  <SkillBadge skill="DATA LAKES" category="data" level="intermediate" noLink={true}>Data Lakes</SkillBadge>
+                  <SkillBadge skill="ELASTICSEARCH" category="databases" level="intermediate" noLink={true}>Elasticsearch</SkillBadge>
+                  <SkillBadge skill="MICROSERVICES" category="architecture" level="intermediate" noLink={true}>Microservices</SkillBadge>
+                  <SkillBadge skill="CI/CD" category="devops" level="intermediate" noLink={true}>CI/CD</SkillBadge>
+                  <SkillBadge skill="JENKINS" category="devops" level="intermediate" noLink={true}>Jenkins</SkillBadge>
+                  <SkillBadge skill="CLEAN ARCHITECTURE" category="architecture" level="intermediate" noLink={true}>Clean Architecture</SkillBadge>
+                  <SkillBadge skill="TDD" category="architecture" level="intermediate" noLink={true}>TDD</SkillBadge>
+                  <SkillBadge skill="LINUX" category="security" level="intermediate" noLink={true}>Linux</SkillBadge>
+                  <SkillBadge skill="WEB SECURITY" category="security" level="intermediate" noLink={true}>Web Security</SkillBadge>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Expertise Section */}
+      <section id="expertise" className="py-24 bg-white dark:bg-[#101114] relative border-b border-gray-200 dark:border-gray-700/70">
         <div className="container mx-auto px-4">
           <motion.div
             className="mb-16 max-w-2xl"
@@ -294,13 +375,13 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="text-xs font-mono uppercase tracking-widest text-gray-500 dark:text-gray-500">01</span>
+            <span className="text-xs font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400">02</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white mt-2">
               {t.home?.expertiseAreas || "Áreas de Especialização"}
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-l border-gray-200 dark:border-gray-800">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-l border-gray-200 dark:border-gray-700/70">
             {[
               {
                 icon: <SiApachespark />,
@@ -343,13 +424,13 @@ export default function Home() {
             ].map((card, i) => (
               <motion.div
                 key={card.title}
-                className="p-8 border-r border-b border-gray-200 dark:border-gray-800 group hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors"
+                className="p-8 border-r border-b border-gray-200 dark:border-gray-700/70 group hover:bg-gray-50 dark:hover:bg-white/[0.04] transition-colors"
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
               >
-                <div className="w-12 h-12 rounded-full border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center text-lg mb-6 group-hover:border-gray-900 dark:group-hover:border-white transition-colors">
+                <div className="w-12 h-12 rounded-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 flex items-center justify-center text-lg mb-6 group-hover:border-gray-900 dark:group-hover:border-white transition-colors">
                   {card.icon}
                 </div>
                 <h3 className="text-base font-bold mb-3 text-gray-900 dark:text-white">{card.title}</h3>
@@ -369,87 +450,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Current Experience Section */}
-      <section className="py-24 bg-[#FAF9F6] dark:bg-[#0B0C0E] relative">
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="border border-gray-200 dark:border-gray-800 rounded-sm overflow-hidden bg-white dark:bg-[#101114]"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <div className="flex flex-col md:flex-row">
-              <div className="md:w-1/3 bg-[#171B24] dark:bg-black p-8 md:p-12 text-white">
-                <span className="text-xs font-mono uppercase tracking-widest text-gray-400">02</span>
-                <h2 className="font-serif text-2xl sm:text-3xl font-semibold mt-2 mb-6">{t.home?.latestExperience || "Experiência Atual"}</h2>
-                <div className="flex items-center mb-6">
-                  <div className="border border-white/20 p-3 rounded-sm mr-4">
-                    <FaBriefcase className="text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">MPMG</h3>
-                    <p className="text-gray-400 text-sm">{locale === 'en' ? 'Senior Data Engineering' : 'Engenheiro de dados'}</p>
-                  </div>
-                </div>
-                <div className="mb-6 text-sm text-gray-400 space-y-1.5">
-                  <div>Minas Gerais, Brasil</div>
-                  <div className="font-mono">{locale === 'en' ? 'September 2025 - Present' : 'Setembro de 2025 - Presente'}</div>
-                </div>
-                <Link
-                  href={`/${locale}/about`}
-                  className="mt-6 inline-flex items-center gap-2 text-sm text-white border-b border-white/30 hover:border-white pb-0.5 transition-colors"
-                >
-                  <span>{t.home?.viewFullHistory || "Ver histórico completo"}</span>
-                  <FaArrowRight className="text-xs" />
-                </Link>
-              </div>
-
-              <div className="md:w-2/3 p-8 md:p-12">
-                <h3 className="text-xl font-bold mb-6 text-gray-800 dark:text-white">
-                  {locale === 'en' ? 'data engineering' : 'Engenheiro de dados'}
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-                  <SkillsText
-                    text={t.home?.currentExperienceDescription || "Atuando principalmente como Engenheiro de Dados, responsável pelo desenvolvimento e implementação de pipelines de dados, processos de ETL e construção de arquiteturas de dados escaláveis. Desenvolvimento de soluções de automação, projetos de integração de dados e APIs performáticas com foco em boas práticas e código limpo. Trabalho com grandes volumes de dados, incluindo iniciativas junto ao Ministério Público de Minas Gerais (MPMG)."}
-                    locale={locale}
-                  />
-                </p>
-
-                <h4 className="text-xs font-mono uppercase tracking-widest mb-4 text-gray-500 dark:text-gray-500">{t.home?.tools || "Ferramentas"}</h4>
-                <div className="flex flex-wrap gap-2">
-                  <SkillBadge skill="PYTHON" category="languages" level="advanced" noLink={true}>Python</SkillBadge>
-                  <SkillBadge skill="SQL" category="languages" level="intermediate" noLink={true}>SQL</SkillBadge>
-                  <SkillBadge skill="APACHE AIRFLOW" category="data" level="intermediate" noLink={true}>Airflow</SkillBadge>
-                  <SkillBadge skill="APACHE SPARK" category="data" level="advanced" noLink={true}>Spark</SkillBadge>
-                  <SkillBadge skill="AWS" category="devops" level="beginner" noLink={true}>AWS</SkillBadge>
-                  <SkillBadge skill="FASTAPI" category="web" level="intermediate" noLink={true}>FastAPI</SkillBadge>
-                  <SkillBadge skill="DOCKER" category="devops" level="advanced" noLink={true}>Docker</SkillBadge>
-                  <SkillBadge skill="APACHE HADOOP" category="data" level="advanced" noLink={true}>Hadoop</SkillBadge>
-                  <SkillBadge skill="APACHE DRUID" category="data" level="intermediate" noLink={true}>Druid</SkillBadge>
-                  <SkillBadge skill="APACHE NIFI" category="data" level="intermediate" noLink={true}>NiFi</SkillBadge>
-                  <SkillBadge skill="WEB SCRAPING" category="data" level="advanced" noLink={true}>Web Scraping</SkillBadge>
-                  <SkillBadge skill="POSTGRESQL" category="databases" level="advanced" noLink={true}>PostgreSQL</SkillBadge>
-                  <SkillBadge skill="DATA ENGINEERING" category="data" level="intermediate" noLink={true}>Data Engineering</SkillBadge>
-                  <SkillBadge skill="APACHE HIVE" category="data" level="intermediate" noLink={true}>Hive</SkillBadge>
-                  <SkillBadge skill="DATA LAKES" category="data" level="intermediate" noLink={true}>Data Lakes</SkillBadge>
-                  <SkillBadge skill="ELASTICSEARCH" category="databases" level="intermediate" noLink={true}>Elasticsearch</SkillBadge>
-                  <SkillBadge skill="MICROSERVICES" category="architecture" level="intermediate" noLink={true}>Microservices</SkillBadge>
-                  <SkillBadge skill="CI/CD" category="devops" level="intermediate" noLink={true}>CI/CD</SkillBadge>
-                  <SkillBadge skill="JENKINS" category="devops" level="intermediate" noLink={true}>Jenkins</SkillBadge>
-                  <SkillBadge skill="CLEAN ARCHITECTURE" category="architecture" level="intermediate" noLink={true}>Clean Architecture</SkillBadge>
-                  <SkillBadge skill="TDD" category="architecture" level="intermediate" noLink={true}>TDD</SkillBadge>
-                  <SkillBadge skill="LINUX" category="security" level="intermediate" noLink={true}>Linux</SkillBadge>
-                  <SkillBadge skill="WEB SECURITY" category="security" level="intermediate" noLink={true}>Web Security</SkillBadge>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* CTA Section */}
-      <section className="py-24 border-t border-gray-200 dark:border-gray-800">
+      <section className="py-24 border-t border-gray-200 dark:border-gray-700/70">
         <div className="container mx-auto px-4">
           <motion.div
             className="max-w-2xl mx-auto text-center"
@@ -458,7 +460,7 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="text-xs font-mono uppercase tracking-widest text-gray-500 dark:text-gray-500">03</span>
+            <span className="text-xs font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400">03</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white mt-2 mb-4">
               {t.home?.ctaTitle || "Vamos trabalhar juntos?"}
             </h2>

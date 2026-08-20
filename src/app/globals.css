@@ -625,4 +625,48 @@ body {
   .gradient-cyan {
     @apply from-cyan-500 to-blue-600;
   }
-} 
+}
+
+/* Header — cada link do menu "avisa" o tema da pagina de destino ao passar
+   o mouse (nao apenas quando ja se esta nela). Seletores compostos para
+   vencer a especificidade das regras .nav-link genericas acima. */
+.nav-link.theme-home:hover { color: #171717; }
+.dark .nav-link.theme-home:hover { color: #ffffff; }
+.nav-link.theme-home::after { background-color: #171717; }
+.dark .nav-link.theme-home::after { background-color: #ffffff; }
+
+.nav-link.theme-about:hover { color: #7c3aed; }
+.dark .nav-link.theme-about:hover { color: #a78bfa; }
+.nav-link.theme-about::after { background-image: linear-gradient(90deg, #6366f1, #d946ef); background-color: transparent; }
+
+.nav-link.theme-projects:hover { color: #10b981; }
+.dark .nav-link.theme-projects:hover { color: #5CE1A8; }
+.nav-link.theme-projects::after { background-color: #10b981; }
+.dark .nav-link.theme-projects::after { background-color: #5CE1A8; }
+
+.nav-link.theme-skills:hover { color: #E33D3D; }
+.nav-link.theme-skills::after { background-color: #E33D3D; }
+
+.nav-link.theme-saa:hover { color: #1E3A5F; }
+.dark .nav-link.theme-saa:hover { color: #3B82F6; }
+.nav-link.theme-saa::after { background-color: #1E3A5F; }
+.dark .nav-link.theme-saa::after { background-color: #3B82F6; }
+
+/* Estado ativo (pagina atual) tambem herda a cor do proprio tema, em vez
+   do azul generico de .nav-link-active. */
+.nav-link.theme-home.nav-link-active { color: #171717; }
+.dark .nav-link.theme-home.nav-link-active { color: #ffffff; }
+.nav-link.theme-about.nav-link-active { color: #7c3aed; }
+.dark .nav-link.theme-about.nav-link-active { color: #a78bfa; }
+.nav-link.theme-projects.nav-link-active { color: #10b981; }
+.dark .nav-link.theme-projects.nav-link-active { color: #5CE1A8; }
+.nav-link.theme-skills.nav-link-active { color: #E33D3D; }
+.nav-link.theme-saa.nav-link-active { color: #1E3A5F; }
+.dark .nav-link.theme-saa.nav-link-active { color: #3B82F6; }
+
+/* Projects e' sempre "dark terminal" independente do toggle claro/escuro —
+   forca o texto do header a ficar legivel sobre essa barra sempre escura. */
+.nav-link.on-dark-bar,
+.dark .nav-link.on-dark-bar { color: #D7DBE0; }
+.nav-link.on-dark-bar:hover,
+.dark .nav-link.on-dark-bar:hover { color: #5CE1A8; } 
