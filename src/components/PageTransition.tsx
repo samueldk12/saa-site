@@ -221,10 +221,14 @@ function runProjectsType(mountPoint: HTMLElement, cleanups: (() => void)[]) {
 // (focando nela), depois se abre revelando o site inteiro.
 function runSaaSpotlight(mountPoint: HTMLElement, cleanups: (() => void)[]) {
   const root = mountPoint.firstElementChild as HTMLElement | null;
-  const logoEl = root?.querySelector('img[alt="SAA Logo"]') as HTMLElement | null;
+  // A Navigation (renderizada antes no DOM) tambem tem uma logo com o
+  // mesmo alt="SAA Logo" — busca pelo src, que e' exclusivo da logo do
+  // masthead, senao o seletor por alt pega a logo errada (a do header).
+  const logoEl = root?.querySelector('img[src*="saa-logo"]') as HTMLElement | null;
   const rect = logoEl?.getBoundingClientRect();
-  const baseX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
-  const baseY = rect ? rect.top + rect.height / 2 : 96;
+  const hasValidRect = !!rect && rect.width > 0 && rect.height > 0;
+  const baseX = hasValidRect ? rect!.left + rect!.width / 2 : window.innerWidth / 2;
+  const baseY = hasValidRect ? rect!.top + rect!.height / 2 : 96;
 
   const overlay = createOverlay('#000');
   const maxR = Math.hypot(window.innerWidth, window.innerHeight);
