@@ -479,6 +479,28 @@ body {
   @apply container mx-auto px-4 sm:px-6 lg:px-8;
 }
 
+/* About page — ficha de RPG cyber-medieval */
+.rpg-bg {
+  background-color: #08080c;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.rpg-glow-text {
+  text-shadow: 0 0 24px rgba(168, 85, 247, 0.45), 0 0 4px rgba(168, 85, 247, 0.3);
+}
+
+@keyframes rpg-ring-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.rpg-ring {
+  animation: rpg-ring-spin 12s linear infinite;
+}
+
 /* Skills page — comic/HQ panel treatment */
 .halftone-dots {
   background-image: radial-gradient(rgba(23, 19, 22, 0.35) 1px, transparent 1.5px);
@@ -678,4 +700,36 @@ body {
 .nav-link.on-dark-bar,
 .dark .nav-link.on-dark-bar { color: #D7DBE0; }
 .nav-link.on-dark-bar:hover,
-.dark .nav-link.on-dark-bar:hover { color: #5CE1A8; } 
+.dark .nav-link.on-dark-bar:hover { color: #5CE1A8; }
+
+/* Hover tematico: cursor de terminal piscando depois do link de Projetos */
+.nav-link.theme-projects { position: relative; }
+.nav-link.theme-projects:hover::before {
+  content: '_';
+  margin-left: 2px;
+  color: #10b981;
+  animation: blinkCursor 1s steps(1) infinite;
+}
+.dark .nav-link.theme-projects:hover::before { color: #5CE1A8; }
+
+/* Hover tematico: reflexo de vidro varrendo por tras do link da SAA */
+.nav-link.theme-saa { position: relative; }
+.nav-link.theme-saa::before {
+  content: '';
+  position: absolute;
+  inset: -2px -6px;
+  background-image: linear-gradient(115deg, transparent 30%, rgba(124, 197, 255, 0.35) 50%, transparent 70%);
+  background-size: 220% 100%;
+  background-position: 150% 0;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 4px;
+}
+.nav-link.theme-saa:hover::before {
+  animation: rpg-shimmer-sweep 0.8s ease;
+}
+@keyframes rpg-shimmer-sweep {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+} 

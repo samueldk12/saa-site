@@ -101,6 +101,36 @@ const COMPETENCY_COLOR: Record<string, { bg: string; text: string }> = {
   yellow: { bg: 'bg-yellow-500', text: 'text-yellow-500' },
 };
 
+// Painel de "ficha de RPG" — moldura com cantos em L e brilho neon,
+// reaproveitado em todos os blocos da pagina (atributos, missoes, etc).
+const RpgPanel = ({
+  children,
+  className = '',
+  glow = 'cyan',
+}: {
+  children: React.ReactNode;
+  className?: string;
+  glow?: 'cyan' | 'purple' | 'amber';
+}) => {
+  const ring = glow === 'purple' ? 'border-purple-400/70' : glow === 'amber' ? 'border-amber-400/70' : 'border-cyan-400/70';
+  const shadow =
+    glow === 'purple'
+      ? 'shadow-[0_0_30px_-8px_rgba(168,85,247,0.35)]'
+      : glow === 'amber'
+      ? 'shadow-[0_0_30px_-8px_rgba(245,158,11,0.35)]'
+      : 'shadow-[0_0_30px_-8px_rgba(34,211,238,0.35)]';
+  const border = glow === 'purple' ? 'border-purple-500/25' : glow === 'amber' ? 'border-amber-500/25' : 'border-cyan-500/25';
+  return (
+    <div className={`relative rounded-sm border ${border} bg-[#0D0D14]/90 backdrop-blur-sm ${shadow} ${className}`}>
+      <span className={`absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 ${ring}`} />
+      <span className={`absolute -top-px -right-px w-3 h-3 border-t-2 border-r-2 ${ring}`} />
+      <span className={`absolute -bottom-px -left-px w-3 h-3 border-b-2 border-l-2 ${ring}`} />
+      <span className={`absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 ${ring}`} />
+      {children}
+    </div>
+  );
+};
+
 export default function About() {
   const params = useParams();
   const locale = params.locale as string;
@@ -447,172 +477,166 @@ export default function About() {
     github: "@samueldk12"
   };
 
+  const characterLevel = workExperience.length;
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-black text-gray-800 dark:text-white overflow-x-hidden">
+    <main className="min-h-screen rpg-bg text-gray-200 overflow-x-hidden">
       <Navigation locale={locale} />
 
-      {/* Hero Section */}
+      {/* Hero — cabeçalho da ficha de personagem */}
       <section className="relative py-24 overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-transparent dark:from-gray-900/50 dark:to-transparent"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#2a2a3c_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
-        </div>
         <motion.div
           className="absolute top-0 right-0 -z-10 w-[800px] h-[600px] opacity-30"
           animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <div className="absolute right-0 top-0 w-full h-full bg-gradient-to-br from-blue-500/40 to-purple-500/40 dark:from-blue-500/15 dark:to-purple-500/15 blur-3xl rounded-full"></div>
+          <div className="absolute right-0 top-0 w-full h-full bg-gradient-to-br from-purple-600/30 to-fuchsia-600/20 blur-3xl rounded-full"></div>
         </motion.div>
         <motion.div
-          className="absolute -bottom-20 left-0 -z-10 w-[500px] h-[500px] opacity-20"
+          className="absolute -bottom-20 left-0 -z-10 w-[500px] h-[500px] opacity-25"
           animate={{ x: [0, -20, 0], y: [0, 20, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <div className="absolute w-full h-full bg-gradient-to-tr from-amber-400/40 to-red-400/30 dark:from-amber-500/10 dark:to-red-500/10 blur-3xl rounded-full"></div>
+          <div className="absolute w-full h-full bg-gradient-to-tr from-cyan-500/30 to-blue-600/20 blur-3xl rounded-full"></div>
         </motion.div>
 
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
-            {/* Header Content */}
-            <div className="text-center mb-16">
+            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 mb-12">
+              {/* Retrato em moldura hex/circular com anel girando */}
               <motion.div
-                initial={{ opacity: 0, y: 20, rotate: -2 }}
-                animate={{ opacity: 1, y: 0, rotate: 0 }}
-                transition={{ duration: 0.6, type: 'spring', bounce: 0.35 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, type: 'spring', bounce: 0.3 }}
+                className="relative shrink-0 w-40 h-40 sm:w-48 sm:h-48"
               >
-                <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400">
-                  {t.about?.title || "Sobre Mim"}
-                </h1>
+                <svg className="absolute inset-0 w-full h-full rpg-ring" viewBox="0 0 100 100" fill="none">
+                  <circle cx="50" cy="50" r="47" stroke="url(#rpgRingGradient)" strokeWidth="1.5" strokeDasharray="6 4" />
+                  <defs>
+                    <linearGradient id="rpgRingGradient" x1="0" y1="0" x2="100" y2="100">
+                      <stop offset="0%" stopColor="#22D3EE" />
+                      <stop offset="100%" stopColor="#A855F7" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div className="absolute inset-3 rounded-full overflow-hidden border-2 border-cyan-400/60 shadow-[0_0_35px_-5px_rgba(34,211,238,0.5)]">
+                  <Image
+                    src="/images/profile.jpg"
+                    alt={t.home?.profileAlt || "Foto de perfil de Samuel Apolinário Arão"}
+                    fill
+                    sizes="12rem"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-black border border-purple-400/60 text-[0.65rem] font-mono text-purple-300 whitespace-nowrap">
+                  {locale === 'en' ? `LVL ${characterLevel}` : `NÍVEL ${characterLevel}`}
+                </div>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="flex flex-wrap justify-center gap-4 mb-8"
-              >
-                <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-full text-blue-700 dark:text-blue-300">
-                  <FaBriefcase className="text-lg" />
-                  <span>Data Engineering @ MPMG</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 rounded-full text-purple-700 dark:text-purple-300">
-                  <FaLocation className="text-lg" />
-                  <span>{t.home?.location || "Localização"}: Minas Gerais, Brasil</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full text-indigo-700 dark:text-indigo-300">
-                  <FaGrad className="text-lg" />
-                  <span>{t.home?.postgrad || "Pós graduado em IA"}</span>
-                </div>
-              </motion.div>
+              <div className="text-center md:text-left flex-1">
+                <span className="inline-block text-[0.65rem] font-mono uppercase tracking-[0.25em] text-cyan-400 mb-2">
+                  {locale === 'en' ? '[ Character Sheet ]' : '[ Ficha de Personagem ]'}
+                </span>
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="font-serif text-4xl md:text-6xl font-bold mb-3 text-white rpg-glow-text"
+                >
+                  Samuel Apolinário Arão
+                </motion.h1>
+                <p className="text-sm sm:text-base text-purple-300 font-mono mb-5">
+                  {locale === 'en' ? 'Data Engineer · Backend Class' : 'Engenheiro de Dados · Classe Backend'}
+                </p>
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="flex justify-center gap-6 mb-12"
-              >
-                <a 
-                  href="https://github.com/samueldk12" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-110"
-                >
-                  <FaGithub className="text-2xl" />
-                </a>
-                <a 
-                  href="https://www.linkedin.com/in/samuel-arao/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-110"
-                >
-                  <FaLinkedin className="text-2xl" />
-                </a>
-                <a 
-                  href="mailto:samuel.arao@gmail.com"
-                  className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-110"
-                >
-                  <FaEnvelope className="text-2xl" />
-                </a>
-              </motion.div>
+                <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm border border-cyan-500/30 bg-cyan-500/5 text-cyan-300 text-xs font-mono">
+                    <FaBriefcase className="text-[0.7rem]" /> MPMG
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm border border-purple-500/30 bg-purple-500/5 text-purple-300 text-xs font-mono">
+                    <FaLocation className="text-[0.7rem]" /> Minas Gerais, BR
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm border border-amber-500/30 bg-amber-500/5 text-amber-300 text-xs font-mono">
+                    <FaGrad className="text-[0.7rem]" /> {t.home?.postgrad || "Pós graduado em IA"}
+                  </span>
+                </div>
+
+                <div className="flex justify-center md:justify-start gap-3">
+                  <a
+                    href="https://github.com/samueldk12"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-cyan-500/30 bg-black/40 text-cyan-300 hover:bg-cyan-500/10 hover:shadow-[0_0_15px_-2px_rgba(34,211,238,0.6)] transition-all"
+                  >
+                    <FaGithub />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/samuel-arao/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-cyan-500/30 bg-black/40 text-cyan-300 hover:bg-cyan-500/10 hover:shadow-[0_0_15px_-2px_rgba(34,211,238,0.6)] transition-all"
+                  >
+                    <FaLinkedin />
+                  </a>
+                  <a
+                    href="mailto:samuel.arao@gmail.com"
+                    className="w-10 h-10 flex items-center justify-center rounded-sm border border-cyan-500/30 bg-black/40 text-cyan-300 hover:bg-cyan-500/10 hover:shadow-[0_0_15px_-2px_rgba(34,211,238,0.6)] transition-all"
+                  >
+                    <FaEnvelope />
+                  </a>
+                </div>
+              </div>
             </div>
 
-            {/* About Content */}
+            {/* Lore / biografia */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-12 border border-gray-100 dark:border-gray-700"
+              className="mb-10"
             >
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <SkillsText
-                  text={t.about?.description || ""}
-                  locale={locale}
-                />
-              </div>
+              <RpgPanel glow="purple" className="p-6 sm:p-8">
+                <span className="text-[0.65rem] font-mono uppercase tracking-widest text-purple-400 mb-3 block">
+                  {locale === 'en' ? '// Lore' : '// Lore'}
+                </span>
+                <div className="prose prose-invert prose-sm sm:prose-base max-w-none text-gray-300">
+                  <SkillsText
+                    text={t.about?.description || ""}
+                    locale={locale}
+                  />
+                </div>
+              </RpgPanel>
             </motion.div>
 
-            {/* Navigation Buttons */}
+            {/* Ações rápidas da ficha */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="grid grid-cols-2 md:grid-cols-5 gap-4"
+              className="grid grid-cols-2 md:grid-cols-5 gap-3"
             >
-              <a
-                href="#timeline"
-                className="col-span-2 md:col-span-1 group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-1 hover:scale-105 transition-transform"
-              >
-                <div className="relative flex h-full items-center gap-4 rounded-lg bg-gray-950/50 backdrop-blur-xl p-4">
-                  <FaGrad className="text-2xl text-blue-300" />
-                  <span className="font-medium text-white">{locale === 'en' ? "Timeline" : "Linha do Tempo"}</span>
-                </div>
-              </a>
-              <a
-                href="#experience"
-                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-1 hover:scale-105 transition-transform"
-              >
-                <div className="relative flex h-full items-center gap-4 rounded-lg bg-gray-950/50 backdrop-blur-xl p-4">
-                  <FaBriefcase className="text-2xl text-purple-300" />
-                  <span className="font-medium text-white">{locale === 'en' ? "Experience" : "Experiência"}</span>
-                </div>
-              </a>
-              <a
-                href="#education"
-                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-500 to-green-600 p-1 hover:scale-105 transition-transform"
-              >
-                <div className="relative flex h-full items-center gap-4 rounded-lg bg-gray-950/50 backdrop-blur-xl p-4">
-                  <FaGrad className="text-2xl text-green-300" />
-                  <span className="font-medium text-white">{locale === 'en' ? "Education" : "Formação"}</span>
-                </div>
-              </a>
-              <a
-                href="#certifications"
-                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 p-1 hover:scale-105 transition-transform"
-              >
-                <div className="relative flex h-full items-center gap-4 rounded-lg bg-gray-950/50 backdrop-blur-xl p-4">
-                  <FaCertificate className="text-2xl text-amber-300" />
-                  <span className="font-medium text-white">{locale === 'en' ? "Certifications" : "Certificações"}</span>
-                </div>
-              </a>
-              <a
-                href="#contact"
-                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500 to-red-600 p-1 hover:scale-105 transition-transform"
-              >
-                <div className="relative flex h-full items-center gap-4 rounded-lg bg-gray-950/50 backdrop-blur-xl p-4">
-                  <FaEnvelope className="text-2xl text-red-300" />
-                  <span className="font-medium text-white">{locale === 'en' ? "Contact" : "Contato"}</span>
-                </div>
-              </a>
+              {[
+                { href: '#timeline', icon: <FaGrad />, label: locale === 'en' ? 'Timeline' : 'Linha do Tempo', glow: 'cyan' as const },
+                { href: '#experience', icon: <FaBriefcase />, label: t.about?.experience || (locale === 'en' ? 'Experience' : 'Experiência'), glow: 'purple' as const },
+                { href: '#education', icon: <FaGrad />, label: t.about?.educationSection || t.about?.education || (locale === 'en' ? 'Education' : 'Formação'), glow: 'cyan' as const },
+                { href: '#certifications', icon: <FaCertificate />, label: t.about?.certifications || (locale === 'en' ? 'Certifications' : 'Certificações'), glow: 'amber' as const },
+                { href: '#contact', icon: <FaEnvelope />, label: t.about?.contactInfo || (locale === 'en' ? 'Contact' : 'Contato'), glow: 'purple' as const },
+              ].map((item) => (
+                <a key={item.href} href={item.href} className="col-span-1">
+                  <RpgPanel glow={item.glow} className="h-full px-3 py-3 flex items-center gap-2.5 hover:bg-white/5 transition-colors">
+                    <span className={item.glow === 'purple' ? 'text-purple-400' : item.glow === 'amber' ? 'text-amber-400' : 'text-cyan-400'}>{item.icon}</span>
+                    <span className="text-xs sm:text-sm font-medium text-gray-200 truncate">{item.label}</span>
+                  </RpgPanel>
+                </a>
+              ))}
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Marquee de marcos de carreira — leitura rápida e cinética, pausa ao passar o mouse */}
+      {/* Marquee de feitos lendários — pausa ao passar o mouse */}
       <section
-        className="relative py-4 bg-gray-900 dark:bg-black overflow-hidden -skew-y-1 my-4"
+        className="relative py-4 bg-black border-y border-purple-500/20 overflow-hidden -skew-y-1 my-4"
         onMouseEnter={() => setMarqueePaused(true)}
         onMouseLeave={() => setMarqueePaused(false)}
       >
@@ -621,29 +645,34 @@ export default function About() {
             className={`flex gap-10 whitespace-nowrap animate-marquee ${marqueePaused ? '[animation-play-state:paused]' : ''}`}
           >
             {[...careerMilestones, ...careerMilestones].map((m, i) => (
-              <span key={i} className="inline-flex items-center gap-3 text-sm sm:text-base text-gray-200 hover:text-white transition-colors cursor-default">
+              <span key={i} className="inline-flex items-center gap-3 text-sm sm:text-base text-gray-300 hover:text-white transition-colors cursor-default">
                 <span className="text-lg">{m.icon}</span>
-                <span className="font-mono text-amber-400 font-bold">{m.year}</span>
+                <span className="font-mono text-cyan-400 font-bold">{m.year}</span>
                 <span>{m.achievement}</span>
-                <span className="text-gray-600 ml-6">/</span>
+                <span className="text-purple-500/60 ml-6">❖</span>
               </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Competências — barras cinéticas que preenchem ao entrar em cena */}
-      <section className="py-16 bg-white dark:bg-gray-800/50 relative scroll-mt-20">
+      {/* Atributos — barras cinéticas que preenchem ao entrar em cena */}
+      <section className="py-16 relative scroll-mt-20">
         <div className="container mx-auto px-4 max-w-4xl">
-          <motion.h2
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-2xl sm:text-3xl font-bold mb-8 -rotate-1 inline-block"
+            className="mb-8"
           >
-            {locale === 'en' ? 'Where I bring the most energy' : 'Onde eu entrego mais energia'}
-          </motion.h2>
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-cyan-400">
+              {locale === 'en' ? '// Attributes' : '// Atributos'}
+            </span>
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
+              {locale === 'en' ? 'Where I bring the most energy' : 'Onde eu entrego mais energia'}
+            </h2>
+          </motion.div>
           <div className="grid sm:grid-cols-2 gap-x-10 gap-y-6">
             {competencyAreas.map((area, index) => {
               const style = COMPETENCY_COLOR[area.color] || COMPETENCY_COLOR.blue;
@@ -659,16 +688,16 @@ export default function About() {
                 >
                   <Link href={`/${locale}/skills/${category}/${slug}`} className="group block">
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="flex items-center gap-2 font-medium text-gray-800 dark:text-gray-200 group-hover:text-gray-950 dark:group-hover:text-white transition-colors">
+                      <span className="flex items-center gap-2 font-medium text-gray-200 group-hover:text-white transition-colors">
                         <span className={style.text}>{area.icon}</span>
                         {area.name}
-                        <FaExternalLinkAlt className="text-[0.6rem] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <FaExternalLinkAlt className="text-[0.6rem] text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </span>
-                      <span className="font-mono text-sm text-gray-500 dark:text-gray-400">{area.value}%</span>
+                      <span className="font-mono text-sm text-gray-400">{area.value}%</span>
                     </div>
-                    <div className="h-2.5 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden group-hover:ring-2 group-hover:ring-offset-2 dark:group-hover:ring-offset-gray-900 group-hover:ring-gray-300 dark:group-hover:ring-gray-600 transition-all">
+                    <div className="h-2.5 rounded-sm bg-white/5 border border-white/10 overflow-hidden group-hover:border-cyan-400/40 transition-colors">
                       <motion.div
-                        className={`h-full rounded-full ${style.bg}`}
+                        className={`h-full rounded-sm ${style.bg}`}
                         initial={{ width: 0 }}
                         whileInView={{ width: `${area.value}%` }}
                         viewport={{ once: true, margin: '-60px' }}
@@ -684,7 +713,7 @@ export default function About() {
       </section>
 
       {/* Timeline Section */}
-      <section id="timeline" className="py-20 bg-white dark:bg-gray-800/50 relative">
+      <section id="timeline" className="py-20 relative">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -693,11 +722,14 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-cyan-400">
+              {locale === 'en' ? '// Quest Log' : '// Registro de Missões'}
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mt-1 mb-3">
               {t.about?.timeline || "Linha do Tempo"}
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              {locale === 'en' 
+            <p className="text-gray-400 text-sm sm:text-base">
+              {locale === 'en'
                 ? "My professional journey and key milestones"
                 : "Minha jornada profissional e marcos importantes"}
             </p>
@@ -706,15 +738,15 @@ export default function About() {
           <div className="relative">
             {/* Controles de zoom */}
             <div className="absolute right-4 -top-12 flex gap-2">
-              <button 
+              <button
                 onClick={() => setTimelineZoom(prev => Math.min(prev + 0.2, 2))}
-                className="p-2 bg-gray-700 rounded-full hover:bg-blue-500/20 transition-all"
+                className="p-2 rounded-sm border border-cyan-500/30 bg-black/40 text-cyan-300 hover:bg-cyan-500/10 transition-all"
               >
                 <FaPlus />
               </button>
-              <button 
+              <button
                 onClick={() => setTimelineZoom(prev => Math.max(prev - 0.2, 0.5))}
-                className="p-2 bg-gray-700 rounded-full hover:bg-blue-500/20 transition-all"
+                className="p-2 rounded-sm border border-cyan-500/30 bg-black/40 text-cyan-300 hover:bg-cyan-500/10 transition-all"
               >
                 <FaMinus />
               </button>
@@ -749,8 +781,8 @@ export default function About() {
                 }}
               >
                 {/* Linha central */}
-                <div className="absolute left-0 right-0 h-1 bg-gray-700 top-1/2 -translate-y-1/2"></div>
-                
+                <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-cyan-500/60 via-purple-500/60 to-amber-500/60 top-1/2 -translate-y-1/2"></div>
+
                 {/* Eventos da linha do tempo */}
                 <div className="flex items-center gap-16">
                   {[...workExperience, ...education, ...certifications]
@@ -760,24 +792,24 @@ export default function About() {
                       return yearB - yearA;
                     })
                     .map((item, index) => {
-                      const type = 'company' in item ? 'experience' : 
+                      const type = 'company' in item ? 'experience' :
                                 'degree' in item ? 'education' : 'certification';
-                      
+
                       const getIconColor = (type: string) => {
                         switch(type) {
-                          case 'experience': return 'text-blue-400';
-                          case 'education': return 'text-green-400';
-                          case 'certification': return 'text-yellow-400';
+                          case 'experience': return 'text-cyan-400';
+                          case 'education': return 'text-purple-400';
+                          case 'certification': return 'text-amber-400';
                           default: return 'text-gray-400';
                         }
                       };
 
                       const getBgColor = (type: string) => {
                         switch(type) {
-                          case 'experience': return 'hover:bg-blue-500/20 border-blue-400/50';
-                          case 'education': return 'hover:bg-green-500/20 border-green-400/50';
-                          case 'certification': return 'hover:bg-yellow-500/20 border-yellow-400/50';
-                          default: return 'hover:bg-gray-500/20 border-gray-400/50';
+                          case 'experience': return 'hover:bg-cyan-500/10 border-cyan-400/40';
+                          case 'education': return 'hover:bg-purple-500/10 border-purple-400/40';
+                          case 'certification': return 'hover:bg-amber-500/10 border-amber-400/40';
+                          default: return 'hover:bg-gray-500/10 border-gray-400/40';
                         }
                       };
 
@@ -791,36 +823,36 @@ export default function About() {
                       };
 
                       return (
-                        <div 
+                        <div
                           key={index}
                           className={`relative ${index % 2 === 0 ? '-top-32' : 'top-32'}`}
                         >
                           {/* Linha vertical conectora */}
-                          <div className={`absolute left-1/2 w-px h-24 ${index % 2 === 0 ? 'top-full' : 'bottom-full'} bg-gray-600`}></div>
-                          
+                          <div className={`absolute left-1/2 w-px h-24 ${index % 2 === 0 ? 'top-full' : 'bottom-full'} bg-white/10`}></div>
+
                           {/* Botão do evento */}
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setSelectedTimelineItem({ type, data: item })}
-                            className={`relative group w-32 p-4 rounded-lg border ${getBgColor(type)} bg-gray-800/80 backdrop-blur-sm transition-all`}
+                            className={`relative group w-32 p-4 rounded-sm border ${getBgColor(type)} bg-black/50 backdrop-blur-sm transition-all`}
                           >
                             <div className="flex flex-col items-center gap-2">
-                              <div className="w-12 h-12 rounded-full bg-gray-700/50 flex items-center justify-center">
+                              <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
                                 {getIcon(type)}
                               </div>
-                              <span className="text-sm font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis w-full">
+                              <span className="text-sm font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis w-full text-gray-200">
                                 {'company' in item ? item.company :
                                  'degree' in item ? item.degree :
                                  item.name}
                               </span>
-                              <span className="text-xs text-gray-400">
+                              <span className="text-xs text-gray-500 font-mono">
                                 {'period' in item ? item.period.split('-')[0] : item.year}
                               </span>
                             </div>
 
                             {/* Tooltip */}
-                            <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs rounded p-2 w-48 z-10 left-1/2 -translate-x-1/2 pointer-events-none">
+                            <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-black border border-white/10 text-white text-xs rounded-sm p-2 w-48 z-10 left-1/2 -translate-x-1/2 pointer-events-none">
                               {'company' in item ? `${item.position} at ${item.company}` :
                                'degree' in item ? `${item.degree} at ${item.institution}` :
                                `${item.name} - ${item.issuer}`}
@@ -840,7 +872,7 @@ export default function About() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="-mt-12 bg-gray-800/50 rounded-lg p-6 border border-gray-700"
+                  className="-mt-12"
                 >
                   {selectedTimelineItem.type === 'experience' && (
                     <ExperienceCard 
@@ -863,26 +895,31 @@ export default function About() {
       </section>
       
       {/* Professional Experience Section */}
-      <section id="experience" className="py-20 bg-white dark:bg-gray-800/80 relative scroll-mt-20">
+      <section id="experience" className="py-20 relative scroll-mt-20">
         <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">
-            {t.about?.experience || ""}
-          </h2>
-          <div className="space-y-8">
+          <div className="text-center mb-10">
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-cyan-400">
+              {locale === 'en' ? '// Guild History' : '// Histórico de Guildas'}
+            </span>
+            <h2 className="font-serif text-3xl font-bold text-white mt-1">
+              {t.about?.experience || ""}
+            </h2>
+          </div>
+          <div className="space-y-6">
             {workExperience.map((exp, index) => (
-              <ExperienceCard 
-                key={index} 
-                experience={exp} 
-                t={t} 
+              <ExperienceCard
+                key={index}
+                experience={exp}
+                t={t}
                 locale={locale}
               />
             ))}
           </div>
         </div>
       </section>
-      
+
       {/* Education Section */}
-      <section id="education" className="py-20 bg-gray-50 dark:bg-gray-900/80 relative scroll-mt-20">
+      <section id="education" className="py-20 relative scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -891,22 +928,25 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400">
-              <FaGrad className="inline-block mr-3 text-3xl" />
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-purple-400">
+              {locale === 'en' ? '// Training Grounds' : '// Escolas de Treinamento'}
+            </span>
+            <h2 className="font-serif text-3xl font-bold text-white mt-1">
+              <FaGrad className="inline-block mr-3 text-2xl text-purple-400" />
               {t.about?.educationSection || t.about?.education}
             </h2>
           </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {education.map((edu, index) => (
               <EducationCard key={index} education={edu} t={t} />
             ))}
           </div>
         </div>
       </section>
-      
+
       {/* Certifications Section */}
-      <section id="certifications" className="py-20 bg-white dark:bg-gray-800/50 relative scroll-mt-20">
+      <section id="certifications" className="py-20 relative scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -915,22 +955,25 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-400">
-              <FaCertificate className="inline-block mr-3 text-3xl" />
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-amber-400">
+              {locale === 'en' ? '// Achievements' : '// Conquistas'}
+            </span>
+            <h2 className="font-serif text-3xl font-bold text-white mt-1">
+              <FaCertificate className="inline-block mr-3 text-2xl text-amber-400" />
               {t.about?.certifications || ""}
             </h2>
           </motion.div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
             {certifications.map((cert, index) => (
               <CertificationCard key={index} certification={cert} t={t} />
             ))}
           </div>
         </div>
       </section>
-      
+
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gray-50 dark:bg-gray-900/80 relative scroll-mt-20">
+      <section id="contact" className="py-20 relative scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -939,113 +982,116 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-pink-600 dark:from-red-400 dark:to-pink-400">
-              <FaEnvelope className="inline-block mr-3 text-3xl" />
+            <span className="text-[0.65rem] font-mono uppercase tracking-widest text-purple-400">
+              {locale === 'en' ? '// Send a Raven' : '// Envie um Corvo'}
+            </span>
+            <h2 className="font-serif text-3xl font-bold text-white mt-1">
+              <FaEnvelope className="inline-block mr-3 text-2xl text-purple-400" />
               {t.about?.contactInfo || "Contato"}
             </h2>
           </motion.div>
-          
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg">
+
+          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+            <RpgPanel glow="cyan" className="p-6 sm:p-8">
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                    <FaEnvelope className="text-2xl text-blue-600 dark:text-blue-400" />
+                  <div className="w-12 h-12 rounded-sm border border-cyan-500/30 bg-cyan-500/5 flex items-center justify-center">
+                    <FaEnvelope className="text-xl text-cyan-400" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Email</h3>
-                    <a 
+                    <h3 className="text-base font-semibold text-white">Email</h3>
+                    <a
                       href={`mailto:${contactInfo.email}`}
-                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                      className="text-cyan-300 hover:text-cyan-200 hover:underline text-sm"
                     >
                       {contactInfo.email}
                     </a>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                    <FaPhone className="text-2xl text-green-600 dark:text-green-400" />
+                  <div className="w-12 h-12 rounded-sm border border-cyan-500/30 bg-cyan-500/5 flex items-center justify-center">
+                    <FaPhone className="text-xl text-cyan-400" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t.home?.phone || "Telefone"}</h3>
-                    <a 
+                    <h3 className="text-base font-semibold text-white">{t.home?.phone || "Telefone"}</h3>
+                    <a
                       href={`tel:${contactInfo.phone}`}
-                      className="text-green-600 dark:text-green-400 hover:underline"
+                      className="text-cyan-300 hover:text-cyan-200 hover:underline text-sm"
                     >
                       {contactInfo.phone}
                     </a>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                    <FaLocation className="text-2xl text-purple-600 dark:text-purple-400" />
+                  <div className="w-12 h-12 rounded-sm border border-cyan-500/30 bg-cyan-500/5 flex items-center justify-center">
+                    <FaLocation className="text-xl text-cyan-400" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t.home?.location || "Localização"}</h3>
-                    <p className="text-gray-600 dark:text-gray-300">
+                    <h3 className="text-base font-semibold text-white">{t.home?.location || "Localização"}</h3>
+                    <p className="text-gray-400 text-sm">
                       Minas Gerais, Brasil
                     </p>
                   </div>
                 </div>
               </div>
-            </div>
-            
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg">
+            </RpgPanel>
+
+            <RpgPanel glow="purple" className="p-6 sm:p-8">
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
-                    <FaLinkedin className="text-2xl text-indigo-600 dark:text-indigo-400" />
+                  <div className="w-12 h-12 rounded-sm border border-purple-500/30 bg-purple-500/5 flex items-center justify-center">
+                    <FaLinkedin className="text-xl text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">LinkedIn</h3>
-                    <a 
+                    <h3 className="text-base font-semibold text-white">LinkedIn</h3>
+                    <a
                       href={`https://www.linkedin.com/in/${contactInfo.linkedin.replace('@', '')}/`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-indigo-600 dark:text-indigo-400 hover:underline"
+                      className="text-purple-300 hover:text-purple-200 hover:underline text-sm"
                     >
                       {contactInfo.linkedin}
                     </a>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gray-100 dark:bg-gray-900/30 rounded-lg flex items-center justify-center">
-                    <FaGithub className="text-2xl text-gray-600 dark:text-gray-400" />
+                  <div className="w-12 h-12 rounded-sm border border-purple-500/30 bg-purple-500/5 flex items-center justify-center">
+                    <FaGithub className="text-xl text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">GitHub</h3>
-                    <a 
+                    <h3 className="text-base font-semibold text-white">GitHub</h3>
+                    <a
                       href={`https://github.com/${contactInfo.github.replace('@', '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-600 dark:text-gray-400 hover:underline"
+                      className="text-purple-300 hover:text-purple-200 hover:underline text-sm"
                     >
                       {contactInfo.github}
                     </a>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
-                    <FaDownload className="text-2xl text-amber-600 dark:text-amber-400" />
+                  <div className="w-12 h-12 rounded-sm border border-amber-500/30 bg-amber-500/5 flex items-center justify-center">
+                    <FaDownload className="text-xl text-amber-400" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t.about?.curriculum || t.home?.curriculum || "Currículo"}</h3>
-                    <a 
+                    <h3 className="text-base font-semibold text-white">{t.about?.curriculum || t.home?.curriculum || "Currículo"}</h3>
+                    <a
                       href={`/files/curriculo_${locale === 'pt' ? 'pt' : 'en'}.pdf`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-600 dark:text-amber-400 hover:underline"
+                      className="text-amber-300 hover:text-amber-200 hover:underline text-sm"
                     >
                       {t.about?.downloadCV || t.home?.downloadCV}
                     </a>
                   </div>
                 </div>
               </div>
-            </div>
+            </RpgPanel>
           </div>
         </div>
       </section>
@@ -1067,37 +1113,38 @@ const ExperienceCard = ({ experience, t, locale }: ExperienceCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      whileHover={{ y: -4, rotate: -0.5 }}
-      className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700 border-l-4 border-l-blue-500"
+      whileHover={{ y: -3 }}
     >
-      <div className="flex items-center gap-4 mb-4">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white">
-          <span className="text-xl font-bold">{experience.company[0]}</span>
+      <RpgPanel glow="cyan" className="p-6">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="w-12 h-12 rounded-full border-2 border-cyan-400/60 bg-black/40 flex items-center justify-center text-cyan-300 shadow-[0_0_15px_-3px_rgba(34,211,238,0.5)]">
+            <span className="text-lg font-bold font-mono">{experience.company[0]}</span>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-white">{experience.position}</h3>
+            <p className="text-base text-cyan-300">{experience.company}</p>
+            <p className="text-xs text-gray-500 font-mono flex items-center gap-2">
+              <FaCalendarAlt className="text-cyan-500" />
+              {experience.period}
+            </p>
+          </div>
         </div>
-        <div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{experience.position}</h3>
-          <p className="text-lg text-gray-700 dark:text-gray-300">{experience.company}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
-            <FaCalendarAlt className="text-blue-500" />
-            {experience.period}
-          </p>
+
+        <p className="text-gray-400 text-sm mb-4">
+          <SkillsText text={experience.description} locale={locale} />
+        </p>
+
+        <div className="flex flex-wrap gap-1.5">
+          {Array.from(new Set(experience.technologies)).map((tech, index) => (
+            <span
+              key={index}
+              className="px-2.5 py-1 border border-cyan-500/25 bg-cyan-500/5 text-cyan-300 rounded-sm text-xs font-mono"
+            >
+              {tech}
+            </span>
+          ))}
         </div>
-      </div>
-      
-      <p className="text-gray-600 dark:text-gray-400 mb-4">
-        <SkillsText text={experience.description} locale={locale} />
-      </p>
-      
-      <div className="flex flex-wrap gap-2">
-        {Array.from(new Set(experience.technologies)).map((tech, index) => (
-          <span
-            key={index}
-            className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm"
-          >
-            {tech}
-          </span>
-        ))}
-      </div>
+      </RpgPanel>
     </motion.div>
   );
 };
@@ -1108,23 +1155,24 @@ const EducationCard = ({ education, t }: EducationCardProps) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5 }}
-    whileHover={{ y: -4, rotate: 0.5 }}
-    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700 border-l-4 border-l-green-500"
+    whileHover={{ y: -3 }}
   >
-    <div className="flex items-start gap-4">
-      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white">
-        <FaGrad className="text-2xl" />
+    <RpgPanel glow="purple" className="p-6 h-full">
+      <div className="flex items-start gap-4">
+        <div className="w-12 h-12 rounded-full border-2 border-purple-400/60 bg-black/40 flex items-center justify-center text-purple-300 shrink-0 shadow-[0_0_15px_-3px_rgba(168,85,247,0.5)]">
+          <FaGrad className="text-xl" />
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-white mb-1">{education.degree}</h3>
+          <p className="text-purple-300 text-sm">{education.institution}</p>
+          <p className="text-xs text-gray-500 font-mono flex items-center gap-2 mt-1">
+            <FaCalendarAlt className="text-purple-500" />
+            {education.period}
+          </p>
+          <p className="text-sm text-gray-400 mt-2">{education.focus}</p>
+        </div>
       </div>
-      <div>
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">{education.degree}</h3>
-        <p className="text-gray-700 dark:text-gray-300">{education.institution}</p>
-        <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 mt-1">
-          <FaCalendarAlt className="text-green-500" />
-          {education.period}
-        </p>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{education.focus}</p>
-      </div>
-    </div>
+    </RpgPanel>
   </motion.div>
 );
 
@@ -1144,53 +1192,40 @@ const CertificationCard = ({ certification, t }: CertificationCardProps) => {
     }
   };
 
-  // Função para determinar a cor do gradiente baseado no emissor
-  const getGradientColor = (issuer: string) => {
-    switch (issuer.toLowerCase()) {
-      case 'rocketseat':
-        return 'from-purple-500 to-indigo-600';
-      case 'alura':
-        return 'from-blue-500 to-cyan-600';
-      case 'full cycle':
-        return 'from-green-500 to-emerald-600';
-      default:
-        return 'from-amber-500 to-orange-600';
-    }
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      whileHover={{ y: -4, rotate: -0.5, scale: 1.02 }}
-      className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700"
+      whileHover={{ y: -3, scale: 1.015 }}
     >
-      <div className="flex items-start gap-4">
-        <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getGradientColor(certification.issuer)} flex items-center justify-center text-white shrink-0`}>
-          {getIssuerIcon(certification.issuer)}
+      <RpgPanel glow="amber" className="p-6 h-full">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 rounded-full border-2 border-amber-400/60 bg-black/40 flex items-center justify-center text-amber-300 shrink-0 shadow-[0_0_15px_-3px_rgba(245,158,11,0.5)]">
+            {getIssuerIcon(certification.issuer)}
+          </div>
+          <div>
+            <h3 className="text-base font-semibold text-white mb-1">{certification.name}</h3>
+            <p className="text-amber-300 text-sm">{certification.issuer}</p>
+            <p className="text-xs text-gray-500 font-mono flex items-center gap-2 mt-1">
+              <FaCalendarAlt className="w-3 h-3 text-amber-500" />
+              {certification.year}
+            </p>
+            {certification.certificate_url && (
+              <a
+                href={certification.certificate_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 mt-2 text-sm"
+              >
+                <FaExternalLinkAlt className="w-3 h-3" />
+                {t.about?.view_certificate || "Ver Certificado"}
+              </a>
+            )}
+          </div>
         </div>
-        <div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">{certification.name}</h3>
-          <p className="text-gray-700 dark:text-gray-300">{certification.issuer}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 mt-1">
-            <FaCalendarAlt className="w-4 h-4 text-amber-500" />
-            {certification.year}
-          </p>
-          {certification.certificate_url && (
-            <a
-              href={certification.certificate_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 mt-2 text-sm"
-            >
-              <FaExternalLinkAlt className="w-3 h-3" />
-              {t.about?.view_certificate || "Ver Certificado"}
-            </a>
-          )}
-        </div>
-      </div>
+      </RpgPanel>
     </motion.div>
   );
 };

@@ -7,8 +7,7 @@ import { useState, useEffect } from 'react';
 // import { useTranslations } from 'next-intl';
 import { getTranslations } from '@/lib/getTranslations';
 import { FaGithub, FaLinkedin, FaBars, FaTimes } from 'react-icons/fa';
-// import { motion } from 'framer-motion';
-import { motion } from '../lib/motion-stub';
+import { motion } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
 interface NavigationProps {
@@ -71,10 +70,20 @@ export default function Navigation({ locale }: NavigationProps) {
   const navItems = [
     { href: `/${locale}`, label: t.navigation.home, theme: 'theme-home' },
     { href: `/${locale}/about`, label: t.navigation.about, theme: 'theme-about' },
-    { href: `/${locale}/projects`, label: t.navigation.projects, theme: 'theme-projects' },
     { href: `/${locale}/skills`, label: t.navigation.skills, theme: 'theme-skills' },
+    { href: `/${locale}/projects`, label: t.navigation.projects, theme: 'theme-projects' },
     { href: `/${locale}/saa`, label: 'SAA Company', theme: 'theme-saa' },
   ];
+
+  // Hover mais tematico por pagina de destino — nao so cor, mas um gesto
+  // que remete ao estilo daquela pagina (RPG, terminal, HQ, vidro...).
+  const hoverMotion: Record<string, any> = {
+    'theme-home': { y: -1 },
+    'theme-about': { y: -2, rotate: [0, -3, 3, -2, 0], transition: { duration: 0.4 } },
+    'theme-skills': { scale: [1, 1.18, 0.94, 1.06, 1], rotate: [0, -5, 4, -2, 0], transition: { duration: 0.45 } },
+    'theme-projects': { y: -1 },
+    'theme-saa': { y: -1 },
+  };
 
   // O header adota a identidade visual da pagina atual — nao so o link
   // ativo, a barra inteira muda de tom conforme a secao em que se esta.
@@ -95,9 +104,8 @@ export default function Navigation({ locale }: NavigationProps) {
     home: scrolled
       ? 'bg-[#FAF9F6]/90 dark:bg-[#0B0C0E]/90 backdrop-blur-md shadow-md border-b border-gray-200 dark:border-gray-800'
       : 'bg-[#FAF9F6]/80 dark:bg-[#0B0C0E]/80 backdrop-blur-sm border-b border-transparent',
-    about: scrolled
-      ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md border-b border-indigo-300/40 dark:border-indigo-500/30'
-      : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-transparent',
+    // About virou uma ficha de RPG sempre escura — o header acompanha
+    about: 'bg-[#08080C]/90 backdrop-blur-md border-b border-purple-500/20 shadow-md',
     projects: 'bg-[#0B0E14]/95 backdrop-blur-md border-b border-[#5CE1A8]/25 shadow-md',
     skills: scrolled
       ? 'bg-[#F4EFE4]/90 dark:bg-[#171316]/90 backdrop-blur-md shadow-md border-b-2 border-[#E33D3D]/50'
@@ -106,7 +114,7 @@ export default function Navigation({ locale }: NavigationProps) {
     saa: 'bg-[#050814]/70 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/10 shadow-md',
   };
 
-  const alwaysDark = section === 'projects' || section === 'saa';
+  const alwaysDark = section === 'projects' || section === 'saa' || section === 'about';
   const barText = alwaysDark ? 'text-[#D7DBE0]' : '';
   const onDarkBar = alwaysDark ? 'on-dark-bar' : '';
 
@@ -141,7 +149,9 @@ export default function Navigation({ locale }: NavigationProps) {
                   href={item.href}
                   className={`nav-link ${item.theme} text-sm lg:text-base ${pathname === item.href ? 'nav-link-active' : ''}`}
                 >
-                  {item.label}
+                  <motion.span className="inline-block" whileHover={hoverMotion[item.theme]}>
+                    {item.label}
+                  </motion.span>
                 </Link>
               ))}
             </div>
