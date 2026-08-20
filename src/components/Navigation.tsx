@@ -24,6 +24,25 @@ const MOBILE_ACTIVE_BG: Record<string, string> = {
   'theme-saa': 'bg-[#1E3A5F] text-white',
 };
 
+// Cada idioma ganha as cores da bandeira do seu pais, uma por letra —
+// PT (Brasil: verde/azul), EN (EUA: azul/vermelho), ES (Espanha: vermelho/amarelo).
+const LOCALE_COLORS: Record<'pt' | 'en' | 'es', [string, string]> = {
+  pt: ['#009C3B', '#002776'],
+  en: ['#3C3B6E', '#B22234'],
+  es: ['#AA151B', '#F1BF00'],
+};
+
+const LocaleLabel = ({ code }: { code: 'pt' | 'en' | 'es' }) => {
+  const [c1, c2] = LOCALE_COLORS[code];
+  const [l1, l2] = code.toUpperCase().split('');
+  return (
+    <>
+      <span style={{ color: c1 }}>{l1}</span>
+      <span style={{ color: c2 }}>{l2}</span>
+    </>
+  );
+};
+
 export default function Navigation({ locale }: NavigationProps) {
   const t = getTranslations(locale);
   const pathname = usePathname();
@@ -162,19 +181,19 @@ export default function Navigation({ locale }: NavigationProps) {
                 href={getLocalePath('pt')}
                   className={`nav-link text-sm ${locale === 'pt' ? 'font-bold' : 'font-normal'}`}
               >
-                PT
+                <LocaleLabel code="pt" />
               </Link>
               <Link
                 href={getLocalePath('en')}
                   className={`nav-link text-sm ${locale === 'en' ? 'font-bold' : 'font-normal'}`}
               >
-                EN
+                <LocaleLabel code="en" />
               </Link>
               <Link
                 href={getLocalePath('es')}
                   className={`nav-link text-sm ${locale === 'es' ? 'font-bold' : 'font-normal'}`}
               >
-                ES
+                <LocaleLabel code="es" />
               </Link>
             </div>
             <div className="flex items-center space-x-4">
@@ -245,7 +264,7 @@ export default function Navigation({ locale }: NavigationProps) {
                       : 'hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}
                 >
-                  PT
+                  <LocaleLabel code="pt" />
                 </Link>
                 <Link
                   href={getLocalePath('en')}
@@ -255,7 +274,7 @@ export default function Navigation({ locale }: NavigationProps) {
                       : 'hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}
                 >
-                  EN
+                  <LocaleLabel code="en" />
                 </Link>
                 <Link
                   href={getLocalePath('es')}
@@ -265,7 +284,7 @@ export default function Navigation({ locale }: NavigationProps) {
                       : 'hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}
                 >
-                  ES
+                  <LocaleLabel code="es" />
                 </Link>
               </div>
 
