@@ -1,6 +1,7 @@
 import { Inter, JetBrains_Mono, Source_Serif_4 } from 'next/font/google';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '../providers';
+import PageTransition from '@/components/PageTransition';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
@@ -37,7 +38,9 @@ export default async function LocaleLayout({
         <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
       </head>
       <ThemeProvider>
-        <body className={`${inter.variable} ${jetbrainsMono.variable} ${sourceSerif.variable} font-sans antialiased`}>{children}</body>
+        <body className={`${inter.variable} ${jetbrainsMono.variable} ${sourceSerif.variable} font-sans antialiased`}>
+          <PageTransition locale={locale}>{children}</PageTransition>
+        </body>
       </ThemeProvider>
     </html>
   );
