@@ -1,10 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '@/components/Navigation';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { getTranslations } from '@/lib/getTranslations';
-import Link from 'next/link';
 import {
   FaCode,
   FaDatabase,
@@ -12,181 +11,59 @@ import {
   FaShieldAlt,
   FaCubes,
   FaLaptopCode,
-  FaPython,
-  FaPhp,
-  FaNodeJs,
-  FaDocker,
-  FaAws,
-  FaGithub,
-  FaChartLine,
-  FaSyncAlt,
-  FaLock,
-  FaArrowUp,
-  FaNetworkWired,
   FaBrain,
-  FaTimes
+  FaTimes,
+  FaBolt
 } from 'react-icons/fa';
-import {
-  SiApachespark,
-  SiApacheairflow,
-  SiElasticsearch,
-  SiPostgresql,
-  SiMysql,
-  SiMongodb,
-  SiRedis,
-  SiTypescript,
-  SiFastapi,
-  SiGo,
-  SiKubernetes,
-  SiGraphql,
-  SiJenkins,
-  SiPrometheus,
-  SiGrafana,
-  SiDocker
-} from 'react-icons/si';
 import { useState } from 'react';
-import SkillBadge from '@/components/SkillBadge';
 import type { ProficiencyLevel } from '@/components/SkillBadge';
-import { getLocalizedSkillData, allSkills, workExperienceFromAbout, getExperiencesForSkill, getProjectsForSkill } from '@/lib/skillsData';
-import { translateSkill } from '@/lib/translateSkill';
+import { getLocalizedSkillData, allSkills, getExperiencesForSkill, getProjectsForSkill } from '@/lib/skillsData';
 
 const getSkillCategories = (locale: string) => ([
-  {
-    id: 'languages',
-    nameKey: 'languages',
-    icon: <FaCode className="text-4xl text-blue-600" />,
-    descriptionKey: 'languages_description',
-    color: 'blue',
-    gradient: 'from-blue-500 to-indigo-600',
-    skills: [
-      { name: "PYTHON", icon: <FaPython /> },
-      { name: "PHP", icon: <FaPhp /> },
-      { name: "NODE.JS", icon: <FaNodeJs /> },
-      { name: "TYPESCRIPT", icon: <SiTypescript /> },
-      { name: "GO", icon: <SiGo /> }
-    ]
-  },
-  {
-    id: 'data',
-    nameKey: 'dataEngineering',
-    icon: <FaDatabase className="text-4xl text-purple-600" />,
-    descriptionKey: 'dataEngineering_description',
-    color: 'purple',
-    gradient: 'from-purple-500 to-pink-600',
-    skills: [
-      { name: "ETL", icon: <FaDatabase /> },
-      { name: "APACHE SPARK", icon: <SiApachespark /> },
-      { name: "APACHE AIRFLOW", icon: <SiApacheairflow /> },
-      { name: "APACHE HADOOP", icon: <FaDatabase /> },
-      { name: "APACHE NIFI", icon: <FaDatabase /> },
-      { name: "APACHE HIVE", icon: <FaDatabase /> },
-      { name: "DATA LAKES", icon: <FaDatabase /> },
-      { name: "WEB SCRAPING", icon: <FaCode /> },
-      { name: "DATA ENGINEERING", icon: <FaDatabase /> }
-    ]
-  },
-  {
-    id: 'ai',
-    nameKey: 'artificialIntelligence',
-    icon: <FaBrain className="text-4xl text-emerald-600" />,
-    descriptionKey: 'artificialIntelligence_description',
-    color: 'emerald',
-    gradient: 'from-emerald-500 to-green-600',
-    skills: [
-      { name: "MACHINE LEARNING", icon: <FaBrain /> },
-      { name: "DEEP LEARNING", icon: <FaBrain /> },
-      { name: "GAN", icon: <FaBrain /> },
-      { name: "COMPUTER VISION", icon: <FaBrain /> },
-      { name: "NLP", icon: <FaBrain /> }
-    ]
-  },
-  {
-    id: 'databases',
-    nameKey: 'databases',
-    icon: <FaDatabase className="text-4xl text-red-600" />,
-    descriptionKey: 'databases_description',
-    color: 'red',
-    gradient: 'from-red-500 to-pink-600',
-    skills: [
-      { name: "POSTGRESQL", icon: <SiPostgresql /> },
-      { name: "MYSQL", icon: <SiMysql /> },
-      { name: "MONGODB", icon: <SiMongodb /> },
-      { name: "REDIS", icon: <SiRedis /> }
-    ]
-  },
-  {
-    id: 'web',
-    nameKey: 'webDev',
-    icon: <FaServer className="text-4xl text-amber-600" />,
-    descriptionKey: 'webDev_description',
-    color: 'amber',
-    gradient: 'from-amber-500 to-yellow-600',
-    skills: [
-      { name: "FASTAPI", icon: <SiFastapi /> },
-      { name: "REST APIS", icon: <FaServer /> },
-      { name: "GRAPHQL", icon: <SiGraphql /> },
-      { name: "MICROSERVICES", icon: <FaServer /> }
-    ]
-  },
-  {
-    id: 'devops',
-    nameKey: 'devops',
-    icon: <FaLaptopCode className="text-4xl text-indigo-600" />,
-    descriptionKey: 'devops_description',
-    color: 'indigo',
-    gradient: 'from-indigo-500 to-blue-600',
-    skills: [
-      { name: "DOCKER", icon: <SiDocker /> },
-      { name: "KUBERNETES", icon: <SiKubernetes /> },
-      { name: "AWS", icon: <FaAws /> },
-      { name: "CI/CD", icon: <FaLaptopCode /> },
-      { name: "JENKINS", icon: <SiJenkins /> },
-      { name: "PROMETHEUS", icon: <SiPrometheus /> },
-      { name: "GRAFANA", icon: <SiGrafana /> }
-    ]
-  },
-  {
-    id: 'architecture',
-    nameKey: 'architecture',
-    icon: <FaCubes className="text-4xl text-pink-600" />,
-    descriptionKey: 'architecture_description',
-    color: 'pink',
-    gradient: 'from-pink-500 to-rose-600',
-    skills: [
-      { name: "CLEAN ARCHITECTURE", icon: <FaCubes /> },
-      { name: "PERFORMANCE", icon: <FaChartLine /> },
-      { name: "AGILE", icon: <FaSyncAlt /> },
-      { name: "TDD", icon: <FaCode /> }
-    ]
-  },
-  {
-    id: 'security',
-    nameKey: 'security',
-    icon: <FaShieldAlt className="text-4xl text-gray-600" />,
-    descriptionKey: 'security_description',
-    color: 'gray',
-    gradient: 'from-gray-500 to-gray-700',
-    skills: [
-      { name: "WEB SECURITY", icon: <FaLock /> },
-      { name: "PENETRATION TESTING", icon: <FaShieldAlt /> },
-      { name: "LINUX", icon: <FaCode /> },
-      { name: "SSRF", icon: <FaCode /> }
-    ]
-  }
+  { id: 'languages', nameKey: 'languages', icon: <FaCode />, descriptionKey: 'languages_description' },
+  { id: 'data', nameKey: 'dataEngineering', icon: <FaDatabase />, descriptionKey: 'dataEngineering_description' },
+  { id: 'ai', nameKey: 'artificialIntelligence', icon: <FaBrain />, descriptionKey: 'artificialIntelligence_description' },
+  { id: 'databases', nameKey: 'databases', icon: <FaDatabase />, descriptionKey: 'databases_description' },
+  { id: 'web', nameKey: 'webDev', icon: <FaServer />, descriptionKey: 'webDev_description' },
+  { id: 'devops', nameKey: 'devops', icon: <FaLaptopCode />, descriptionKey: 'devops_description' },
+  { id: 'architecture', nameKey: 'architecture', icon: <FaCubes />, descriptionKey: 'architecture_description' },
+  { id: 'security', nameKey: 'security', icon: <FaShieldAlt />, descriptionKey: 'security_description' },
 ]);
+
+// Ordem de exibição das skills dentro de cada categoria
+const CATEGORY_SKILL_NAMES: Record<string, string[]> = {
+  languages: ['PYTHON', 'PHP', 'TYPESCRIPT', 'GO', 'JAVASCRIPT'],
+  data: ['DATA ENGINEERING', 'ETL', 'APACHE SPARK', 'APACHE AIRFLOW', 'APACHE HADOOP', 'APACHE NIFI', 'APACHE HIVE', 'DATA LAKES', 'WEB SCRAPING'],
+  ai: ['MACHINE LEARNING', 'DEEP LEARNING', 'GAN', 'COMPUTER VISION', 'NLP'],
+  databases: ['POSTGRESQL', 'MYSQL', 'MONGODB', 'REDIS', 'ELASTICSEARCH'],
+  web: ['FASTAPI', 'REST APIS', 'GRAPHQL', 'MICROSERVICES', 'NODE.JS'],
+  devops: ['DOCKER', 'KUBERNETES', 'AWS', 'CI/CD', 'JENKINS', 'PROMETHEUS', 'GRAFANA'],
+  architecture: ['CLEAN ARCHITECTURE', 'PERFORMANCE', 'AGILE', 'TDD'],
+  security: ['WEB SECURITY', 'PENETRATION TESTING', 'LINUX', 'SSRF', 'CRYPTOGRAPHY', 'API SECURITY', 'CYBERSECURITY'],
+};
+
+// Rank fixo por nível — sem cores por categoria, o "tech" aqui é o gauge e a interação, não o arco-íris
+const RANK_LABEL: Record<ProficiencyLevel, string> = {
+  expert: 'S',
+  advanced: 'A',
+  intermediate: 'B',
+  beginner: 'C',
+};
+
+const RANK_STYLE: Record<ProficiencyLevel, string> = {
+  expert: 'bg-[#E33D3D] text-white border-[#171316] dark:border-[#F5F1E8]',
+  advanced: 'bg-[#171316] text-[#F5F1E8] border-[#171316] dark:bg-[#F5F1E8] dark:text-[#171316] dark:border-[#F5F1E8]',
+  intermediate: 'bg-transparent text-[#171316] dark:text-[#F5F1E8] border-[#171316] dark:border-[#F5F1E8]',
+  beginner: 'bg-transparent text-[#171316]/50 dark:text-[#F5F1E8]/50 border-[#171316]/40 dark:border-[#F5F1E8]/40',
+};
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
+  visible: { opacity: 1, transition: { staggerChildren: 0.06 } }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 16 },
   visible: { opacity: 1, y: 0 }
 };
 
@@ -196,349 +73,226 @@ export default function Skills() {
   const t = getTranslations(locale);
   const [activeCategory, setActiveCategory] = useState('languages');
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const skillCategories = getSkillCategories(locale);
-  const activeSkillCategory = skillCategories.find(cat => cat.id === activeCategory);
+  const activeSkillCategory = skillCategories.find(cat => cat.id === activeCategory)!;
 
-  // Obter experiências e projetos relacionados à skill selecionada
   const experiencesForSkill = selectedSkill ? getExperiencesForSkill(selectedSkill) : [];
   const projectsForSkill = selectedSkill ? getProjectsForSkill(selectedSkill) : [];
 
-  // Função para obter os dados de todas as skills de uma categoria
-  const getSkillsForCategory = (category: string) => {
-    return allSkills
-      .filter(skill => getSkillCategory(skill) === category)
-      .map(skill => {
-        const skillData = getLocalizedSkillData(skill, locale);
-        return {
-          ...skillData,
-          normalizedSkill: skill
-        };
-      });
-  };
+  const skillsInCategory = (CATEGORY_SKILL_NAMES[activeCategory] || [])
+    .map(name => allSkills.includes(name) ? getLocalizedSkillData(name, locale) : null)
+    .filter(Boolean) as ReturnType<typeof getLocalizedSkillData>[];
 
-  // Selecionar as skills mais relevantes para destaque
-  const featuredSkills = [
-    getLocalizedSkillData('PYTHON', locale),
-    getLocalizedSkillData('DATA ENGINEERING', locale),
-    getLocalizedSkillData('APACHE SPARK', locale),
-    getLocalizedSkillData('FASTAPI', locale),
-    getLocalizedSkillData('DOCKER', locale),
-    getLocalizedSkillData('WEB SECURITY', locale)
-  ].filter(Boolean);
-  
+  const selectedSkillData = selectedSkill ? getLocalizedSkillData(selectedSkill, locale) : null;
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-black">
+    <div className="min-h-screen bg-[#F4EFE4] dark:bg-[#171316] halftone-dots">
       <Navigation locale={locale} />
-      
-      <section className="py-20">
+
+      <section className="pt-24 pb-20 sm:pt-28">
         <div className="container mx-auto px-4 max-w-6xl">
+          {/* Cabeçalho estilo capa de HQ */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
+            transition={{ duration: 0.4 }}
+            className="mb-10 sm:mb-14"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
-              {t.skills?.title || "Minhas Habilidades"}
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+              <span className="inline-flex items-center gap-2 -rotate-2 bg-[#E33D3D] text-white text-xs sm:text-sm font-black uppercase tracking-widest px-3 py-1.5 border-2 border-[#171316] dark:border-[#F5F1E8] comic-panel-sm">
+                <FaBolt className="text-yellow-300" />
+                {locale === 'en' ? 'Skill Dossier — Issue No. 01' : locale === 'es' ? 'Dossier de Habilidades — Número 01' : 'Dossiê de Habilidades — Nº 01'}
+              </span>
+            </div>
+            <h1 className="font-black uppercase text-4xl sm:text-6xl md:text-7xl leading-[0.95] tracking-tight text-[#171316] dark:text-[#F5F1E8]">
+              {t.skills?.title || 'Minhas Habilidades'}
             </h1>
-            <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
-              {t.skills?.subtitle || "Tecnologias e ferramentas que utilizo para criar soluções eficientes"}
+            <p className="mt-4 max-w-2xl border-2 border-[#171316] dark:border-[#F5F1E8] bg-white dark:bg-[#211c22] px-4 py-3 text-sm sm:text-base text-[#171316] dark:text-[#F5F1E8] comic-panel-sm">
+              {t.skills?.subtitle || 'Tecnologias e ferramentas que utilizo para criar soluções eficientes'}
             </p>
           </motion.div>
-          
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {skillCategories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                  activeCategory === category.id
-                    ? `bg-${category.color}-100 dark:bg-${category.color}-900/30 text-${category.color}-600 dark:text-${category.color}-400`
-                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
-                }`}
-              >
-                <div className={`p-1 rounded-lg ${
-                  activeCategory === category.id
-                    ? `bg-${category.color}-50 dark:bg-${category.color}-900/20`
-                    : 'bg-gray-100 dark:bg-gray-800'
-                }`}>
-                  {category.icon}
-                </div>
-                <span className="font-medium">
+
+          {/* Seletor de categorias — abas de gibi */}
+          <div className="flex flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-10">
+            {skillCategories.map((category) => {
+              const isActive = activeCategory === category.id;
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 border-2 text-xs sm:text-sm font-bold uppercase tracking-wide transition-transform duration-150 ${
+                    isActive
+                      ? 'bg-[#171316] text-[#F5F1E8] border-[#171316] dark:bg-[#F5F1E8] dark:text-[#171316] dark:border-[#F5F1E8] -rotate-1 comic-panel-active'
+                      : 'bg-white dark:bg-[#211c22] text-[#171316] dark:text-[#F5F1E8] border-[#171316]/70 dark:border-[#F5F1E8]/60 hover:-translate-y-0.5'
+                  }`}
+                >
+                  <span className="text-base sm:text-lg">{category.icon}</span>
                   {t.skills?.[category.nameKey] || category.nameKey}
-                </span>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-1 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-              <div className="flex items-center gap-4 mb-6">
-                <div className={`p-3 rounded-full bg-${activeSkillCategory?.color}-100 dark:bg-${activeSkillCategory?.color}-900/30`}>
-                  {activeSkillCategory?.icon}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            {/* Painel "dossiê" da categoria */}
+            <div className="md:col-span-1 bg-white dark:bg-[#211c22] border-2 border-[#171316] dark:border-[#F5F1E8] comic-panel p-5 sm:p-6 h-fit">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full border-2 border-[#171316] dark:border-[#F5F1E8] bg-[#F4EFE4] dark:bg-[#171316] flex items-center justify-center text-xl text-[#171316] dark:text-[#F5F1E8]">
+                  {activeSkillCategory.icon}
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  {t.skills?.[activeSkillCategory?.nameKey || ''] || activeSkillCategory?.nameKey}
+                <h2 className="text-lg sm:text-xl font-black uppercase text-[#171316] dark:text-[#F5F1E8]">
+                  {t.skills?.[activeSkillCategory.nameKey] || activeSkillCategory.nameKey}
                 </h2>
               </div>
-              
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                {t.skills?.[activeSkillCategory?.descriptionKey || ''] || activeSkillCategory?.descriptionKey}
+
+              <p className="text-sm sm:text-base text-[#171316]/80 dark:text-[#F5F1E8]/80 mb-6">
+                {t.skills?.[activeSkillCategory.descriptionKey] || activeSkillCategory.descriptionKey}
               </p>
 
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
-                  {t.skills?.proficiencyLevels || "Níveis de Proficiência"}
+              <div className="border-t-2 border-dashed border-[#171316]/30 dark:border-[#F5F1E8]/30 pt-5">
+                <h3 className="text-xs font-black uppercase tracking-widest mb-3 text-[#171316] dark:text-[#F5F1E8]">
+                  {locale === 'en' ? 'Power Ranks' : locale === 'es' ? 'Rangos de Poder' : 'Ranks de Poder'}
                 </h3>
-                <div className="space-y-3">
-                  <div className="flex items-center">
-                    <div className="w-3 h-3 rounded-full bg-blue-600 dark:bg-blue-500 mr-2"></div>
-                    <span className="text-sm">{t.skills?.expert || "Especialista"}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-3 h-3 rounded-full bg-green-600 dark:bg-green-500 mr-2"></div>
-                    <span className="text-sm">{t.skills?.advanced || "Avançado"}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-3 h-3 rounded-full bg-yellow-600 dark:bg-yellow-500 mr-2"></div>
-                    <span className="text-sm">{t.skills?.intermediate || "Intermediário"}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-3 h-3 rounded-full bg-gray-600 dark:bg-gray-500 mr-2"></div>
-                    <span className="text-sm">{t.skills?.beginner || "Iniciante"}</span>
-                  </div>
+                <div className="space-y-2">
+                  {(['expert', 'advanced', 'intermediate', 'beginner'] as ProficiencyLevel[]).map(level => (
+                    <div key={level} className="flex items-center gap-3">
+                      <span className={`w-6 h-6 flex items-center justify-center text-xs font-black border-2 ${RANK_STYLE[level]}`}>
+                        {RANK_LABEL[level]}
+                      </span>
+                      <span className="text-sm text-[#171316] dark:text-[#F5F1E8]">
+                        {t.skills?.[level] || level}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
 
-            <div className="md:col-span-2 space-y-4">
-              {activeSkillCategory?.skills.map((skill, index) => {
-                const skillData = getLocalizedSkillData(skill.name, locale);
-                return (
-                  <motion.div 
-                    key={`${activeSkillCategory.id}-${index}`}
-                    className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm hover:shadow-md transition-all cursor-pointer"
-                    variants={itemVariants}
-                    initial="hidden"
-                    animate="visible"
-                    transition={{ delay: index * 0.1 }}
-                    onClick={() => setSelectedSkill(skill.name)}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center">
-                        <span className={`bg-${activeSkillCategory.color}-100 dark:bg-${activeSkillCategory.color}-900/30 p-2 rounded-lg mr-3`}>
-                          {skill.icon}
-                        </span>
-                        <SkillBadge 
-                          skill={skillData.normalizedSkill} 
-                          category={activeSkillCategory.id}
-                          level={skillData.level as ProficiencyLevel}
-                          className="text-base font-semibold p-2"
-                        >
-                          {skillData.skill}
-                        </SkillBadge>
-                      </div>
-                      <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full bg-${getLevelColor(skillData.level as ProficiencyLevel)}-600 dark:bg-${getLevelColor(skillData.level as ProficiencyLevel)}-500 mr-2`}></div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          {skillData.score}%
-                        </span>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-gray-200 dark:bg-gray-700 w-full h-2 rounded-full overflow-hidden mb-2">
-                      <div 
-                        className={`bg-${getLevelColor(skillData.level as ProficiencyLevel)}-600 dark:bg-${getLevelColor(skillData.level as ProficiencyLevel)}-500 h-full rounded-full`}
-                        style={{ width: `${skillData.score}%` }}
-                      ></div>
-                    </div>
-                    
-                    <div className="flex justify-between items-center text-xs mb-2">
-                      <div className="flex items-center gap-3">
-                        <span className="text-gray-600 dark:text-gray-400">
-                          <span className="font-semibold">{skillData.stats.yearsOfExperience}</span> {t.skills?.yearsExperience || "anos de experiência"}
-                        </span>
-                        
-                        <span className="text-gray-600 dark:text-gray-400">
-                          <span className="font-semibold">{skillData.stats.projectCount}</span> {skillData.stats.projectCount === 1 ? "projeto" : "projetos"}
-                        </span>
-                        
-                        <span className="text-gray-600 dark:text-gray-400">
-                          <span className="font-semibold">{skillData.stats.certificationCount}</span> {skillData.stats.certificationCount === 1 ? "certificação" : "certificações"}
-                        </span>
-                      </div>
-                      
-                      <span className="font-medium text-gray-700 dark:text-gray-300">
-                        {t.skills?.[skillData.level] || skillData.level}
-                      </span>
-                    </div>
-                  </motion.div>
-                );
-              })}
-
-              {selectedSkill && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg relative"
+            {/* Grade de skills — cartas colecionáveis */}
+            <motion.div
+              key={activeCategory}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 content-start"
+            >
+              {skillsInCategory.map((skillData) => (
+                <motion.button
+                  key={skillData.normalizedSkill}
+                  variants={itemVariants}
+                  aria-label={skillData.skill}
+                  onClick={() => setSelectedSkill(skillData.normalizedSkill)}
+                  className="text-left bg-white dark:bg-[#211c22] border-2 border-[#171316] dark:border-[#F5F1E8] comic-panel-sm p-4 hover:-translate-y-1 hover:translate-x-0.5 transition-transform duration-150"
                 >
-                  <button
-                    onClick={() => setSelectedSkill(null)}
-                    className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                  >
-                    <FaTimes className="text-xl" />
-                  </button>
-                  <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{selectedSkill}</h3>
-                  <div className="flex items-center gap-4 mb-6">
-                    <SkillBadge
-                      skill={selectedSkill}
-                      category={getSkillCategory(selectedSkill)}
-                      level={getLocalizedSkillData(selectedSkill, locale).level as ProficiencyLevel}
-                      size="lg"
-                    >
-                      {getLocalizedSkillData(selectedSkill, locale).skill}
-                    </SkillBadge>
+                  <div className="flex items-start justify-between mb-3">
+                    <span className="font-black uppercase text-sm sm:text-base text-[#171316] dark:text-[#F5F1E8] leading-tight pr-2">
+                      {skillData.skill}
+                    </span>
+                    <span className={`shrink-0 w-7 h-7 flex items-center justify-center text-xs font-black border-2 ${RANK_STYLE[skillData.level as ProficiencyLevel]}`}>
+                      {RANK_LABEL[skillData.level as ProficiencyLevel]}
+                    </span>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="text-lg font-semibold mb-3 text-gray-800 dark:text-white">
-                        {t.skills?.experience || "Experiência"}
-                      </h4>
-                      {experiencesForSkill.map((exp, index) => (
-                        <div key={index} className="mb-4 last:mb-0">
-                          <div className="font-medium text-gray-900 dark:text-white">{exp.company}</div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">{exp.position}</div>
-                          <div className="text-sm text-gray-500 dark:text-gray-500">{exp.period}</div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div>
-                      <h4 className="text-lg font-semibold mb-3 text-gray-800 dark:text-white">
-                        {t.skills?.projects || "Projetos"}
-                      </h4>
-                      {projectsForSkill.map((project, index) => (
-                        <div key={index} className="mb-4 last:mb-0">
-                          <div className="font-medium text-gray-900 dark:text-white">{project.name}</div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">{project.description}</div>
-                          <a 
-                            href={project.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="text-sm text-blue-600 dark:text-blue-400 hover:underline mt-1 inline-block"
-                          >
-                            {t.skills?.viewProject || "Ver Projeto"}
-                          </a>
-                        </div>
-                      ))}
-                    </div>
+                  {/* Power meter estilo gauge de HQ, em blocos */}
+                  <div className="flex gap-1 mb-3" aria-hidden>
+                    {Array.from({ length: 10 }).map((_, i) => (
+                      <span
+                        key={i}
+                        className={`h-2.5 flex-1 border border-[#171316] dark:border-[#F5F1E8] ${
+                          i < Math.round(skillData.score / 10) ? 'bg-[#E33D3D]' : 'bg-transparent'
+                        }`}
+                      />
+                    ))}
                   </div>
-                </motion.div>
-              )}
-            </div>
+
+                  <div className="flex items-center justify-between font-mono text-[0.65rem] sm:text-xs text-[#171316]/70 dark:text-[#F5F1E8]/70">
+                    <span>{skillData.score}%</span>
+                    <span>{skillData.stats.yearsOfExperience}{locale === 'en' ? 'y' : 'a'} · {skillData.stats.projectCount}{locale === 'en' ? 'p' : 'p'} · {skillData.stats.certificationCount}c</span>
+                  </div>
+                </motion.button>
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
+
+      {/* Dossiê da skill selecionada */}
+      <AnimatePresence>
+        {selectedSkill && selectedSkillData && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-[#171316]/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setSelectedSkill(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative bg-[#F4EFE4] dark:bg-[#211c22] border-2 border-[#171316] dark:border-[#F5F1E8] comic-panel max-w-2xl w-full max-h-[85vh] overflow-y-auto p-5 sm:p-8"
+            >
+              <button
+                onClick={() => setSelectedSkill(null)}
+                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center border-2 border-[#171316] dark:border-[#F5F1E8] text-[#171316] dark:text-[#F5F1E8] hover:bg-[#171316] hover:text-white dark:hover:bg-[#F5F1E8] dark:hover:text-[#171316] transition-colors"
+                aria-label="Fechar"
+              >
+                <FaTimes />
+              </button>
+
+              <div className="flex items-center gap-3 mb-6">
+                <span className={`w-10 h-10 flex items-center justify-center text-sm font-black border-2 ${RANK_STYLE[selectedSkillData.level as ProficiencyLevel]}`}>
+                  {RANK_LABEL[selectedSkillData.level as ProficiencyLevel]}
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-black uppercase text-[#171316] dark:text-[#F5F1E8]">
+                  {selectedSkillData.skill}
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-xs font-black uppercase tracking-widest mb-3 text-[#171316] dark:text-[#F5F1E8] border-b-2 border-[#171316] dark:border-[#F5F1E8] pb-1">
+                    {t.skills?.experience || 'Experiência'}
+                  </h4>
+                  {experiencesForSkill.length > 0 ? experiencesForSkill.map((exp, index) => (
+                    <div key={index} className="mb-4 last:mb-0">
+                      <div className="font-bold text-[#171316] dark:text-[#F5F1E8]">{exp.company}</div>
+                      <div className="text-sm text-[#171316]/70 dark:text-[#F5F1E8]/70">{exp.position}</div>
+                      <div className="text-xs font-mono text-[#171316]/50 dark:text-[#F5F1E8]/50">{exp.period}</div>
+                    </div>
+                  )) : (
+                    <p className="text-sm text-[#171316]/60 dark:text-[#F5F1E8]/60">—</p>
+                  )}
+                </div>
+
+                <div>
+                  <h4 className="text-xs font-black uppercase tracking-widest mb-3 text-[#171316] dark:text-[#F5F1E8] border-b-2 border-[#171316] dark:border-[#F5F1E8] pb-1">
+                    {t.skills?.projects || 'Projetos'}
+                  </h4>
+                  {projectsForSkill.length > 0 ? projectsForSkill.map((project, index) => (
+                    <div key={index} className="mb-4 last:mb-0">
+                      <div className="font-bold text-[#171316] dark:text-[#F5F1E8]">{project.name}</div>
+                      <div className="text-sm text-[#171316]/70 dark:text-[#F5F1E8]/70">{project.description}</div>
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-bold text-[#E33D3D] hover:underline mt-1 inline-block"
+                      >
+                        {t.skills?.viewProject || 'Ver Projeto'} →
+                      </a>
+                    </div>
+                  )) : (
+                    <p className="text-sm text-[#171316]/60 dark:text-[#F5F1E8]/60">—</p>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
-}
-
-// Função auxiliar para obter a cor com base no nível
-function getLevelColor(level: ProficiencyLevel) {
-  switch (level) {
-    case 'expert': return 'blue';
-    case 'advanced': return 'green';
-    case 'intermediate': return 'yellow';
-    case 'beginner': 
-    default: return 'gray';
-  }
-}
-
-// Função auxiliar para obter a explicação do nível
-function getLevelExplanation(level: ProficiencyLevel) {
-  switch (level) {
-    case 'expert':
-      return 'Uso avançado em projetos complexos';
-    case 'advanced':
-      return 'Experiência sólida em projetos reais';
-    case 'intermediate':
-      return 'Conhecimento prático aplicado';
-    case 'beginner':
-    default:
-      return 'Conhecimento básico';
-  }
-}
-
-// Adicionar função auxiliar para categorização
-function getSkillCategory(skill: string): string {
-  const skillCategoryMap: Record<string, string> = {
-    // Linguagens
-    'PYTHON': 'languages',
-    'PHP': 'languages',
-    'NODE.JS': 'web',
-    'TYPESCRIPT': 'languages',
-    'GO': 'languages',
-    'JAVASCRIPT': 'languages',
-    
-    // Engenharia de Dados
-    'ETL': 'data',
-    'APACHE SPARK': 'data',
-    'APACHE AIRFLOW': 'data',
-    'APACHE HADOOP': 'data',
-    'APACHE NIFI': 'data',
-    'APACHE HIVE': 'data',
-    'DATA LAKES': 'data',
-    'WEB SCRAPING': 'data',
-    'DATA ENGINEERING': 'data',
-    
-    // Inteligência Artificial
-    'MACHINE LEARNING': 'ai',
-    'DEEP LEARNING': 'ai',
-    'GAN': 'ai',
-    'COMPUTER VISION': 'ai',
-    'NLP': 'ai',
-    
-    // Bancos de Dados
-    'POSTGRESQL': 'databases',
-    'MYSQL': 'databases',
-    'MONGODB': 'databases',
-    'REDIS': 'databases',
-    'ELASTICSEARCH': 'databases',
-    
-    // Web & APIs
-    'FASTAPI': 'web',
-    'REST APIS': 'web',
-    'GRAPHQL': 'web',
-    'MICROSERVICES': 'web',
-    
-    // DevOps & Cloud
-    'DOCKER': 'devops',
-    'KUBERNETES': 'devops',
-    'AWS': 'devops',
-    'CI/CD': 'devops',
-    'JENKINS': 'devops',
-    'PROMETHEUS': 'devops',
-    'GRAFANA': 'devops',
-    
-    // Arquitetura & Metodologias
-    'CLEAN ARCHITECTURE': 'architecture',
-    'PERFORMANCE': 'architecture',
-    'AGILE': 'architecture',
-    'TDD': 'architecture',
-    
-    // Segurança
-    'WEB SECURITY': 'security',
-    'CRYPTOGRAPHY': 'security',
-    'PENETRATION TESTING': 'security',
-    'API SECURITY': 'security',
-    'LINUX': 'security',
-    'SSRF': 'security',
-    'CYBERSECURITY': 'security'
-  };
-  
-  return skillCategoryMap[skill] || 'languages';
 }

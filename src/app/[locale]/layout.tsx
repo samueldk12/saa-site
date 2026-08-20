@@ -1,8 +1,10 @@
-import { Inter } from 'next/font/google';
+import { Inter, JetBrains_Mono, Source_Serif_4 } from 'next/font/google';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '../providers';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
+const sourceSerif = Source_Serif_4({ subsets: ['latin'], variable: '--font-serif' });
 
 export function generateStaticParams() {
   return [
@@ -35,7 +37,7 @@ export default async function LocaleLayout({
         <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
       </head>
       <ThemeProvider>
-        <body className={`${inter.className} antialiased`}>{children}</body>
+        <body className={`${inter.variable} ${jetbrainsMono.variable} ${sourceSerif.variable} font-sans antialiased`}>{children}</body>
       </ThemeProvider>
     </html>
   );
