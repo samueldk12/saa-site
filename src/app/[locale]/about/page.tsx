@@ -160,6 +160,9 @@ export default function About() {
   const [captionText, setCaptionText] = useState('');
   const [activeCompany, setActiveCompany] = useState<string | null>(null);
   const [narratedCompanies, setNarratedCompanies] = useState<Set<string>>(new Set());
+  const [stampedItems, setStampedItems] = useState<Set<number>>(new Set());
+  const stampedRef = useRef<Set<number>>(new Set());
+  const itemPositionsRef = useRef<{ idx: number; centerX: number }[]>([]);
   const timelineRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const narrationFrameRef = useRef<number | null>(null);
@@ -485,6 +488,22 @@ export default function About() {
     return points;
   };
 
+  // Posicao (centro X) de cada card na timeline, calculada uma vez no
+  // inicio da narracao — usada pra "carimbar" como concluido cada card
+  // (cursos, certificacoes, formacoes...) assim que a rolagem passa por
+  // ele, mesmo os que o audio nao cita diretamente.
+  const buildItemPositions = () => {
+    const track = timelineRef.current;
+    if (!track) return [];
+    const trackRect = track.getBoundingClientRect();
+    const els = Array.from(track.querySelectorAll('[data-idx]')) as HTMLElement[];
+    return els.map(el => {
+      const r = el.getBoundingClientRect();
+      const centerX = (r.left - trackRect.left) + track.scrollLeft + r.width / 2;
+      return { idx: Number(el.dataset.idx), centerX };
+    });
+  };
+
   // Sincroniza a rolagem da timeline com o andamento do audio — a linha do
   // tempo "anda" da esquerda pra direita, chegando em cada card no exato
   // momento em que ele e' mencionado — alem da legenda e do destaque do
@@ -511,6 +530,19 @@ export default function About() {
       const span = next.time - seg.time || 1;
       const localP = Math.min(Math.max((t - seg.time) / span, 0), 1);
       track.scrollLeft = seg.scrollLeft + (next.scrollLeft - seg.scrollLeft) * localP;
+    }
+
+    // Carimba cada card assim que o centro da tela alcanca a posicao dele
+    const viewCenter = track.scrollLeft + track.clientWidth / 2;
+    let stampedSomething = false;
+    itemPositionsRef.current.forEach(p => {
+      if (viewCenter >= p.centerX && !stampedRef.current.has(p.idx)) {
+        stampedRef.current.add(p.idx);
+        stampedSomething = true;
+      }
+    });
+    if (stampedSomething) {
+      setStampedItems(new Set(stampedRef.current));
     }
 
     const cues = TIMELINE_NARRATION[getNarrationLocale(locale)];
@@ -549,7 +581,10 @@ export default function About() {
     setCaptionText('');
     setActiveCompany(null);
     setNarratedCompanies(new Set());
+    stampedRef.current = new Set();
+    setStampedItems(new Set());
     waypointsRef.current = buildNarrationWaypoints();
+    itemPositionsRef.current = buildItemPositions();
     audio.play().catch(() => setIsNarrating(false));
     setIsNarrating(true);
     narrationFrameRef.current = requestAnimationFrame(stepNarration);
@@ -901,6 +936,9 @@ export default function About() {
                       const isActive = isNarrating && !!itemCompany && itemCompany === activeCompany;
                       const isNarratedAlready = !!itemCompany && narratedCompanies.has(itemCompany) && !isActive;
                       const isPendingNarration = isNarrating && !!itemCompany && !narratedCompanies.has(itemCompany) && !isActive;
+                      // carimbo de "concluido" pros itens que a rolagem ja' passou
+                      // e que o audio nao cita diretamente (cursos, formacoes...)
+                      const isStamped = !itemCompany && stampedItems.has(index);
 
                       const getIconColor = (type: string) => {
                         switch(type) {
@@ -943,6 +981,7 @@ export default function About() {
                             whileTap={{ scale: 0.95 }}
                             animate={isActive ? { scale: 1.14 } : { scale: 1 }}
                             data-company={itemCompany || undefined}
+                            data-idx={index}
                             onClick={() => setSelectedTimelineItem({ type, data: item })}
                             className={`relative group w-32 p-4 rounded-sm border ${getBgColor(type)} bg-[#FBF6EA]/90 dark:bg-black/50 backdrop-blur-sm transition-all ${
                               isActive
@@ -956,6 +995,18 @@ export default function About() {
                               <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-amber-700 dark:bg-cyan-500 flex items-center justify-center text-[0.5rem] text-white">
                                 ✓
                               </span>
+                            )}
+                            {isStamped && (
+                              <motion.span
+                                initial={{ opacity: 0, scale: 1.8, rotate: -26 }}
+                                animate={{ opacity: 1, scale: 1, rotate: -12 }}
+                                transition={{ duration: 0.32, ease: [0.34, 1.56, 0.64, 1] }}
+                                className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                              >
+                                <span className="px-2 py-0.5 border-2 border-emerald-700/80 dark:border-emerald-400/80 text-emerald-700 dark:text-emerald-400 text-[0.55rem] font-black uppercase tracking-widest rounded-sm bg-[#FBF6EA]/90 dark:bg-black/60 shadow-sm">
+                                  {locale === 'en' ? 'Done' : locale === 'es' ? 'Hecho' : 'Concluído'}
+                                </span>
+                              </motion.span>
                             )}
                             <div className="flex flex-col items-center gap-2">
                               <div className="w-12 h-12 rounded-full bg-amber-900/5 dark:bg-white/5 border border-amber-900/10 dark:border-white/10 flex items-center justify-center">
