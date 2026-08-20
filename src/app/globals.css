@@ -18,22 +18,23 @@
   --dev-color: 236, 72, 153;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 12, 12, 24;
-    --background-end-rgb: 20, 20, 35;
-    --primary: 59, 130, 246;
-    --primary-hover: 37, 99, 235;
-    --secondary: 167, 139, 250;
-    --accent: 249, 115, 22;
-    --accent-hover: 234, 88, 12;
-    --success: 16, 185, 129;
-    --error: 239, 68, 68;
-    --data-color: 96, 165, 250;
-    --gaming-color: 192, 132, 252;
-    --dev-color: 244, 114, 182;
-  }
+/* Driven by the .dark class the theme toggle sets on <html>, not the OS
+   color-scheme preference — keeps CSS variables in sync with Tailwind's
+   dark: utilities regardless of what the OS is set to. */
+.dark {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 12, 12, 24;
+  --background-end-rgb: 20, 20, 35;
+  --primary: 59, 130, 246;
+  --primary-hover: 37, 99, 235;
+  --secondary: 167, 139, 250;
+  --accent: 249, 115, 22;
+  --accent-hover: 234, 88, 12;
+  --success: 16, 185, 129;
+  --error: 239, 68, 68;
+  --data-color: 96, 165, 250;
+  --gaming-color: 192, 132, 252;
+  --dev-color: 244, 114, 182;
 }
 
 body {
