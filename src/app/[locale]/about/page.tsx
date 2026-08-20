@@ -39,6 +39,7 @@ import { SiApachespark, SiApacheairflow, SiPostgresql, SiElasticsearch, SiGo, Si
 import Link from 'next/link';
 import SkillsText from '@/components/SkillsText';
 import { useState, useRef, useEffect } from 'react';
+import { TIMELINE_NARRATION, getNarrationLocale, findCueIndex } from '@/lib/timelineNarration';
 
 // Interfaces para tipagem
 interface Experience {
@@ -156,9 +157,13 @@ export default function About() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [isNarrating, setIsNarrating] = useState(false);
+  const [captionText, setCaptionText] = useState('');
+  const [activeCompany, setActiveCompany] = useState<string | null>(null);
+  const [narratedCompanies, setNarratedCompanies] = useState<Set<string>>(new Set());
   const timelineRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const narrationFrameRef = useRef<number | null>(null);
+  const lastCueIndexRef = useRef<number>(-2);
 
   const handleSkillClick = (skill: string) => {
     setSelectedSkill(skill);
@@ -454,18 +459,73 @@ export default function About() {
     timelineRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  // Sincroniza a rolagem da timeline com o andamento do audio — a linha
-  // do tempo "anda" da esquerda pra direita conforme a narracao avanca.
+  // Waypoints: tempo do audio -> posicao de scroll do item daquela empresa
+  // na timeline. Calculado a partir da posicao real dos cards na tela, pra
+  // a timeline chegar em cada card exatamente quando ele comeca a ser
+  // narrado, em vez de um scroll linear generico.
+  const waypointsRef = useRef<{ time: number; scrollLeft: number }[]>([]);
+
+  const buildNarrationWaypoints = () => {
+    const track = timelineRef.current;
+    if (!track) return [];
+    const cues = TIMELINE_NARRATION[getNarrationLocale(locale)];
+    const trackRect = track.getBoundingClientRect();
+    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
+    const points: { time: number; scrollLeft: number }[] = [{ time: 0, scrollLeft: 0 }];
+    cues.forEach(cue => {
+      if (!cue.company) return;
+      const el = track.querySelector(`[data-company="${cue.company}"]`) as HTMLElement | null;
+      if (!el) return;
+      const elRect = el.getBoundingClientRect();
+      const centerX = (elRect.left - trackRect.left) + track.scrollLeft + elRect.width / 2;
+      const target = Math.min(Math.max(centerX - track.clientWidth / 2, 0), maxScroll);
+      points.push({ time: cue.start, scrollLeft: target });
+    });
+    points.push({ time: cues[cues.length - 1].end, scrollLeft: maxScroll });
+    return points;
+  };
+
+  // Sincroniza a rolagem da timeline com o andamento do audio — a linha do
+  // tempo "anda" da esquerda pra direita, chegando em cada card no exato
+  // momento em que ele e' mencionado — alem da legenda e do destaque do
+  // card que esta sendo narrado no momento.
   const stepNarration = () => {
     const audio = audioRef.current;
     const track = timelineRef.current;
-    if (!audio || !track || !audio.duration) {
+    if (!audio || !track) {
       narrationFrameRef.current = requestAnimationFrame(stepNarration);
       return;
     }
-    const progress = Math.min(audio.currentTime / audio.duration, 1);
-    const maxScroll = track.scrollWidth - track.clientWidth;
-    track.scrollLeft = maxScroll * progress;
+    const t = audio.currentTime;
+    const points = waypointsRef.current;
+    if (points.length >= 2) {
+      let seg = points[0];
+      let next = points[1];
+      for (let i = 0; i < points.length - 1; i++) {
+        if (t >= points[i].time && t <= points[i + 1].time) {
+          seg = points[i];
+          next = points[i + 1];
+          break;
+        }
+      }
+      const span = next.time - seg.time || 1;
+      const localP = Math.min(Math.max((t - seg.time) / span, 0), 1);
+      track.scrollLeft = seg.scrollLeft + (next.scrollLeft - seg.scrollLeft) * localP;
+    }
+
+    const cues = TIMELINE_NARRATION[getNarrationLocale(locale)];
+    const idx = findCueIndex(cues, t);
+    if (idx !== lastCueIndexRef.current) {
+      lastCueIndexRef.current = idx;
+      const cue = idx >= 0 ? cues[idx] : null;
+      setCaptionText(cue ? cue.text : '');
+      setActiveCompany(cue?.company || null);
+      if (cue?.company) {
+        const company = cue.company;
+        setNarratedCompanies(prev => (prev.has(company) ? prev : new Set(prev).add(company)));
+      }
+    }
+
     if (!audio.paused && !audio.ended) {
       narrationFrameRef.current = requestAnimationFrame(stepNarration);
     }
@@ -485,6 +545,11 @@ export default function About() {
 
     if (track) track.scrollLeft = 0;
     audio.currentTime = 0;
+    lastCueIndexRef.current = -2;
+    setCaptionText('');
+    setActiveCompany(null);
+    setNarratedCompanies(new Set());
+    waypointsRef.current = buildNarrationWaypoints();
     audio.play().catch(() => setIsNarrating(false));
     setIsNarrating(true);
     narrationFrameRef.current = requestAnimationFrame(stepNarration);
@@ -796,22 +861,42 @@ export default function About() {
             <audio
               ref={audioRef}
               src={`/audio/timeline-${locale === 'en' || locale === 'es' ? locale : 'pt'}.mp3`}
-              onEnded={() => setIsNarrating(false)}
+              onEnded={() => {
+                setIsNarrating(false);
+                setCaptionText('');
+                setActiveCompany(null);
+              }}
               preload="none"
             />
-            <div className="absolute right-4 -top-12 flex gap-2">
+            <div className="flex flex-col items-center gap-3 mb-6">
               <button
                 onClick={toggleNarration}
                 aria-label={isNarrating
                   ? (locale === 'en' ? 'Pause narration' : locale === 'es' ? 'Pausar narración' : 'Pausar narração')
                   : (locale === 'en' ? 'Play narration' : locale === 'es' ? 'Reproducir narración' : 'Ouvir narração')}
-                className="flex items-center gap-2 px-3 py-2 rounded-sm border border-amber-800/30 dark:border-cyan-500/30 bg-amber-100/70 dark:bg-black/40 text-amber-800 dark:text-cyan-300 hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 transition-all text-xs font-mono uppercase tracking-wide"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-amber-800/30 dark:border-cyan-500/30 bg-amber-100/70 dark:bg-black/40 text-amber-800 dark:text-cyan-300 hover:bg-amber-800/10 dark:hover:bg-cyan-500/10 hover:shadow-[0_0_20px_-4px_rgba(34,211,238,0.5)] transition-all text-xs font-mono uppercase tracking-wide"
               >
                 {isNarrating ? <FaPause /> : <FaPlay />}
                 {isNarrating
                   ? (locale === 'en' ? 'Pause' : locale === 'es' ? 'Pausa' : 'Pausar')
                   : (locale === 'en' ? 'Play story' : locale === 'es' ? 'Reproducir' : 'Ouvir história')}
               </button>
+
+              {/* Legenda — acompanha a frase que esta' sendo narrada */}
+              <AnimatePresence mode="wait">
+                {isNarrating && captionText && (
+                  <motion.p
+                    key={captionText}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2 }}
+                    className="max-w-xl text-center text-xs sm:text-sm text-stone-700 dark:text-gray-300 bg-[#FBF6EA]/90 dark:bg-black/50 border border-amber-900/10 dark:border-white/10 rounded-sm px-4 py-2 backdrop-blur-sm"
+                  >
+                    {captionText}
+                  </motion.p>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Container da linha do tempo com scroll via drag */}
@@ -868,6 +953,10 @@ export default function About() {
                     .map((item, index) => {
                       const type = 'company' in item ? 'experience' :
                                 'degree' in item ? 'education' : 'certification';
+                      const itemCompany = 'company' in item ? item.company : null;
+                      const isActive = isNarrating && !!itemCompany && itemCompany === activeCompany;
+                      const isNarratedAlready = !!itemCompany && narratedCompanies.has(itemCompany) && !isActive;
+                      const isPendingNarration = isNarrating && !!itemCompany && !narratedCompanies.has(itemCompany) && !isActive;
 
                       const getIconColor = (type: string) => {
                         switch(type) {
@@ -908,9 +997,22 @@ export default function About() {
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
+                            animate={isActive ? { scale: 1.14 } : { scale: 1 }}
+                            data-company={itemCompany || undefined}
                             onClick={() => setSelectedTimelineItem({ type, data: item })}
-                            className={`relative group w-32 p-4 rounded-sm border ${getBgColor(type)} bg-[#FBF6EA]/90 dark:bg-black/50 backdrop-blur-sm transition-all`}
+                            className={`relative group w-32 p-4 rounded-sm border ${getBgColor(type)} bg-[#FBF6EA]/90 dark:bg-black/50 backdrop-blur-sm transition-all ${
+                              isActive
+                                ? 'ring-2 ring-amber-600 dark:ring-cyan-400 shadow-[0_0_28px_-4px_rgba(34,211,238,0.65)] border-amber-600 dark:border-cyan-400'
+                                : isPendingNarration
+                                ? 'opacity-40 saturate-50'
+                                : ''
+                            }`}
                           >
+                            {isNarratedAlready && (
+                              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-amber-700 dark:bg-cyan-500 flex items-center justify-center text-[0.5rem] text-white">
+                                ✓
+                              </span>
+                            )}
                             <div className="flex flex-col items-center gap-2">
                               <div className="w-12 h-12 rounded-full bg-amber-900/5 dark:bg-white/5 border border-amber-900/10 dark:border-white/10 flex items-center justify-center">
                                 {getIcon(type)}
