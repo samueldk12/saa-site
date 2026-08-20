@@ -134,10 +134,10 @@
     "beginner": "Iniciante",
     "yearsExperience": "anos de experiência",
     "viewAllSkills": "Ver todas as habilidades",
-    "languages_description": "Proficiência em múltiplas linguagens para desenvolvimento backend, engenharia de dados e automação",
+    "languages_description": "Trabalho com múltiplas linguagens para desenvolvimento backend, engenharia de dados e automação",
     "dataEngineering_description": "Experiência com processamento de dados em larga escala, ETL e soluções Big Data",
     "artificialIntelligence_description": "Desenvolvimento de soluções de machine learning, visão computacional e processamento de linguagem natural",
-    "databases_description": "Proficiência em bancos de dados SQL e NoSQL para armazenamento e análise de dados",
+    "databases_description": "Uso bancos de dados SQL e NoSQL para armazenamento e análise de dados",
     "webDev_description": "Desenvolvimento de APIs modernas e sistemas web escaláveis",
     "devops_description": "Infraestrutura como código, containers e orquestração de serviços",
     "architecture_description": "Design de sistemas e padrões arquiteturais para soluções robustas",
@@ -156,4 +156,4 @@
     "success": "Sucesso",
     "viewDetails": "Ver Detalhes"
   }
-} 
+}

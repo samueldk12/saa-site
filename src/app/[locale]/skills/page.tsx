@@ -16,7 +16,6 @@ import {
   FaBolt
 } from 'react-icons/fa';
 import { useState } from 'react';
-import type { ProficiencyLevel } from '@/components/SkillBadge';
 import { getLocalizedSkillData, allSkills, getExperiencesForSkill, getProjectsForSkill } from '@/lib/skillsData';
 
 const getSkillCategories = (locale: string) => ([
@@ -40,21 +39,6 @@ const CATEGORY_SKILL_NAMES: Record<string, string[]> = {
   devops: ['DOCKER', 'KUBERNETES', 'AWS', 'CI/CD', 'JENKINS', 'PROMETHEUS', 'GRAFANA'],
   architecture: ['CLEAN ARCHITECTURE', 'PERFORMANCE', 'AGILE', 'TDD'],
   security: ['WEB SECURITY', 'PENETRATION TESTING', 'LINUX', 'SSRF', 'CRYPTOGRAPHY', 'API SECURITY', 'CYBERSECURITY'],
-};
-
-// Rank fixo por nível — sem cores por categoria, o "tech" aqui é o gauge e a interação, não o arco-íris
-const RANK_LABEL: Record<ProficiencyLevel, string> = {
-  expert: 'S',
-  advanced: 'A',
-  intermediate: 'B',
-  beginner: 'C',
-};
-
-const RANK_STYLE: Record<ProficiencyLevel, string> = {
-  expert: 'bg-[#E33D3D] text-white border-[#171316] dark:border-[#F5F1E8]',
-  advanced: 'bg-[#171316] text-[#F5F1E8] border-[#171316] dark:bg-[#F5F1E8] dark:text-[#171316] dark:border-[#F5F1E8]',
-  intermediate: 'bg-transparent text-[#171316] dark:text-[#F5F1E8] border-[#171316] dark:border-[#F5F1E8]',
-  beginner: 'bg-transparent text-[#171316]/50 dark:text-[#F5F1E8]/50 border-[#171316]/40 dark:border-[#F5F1E8]/40',
 };
 
 const containerVariants = {
@@ -151,20 +135,15 @@ export default function Skills() {
               </p>
 
               <div className="border-t-2 border-dashed border-[#171316]/30 dark:border-[#F5F1E8]/30 pt-5">
-                <h3 className="text-xs font-black uppercase tracking-widest mb-3 text-[#171316] dark:text-[#F5F1E8]">
-                  {locale === 'en' ? 'Power Ranks' : locale === 'es' ? 'Rangos de Poder' : 'Ranks de Poder'}
-                </h3>
-                <div className="space-y-2">
-                  {(['expert', 'advanced', 'intermediate', 'beginner'] as ProficiencyLevel[]).map(level => (
-                    <div key={level} className="flex items-center gap-3">
-                      <span className={`w-6 h-6 flex items-center justify-center text-xs font-black border-2 ${RANK_STYLE[level]}`}>
-                        {RANK_LABEL[level]}
-                      </span>
-                      <span className="text-sm text-[#171316] dark:text-[#F5F1E8]">
-                        {t.skills?.[level] || level}
-                      </span>
-                    </div>
-                  ))}
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl font-black text-[#E33D3D]">{skillsInCategory.length}</span>
+                  <span className="text-sm text-[#171316]/80 dark:text-[#F5F1E8]/80">
+                    {locale === 'en'
+                      ? 'technologies in this category'
+                      : locale === 'es'
+                      ? 'tecnologías en esta categoría'
+                      : 'tecnologias nessa categoria'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -185,30 +164,14 @@ export default function Skills() {
                   onClick={() => setSelectedSkill(skillData.normalizedSkill)}
                   className="text-left bg-white dark:bg-[#211c22] border-2 border-[#171316] dark:border-[#F5F1E8] comic-panel-sm p-4 hover:-translate-y-1 hover:translate-x-0.5 transition-transform duration-150"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <span className="font-black uppercase text-sm sm:text-base text-[#171316] dark:text-[#F5F1E8] leading-tight pr-2">
-                      {skillData.skill}
-                    </span>
-                    <span className={`shrink-0 w-7 h-7 flex items-center justify-center text-xs font-black border-2 ${RANK_STYLE[skillData.level as ProficiencyLevel]}`}>
-                      {RANK_LABEL[skillData.level as ProficiencyLevel]}
-                    </span>
-                  </div>
+                  <span className="font-black uppercase text-sm sm:text-base text-[#171316] dark:text-[#F5F1E8] leading-tight block mb-3">
+                    {skillData.skill}
+                  </span>
 
-                  {/* Power meter estilo gauge de HQ, em blocos */}
-                  <div className="flex gap-1 mb-3" aria-hidden>
-                    {Array.from({ length: 10 }).map((_, i) => (
-                      <span
-                        key={i}
-                        className={`h-2.5 flex-1 border border-[#171316] dark:border-[#F5F1E8] ${
-                          i < Math.round(skillData.score / 10) ? 'bg-[#E33D3D]' : 'bg-transparent'
-                        }`}
-                      />
-                    ))}
-                  </div>
-
-                  <div className="flex items-center justify-between font-mono text-[0.65rem] sm:text-xs text-[#171316]/70 dark:text-[#F5F1E8]/70">
-                    <span>{skillData.score}%</span>
-                    <span>{skillData.stats.yearsOfExperience}{locale === 'en' ? 'y' : 'a'} · {skillData.stats.projectCount}{locale === 'en' ? 'p' : 'p'} · {skillData.stats.certificationCount}c</span>
+                  <div className="flex items-center gap-3 font-mono text-[0.65rem] sm:text-xs text-[#171316]/70 dark:text-[#F5F1E8]/70 border-t-2 border-dashed border-[#171316]/20 dark:border-[#F5F1E8]/20 pt-2.5">
+                    <span>{skillData.stats.yearsOfExperience}{locale === 'en' ? 'y' : 'a'}</span>
+                    <span>·</span>
+                    <span>{skillData.stats.projectCount} {locale === 'en' ? (skillData.stats.projectCount === 1 ? 'project' : 'projects') : (skillData.stats.projectCount === 1 ? 'projeto' : 'projetos')}</span>
                   </div>
                 </motion.button>
               ))}
@@ -243,9 +206,6 @@ export default function Skills() {
               </button>
 
               <div className="flex items-center gap-3 mb-6">
-                <span className={`w-10 h-10 flex items-center justify-center text-sm font-black border-2 ${RANK_STYLE[selectedSkillData.level as ProficiencyLevel]}`}>
-                  {RANK_LABEL[selectedSkillData.level as ProficiencyLevel]}
-                </span>
                 <h3 className="text-2xl sm:text-3xl font-black uppercase text-[#171316] dark:text-[#F5F1E8]">
                   {selectedSkillData.skill}
                 </h3>

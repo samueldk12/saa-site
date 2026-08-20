@@ -142,10 +142,10 @@
     "beginner": "Beginner",
     "yearsExperience": "years of experience",
     "viewAllSkills": "View all skills",
-    "languages_description": "Proficiency in multiple languages for backend development, data engineering, and automation",
+    "languages_description": "Working with multiple languages for backend development, data engineering, and automation",
     "dataEngineering_description": "Experience with large-scale data processing, ETL, and Big Data solutions",
     "artificialIntelligence_description": "Development of machine learning solutions, computer vision, and natural language processing",
-    "databases_description": "Proficiency in SQL and NoSQL databases for data storage and analysis",
+    "databases_description": "Using SQL and NoSQL databases for data storage and analysis",
     "webDev_description": "Development of modern APIs and scalable web systems",
     "devops_description": "Infrastructure as code, containers, and service orchestration",
     "architecture_description": "System design and architectural patterns for robust solutions",
@@ -175,4 +175,4 @@
     "success": "Success",
     "viewDetails": "View Details"
   }
-} 
+}

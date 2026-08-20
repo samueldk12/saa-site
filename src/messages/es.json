@@ -143,10 +143,10 @@
     "beginner": "Principiante",
     "yearsExperience": "años de experiencia",
     "viewAllSkills": "Ver todas las habilidades",
-    "languages_description": "Competencia en múltiples lenguajes para desarrollo backend, ingeniería de datos y automatización",
+    "languages_description": "Trabajo con múltiples lenguajes para desarrollo backend, ingeniería de datos y automatización",
     "dataEngineering_description": "Experiencia con procesamiento de datos a gran escala, ETL y soluciones Big Data",
     "artificialIntelligence_description": "Desarrollo de soluciones de machine learning, visión por computadora y procesamiento de lenguaje natural",
-    "databases_description": "Competencia en bases de datos SQL y NoSQL para almacenamiento y análisis de datos",
+    "databases_description": "Uso bases de datos SQL y NoSQL para almacenamiento y análisis de datos",
     "webDev_description": "Desarrollo de APIs modernas y sistemas web escalables",
     "devops_description": "Infraestructura como código, contenedores y orquestación de servicios",
     "architecture_description": "Diseño de sistemas y patrones arquitectónicos para soluciones robustas",
@@ -176,4 +176,4 @@
     "success": "Éxito",
     "viewDetails": "Ver Detalles"
   }
-} 
+}
