@@ -104,7 +104,7 @@ export default function SAACompany() {
   // bordas finas e um único acento (navy), sem cor por projeto.
   const SAAProjectCard = ({ project, index }: { project: any; index: number }) => (
     <motion.div
-      className="group relative rounded-[28px] overflow-hidden flex flex-col h-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-black/30 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:bg-black/[0.04] dark:hover:bg-white/[0.08] hover:border-black/20 dark:hover:border-white/25 hover:-translate-y-1 transition-all duration-300"
+      className="group relative rounded-[28px] overflow-hidden flex flex-col h-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:bg-black/[0.04] dark:hover:bg-white/[0.1] hover:border-black/20 dark:hover:border-white/25 hover:-translate-y-1 transition-all duration-300"
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
@@ -184,7 +184,7 @@ export default function SAACompany() {
     return (
       <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
         <motion.div
-          className="relative rounded-[32px] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-black/10 dark:border-white/15 bg-white/60 dark:bg-black/40 backdrop-blur-2xl backdrop-saturate-150"
+          className="relative rounded-[32px] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-black/10 dark:border-white/15 bg-white/60 dark:bg-white/[0.08] backdrop-blur-2xl backdrop-saturate-150"
           initial={{ opacity: 0, y: 16, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, scale: 0.97 }}
@@ -337,7 +337,7 @@ export default function SAACompany() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="relative rounded-[32px] overflow-hidden mb-8 border border-black/10 dark:border-white/15 bg-white/40 dark:bg-black/30 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+          className="relative rounded-[32px] overflow-hidden mb-8 border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
         >
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/40 to-transparent" />
           <div className="p-6 sm:p-10 flex flex-col md:flex-row md:items-center gap-8">
@@ -383,7 +383,7 @@ export default function SAACompany() {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="flex items-center gap-3 mb-10 overflow-x-auto pb-1"
         >
-          <div className="flex items-center gap-1 sm:gap-2 rounded-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-black/30 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.45)] px-2 py-2 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 rounded-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.45)] px-2 py-2 shrink-0">
             {capabilities.map((c) => (
               <div key={c.label} className="flex flex-col items-center gap-1 px-3 sm:px-4 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-default">
                 <span className="text-base text-blue-600 dark:text-[#4FA8FF]">{c.icon}</span>
@@ -394,7 +394,7 @@ export default function SAACompany() {
           <a
             href="#parceria"
             aria-label={locale === 'en' ? 'Jump to partnership' : locale === 'es' ? 'Ir a la asociación' : 'Ir para parceria'}
-            className="w-12 h-12 shrink-0 rounded-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-black/30 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.45)] flex items-center justify-center text-slate-700 dark:text-white/80 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+            className="w-12 h-12 shrink-0 rounded-full border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.45)] flex items-center justify-center text-slate-700 dark:text-white/80 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
           >
             <FaHandshake />
           </a>
@@ -437,7 +437,7 @@ export default function SAACompany() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.4 }}
-            className="relative rounded-[32px] overflow-hidden border border-black/10 dark:border-white/15 bg-white/40 dark:bg-black/30 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-6 sm:p-8"
+            className="relative rounded-[32px] overflow-hidden border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-6 sm:p-8"
           >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/40 to-transparent" />
             <div className="flex flex-col md:flex-row items-start gap-6 sm:gap-8">
