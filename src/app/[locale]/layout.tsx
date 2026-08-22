@@ -1,11 +1,5 @@
-import { Inter, JetBrains_Mono, Source_Serif_4 } from 'next/font/google';
-import type { Metadata } from 'next';
 import { ThemeProvider } from '../providers';
 import PageTransition from '@/components/PageTransition';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
-const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
-const sourceSerif = Source_Serif_4({ subsets: ['latin'], variable: '--font-serif' });
 
 export function generateStaticParams() {
   return [
@@ -15,14 +9,10 @@ export function generateStaticParams() {
   ];
 }
 
-export const metadata: Metadata = {
-  icons: {
-    icon: '/favicon.ico',
-    apple: '/favicon.ico',
-  },
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
-};
-
+// So' o layout raiz (app/layout.tsx) pode renderizar <html>/<body> — este
+// layout aninhado so' fornece o Provider de tema e a transicao de pagina.
+// O atributo lang do <html>, que depende do locale, e' sincronizado pelo
+// PageTransition (client component) via document.documentElement.lang.
 export default async function LocaleLayout({
   children,
   params,
@@ -32,16 +22,8 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
   return (
-    <html lang={locale} className="scroll-smooth">
-      <head>
-        <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
-        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-      </head>
-      <ThemeProvider>
-        <body className={`${inter.variable} ${jetbrainsMono.variable} ${sourceSerif.variable} font-sans antialiased`}>
-          <PageTransition locale={locale}>{children}</PageTransition>
-        </body>
-      </ThemeProvider>
-    </html>
+    <ThemeProvider>
+      <PageTransition locale={locale}>{children}</PageTransition>
+    </ThemeProvider>
   );
-} 
+}

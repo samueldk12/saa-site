@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ReactNode, useLayoutEffect, useRef } from 'react';
+import { ReactNode, useEffect, useLayoutEffect, useRef } from 'react';
 
 const getSection = (pathname: string | null, locale: string) => {
   if (!pathname) return 'home';
@@ -329,6 +329,12 @@ function TransitionStage({ pathname, section, children }: { pathname: string; se
 export default function PageTransition({ children, locale }: { children: ReactNode; locale: string }) {
   const pathname = usePathname();
   const section = getSection(pathname, locale);
+
+  // So' o layout raiz renderiza <html>, entao o lang (que depende do
+  // locale, um segmento abaixo do root) e' sincronizado por aqui.
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   return (
     <AnimatePresence mode="wait" initial={false}>
