@@ -3,11 +3,12 @@
     "home": "Home",
     "about": "About",
     "projects": "Projects",
-    "skills": "Skills"
+    "skills": "Skills",
+    "sites": "Get a website"
   },
   "home": {
     "title": "Samuel Apolinário Arão",
-    "subtitle": "Data Engineer | Backend Developer",
+    "subtitle": "Data Engineer | Backend Developer | Websites & Landing Pages",
     "description": "Professional specialized in Data Engineering and Backend Development, with experience in Business Intelligence, ETL, and Big Data solutions. Passionate about solving complex problems with technology.",
     "cta": "Learn More",
     "downloadCV": "Download CV",
@@ -75,7 +76,12 @@
       "name": "Your Name",
       "email": "Your Email",
       "message": "Your Message",
-      "submit": "Send Message"
+      "submit": "Send Message",
+      "whatsapp": "Your WhatsApp (optional)",
+      "sending": "Sending…",
+      "success": "Message sent! I will reply soon.",
+      "error": "Could not send. Try WhatsApp instead.",
+      "needContact": "Please provide an email or WhatsApp so I can reply."
     },
     "social": {
       "title": "Social Media"
@@ -174,5 +180,22 @@
     "error": "Error",
     "success": "Success",
     "viewDetails": "View Details"
+  },
+  "sites": {
+    "eyebrow": "Websites and landing pages",
+    "title": "I build the website that sells for you",
+    "subtitle": "Besides data engineering, I sell and build websites and landing pages for people and companies — fast, good-looking and made to generate leads.",
+    "forYou": "For you (individuals)",
+    "forYouText": "Digital business card, portfolio, sales page, catalog or event invitation.",
+    "forBusiness": "For your business",
+    "forBusinessText": "Local business site, landing page for ads, corporate site, your own online store or B2B site.",
+    "seeMore": "See how it works",
+    "note": "The presentation pages are in Portuguese.",
+    "orTalk": "Prefer to talk directly?",
+    "whatsapp": "Chat on WhatsApp",
+    "contactPage": "Leave my contact",
+    "homeTitle": "I also build websites and landing pages",
+    "homeText": "Need a website for your business or yourself? I plan, build and publish it — with a fixed quote before we start.",
+    "homeCta": "I want a website"
   }
 }

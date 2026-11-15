@@ -493,6 +493,31 @@ export default function SAACompany() {
           </motion.div>
         </section>
 
+        {/* Servico: criacao de sites e landing pages */}
+        <section id="sites" className="mt-14 scroll-mt-24">
+          <div className="flex items-center gap-3 mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+              {locale === 'en' ? 'Websites & Landing Pages' : locale === 'es' ? 'Sitios Web y Landing Pages' : 'Sites e Landing Pages'}
+            </h2>
+            <div className="h-px flex-1 bg-black/5 dark:bg-white/10" />
+          </div>
+          <div className="relative rounded-[32px] overflow-hidden border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_4px_16px_rgba(15,23,42,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center gap-5">
+            <p className="flex-1 text-sm sm:text-base text-slate-700 dark:text-white/70 max-w-2xl">
+              {locale === 'en'
+                ? 'SAA also sells and builds websites and landing pages for individuals and companies — with a fixed quote before we start.'
+                : locale === 'es'
+                ? 'SAA también vende y desarrolla sitios web y landing pages para personas y empresas — con presupuesto cerrado antes de empezar.'
+                : 'A SAA também vende e desenvolve sites e landing pages para pessoas e empresas — com orçamento fechado antes de começar.'}
+            </p>
+            <a
+              href={`/${locale}/sites`}
+              className="shrink-0 px-5 py-2.5 bg-blue-600 dark:bg-[#4FA8FF] hover:bg-blue-700 dark:hover:bg-[#3B93EA] text-white dark:text-black rounded-full text-sm font-medium text-center transition-colors"
+            >
+              {locale === 'en' ? 'I want a website' : locale === 'es' ? 'Quiero un sitio' : 'Quero um site'}
+            </a>
+          </div>
+        </section>
+
         {/* Seção de Contato */}
         <section id="contato" className="mt-14 scroll-mt-24">
           <div className="flex items-center gap-3 mb-6">

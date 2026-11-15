@@ -46,6 +46,7 @@ export default function Home() {
   const params = useParams();
   const locale = params.locale as string;
   const t = getTranslations(locale);
+  const siteT = t.sites as Record<string, string> | undefined;
   const [topTestimonials, setTopTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -212,6 +213,13 @@ export default function Home() {
                 className="px-6 py-3 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-800 dark:text-white border border-gray-400 dark:border-gray-600 rounded-sm flex items-center gap-2 transition-colors text-sm font-medium tracking-wide"
               >
                 {t.home?.viewProjects || "Ver Projetos"} <FaArrowRight className="text-xs" />
+              </Link>
+
+              <Link
+                href={`/${locale}/sites`}
+                className="px-6 py-3 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-800 dark:text-white border border-gray-400 dark:border-gray-600 rounded-sm flex items-center gap-2 transition-colors text-sm font-medium tracking-wide"
+              >
+                {siteT?.homeCta} <FaArrowRight className="text-xs" />
               </Link>
             </div>
 
@@ -450,6 +458,43 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Sites e landing pages — oferta de servico */}
+      <section className="py-24 bg-white dark:bg-[#101114] border-t border-gray-200 dark:border-gray-700/70">
+        <div className="container mx-auto px-4">
+          <motion.div
+            className="max-w-3xl border border-gray-200 dark:border-gray-700/70 rounded-sm p-8 md:p-12 bg-[#FAF9F6] dark:bg-[#14161A]"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="text-xs font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400">03 · {siteT?.eyebrow}</span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white mt-2 mb-4">
+              {siteT?.homeTitle}
+            </h2>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+              {siteT?.homeText}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href={`/${locale}/sites`}
+                className="px-6 py-3 bg-gray-900 hover:bg-black dark:bg-white dark:hover:bg-gray-200 text-white dark:text-gray-900 rounded-sm flex items-center gap-2 transition-colors text-sm font-medium tracking-wide"
+              >
+                {siteT?.homeCta} <FaArrowRight className="text-xs" />
+              </Link>
+              <a
+                href="https://wa.me/5531991442176"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 border border-gray-400 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-sm flex items-center gap-2 transition-colors text-sm font-medium tracking-wide"
+              >
+                <FaWhatsapp /> {siteT?.whatsapp}
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-24 border-t border-gray-200 dark:border-gray-700/70">
         <div className="container mx-auto px-4">
@@ -460,7 +505,7 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="text-xs font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400">03</span>
+            <span className="text-xs font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400">04</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white mt-2 mb-4">
               {t.home?.ctaTitle || "Vamos trabalhar juntos?"}
             </h2>

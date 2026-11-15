@@ -92,6 +92,7 @@ export default function Navigation({ locale }: NavigationProps) {
     { href: `/${locale}/skills`, label: t.navigation.skills, theme: 'theme-skills' },
     { href: `/${locale}/projects`, label: t.navigation.projects, theme: 'theme-projects' },
     { href: `/${locale}/saa`, label: 'SAA Company', theme: 'theme-saa' },
+    { href: `/${locale}/sites`, label: t.navigation.sites || 'Criar site', theme: 'theme-home' },
   ];
 
   // Hover mais tematico por pagina de destino — nao so cor, mas um gesto
@@ -160,13 +161,13 @@ export default function Navigation({ locale }: NavigationProps) {
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center justify-between flex-1 ml-10">
-            <div className="flex items-center space-x-6">
+          <div className="hidden md:flex items-center justify-between flex-1 ml-4 lg:ml-10 gap-4">
+            <div className="flex items-center space-x-3 lg:space-x-6 whitespace-nowrap">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`nav-link ${item.theme} text-sm lg:text-base ${pathname === item.href ? 'nav-link-active' : ''}`}
+                  className={`nav-link ${item.theme} text-xs lg:text-base ${pathname === item.href ? 'nav-link-active' : ''}`}
                 >
                   <motion.span className="inline-block" whileHover={hoverMotion[item.theme]}>
                     {item.label}
@@ -175,7 +176,7 @@ export default function Navigation({ locale }: NavigationProps) {
               ))}
             </div>
             
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-3 lg:space-x-6 shrink-0">
             <div className="flex items-center space-x-2">
               <Link
                 href={getLocalePath('pt')}
@@ -202,7 +203,7 @@ export default function Navigation({ locale }: NavigationProps) {
                 href="https://github.com/samueldk12"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`nav-link `}
+                className={`nav-link hidden lg:inline-flex`}
               >
                 <FaGithub className="text-xl" />
               </a>
@@ -210,7 +211,7 @@ export default function Navigation({ locale }: NavigationProps) {
                 href="https://www.linkedin.com/in/samuel-arao/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`nav-link `}
+                className={`nav-link hidden lg:inline-flex`}
               >
                 <FaLinkedin className="text-xl" />
               </a>

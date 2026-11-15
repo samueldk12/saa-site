@@ -10,7 +10,7 @@ const sourceSerif = Source_Serif_4({ subsets: ['latin'], variable: '--font-serif
 
 export const metadata: Metadata = {
   title: 'Samuel Apolinário Arão',
-  description: 'Senior BI Consultant and Data Engineer',
+  description: 'Engenheiro de Dados e desenvolvedor. Também crio sites e landing pages para pessoas e empresas — Data Engineer and web developer.',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
   icons: {
     icon: '/favicon.ico',

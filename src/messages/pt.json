@@ -3,11 +3,12 @@
     "home": "Início",
     "about": "Sobre",
     "projects": "Projetos",
-    "skills": "Habilidades"
+    "skills": "Habilidades",
+    "sites": "Criar site"
   },
   "home": {
     "title": "Samuel Apolinário Arão",
-    "subtitle": "Engenheiro de Dados | Desenvolvedor Back-end",
+    "subtitle": "Engenheiro de Dados | Desenvolvedor Back-end | Sites e Landing Pages",
     "description": "Profissional especializado em Engenharia de Dados e Desenvolvimento Backend, com experiência em Business Intelligence, ETL e soluções Big Data. Apaixonado por resolver problemas complexos com tecnologia.",
     "cta": "Saiba Mais",
     "downloadCV": "Baixar CV",
@@ -56,7 +57,12 @@
       "name": "Seu Nome",
       "email": "Seu Email",
       "message": "Sua Mensagem",
-      "submit": "Enviar Mensagem"
+      "submit": "Enviar Mensagem",
+      "whatsapp": "Seu WhatsApp (opcional)",
+      "sending": "Enviando…",
+      "success": "Mensagem enviada! Respondo em breve.",
+      "error": "Não foi possível enviar. Tente pelo WhatsApp.",
+      "needContact": "Informe um e-mail ou WhatsApp para eu poder responder."
     },
     "social": {
       "title": "Redes Sociais"
@@ -155,5 +161,22 @@
     "error": "Erro",
     "success": "Sucesso",
     "viewDetails": "Ver Detalhes"
+  },
+  "sites": {
+    "eyebrow": "Criação de sites e landing pages",
+    "title": "Eu crio o site que vende por você",
+    "subtitle": "Além de engenharia de dados, eu vendo e desenvolvo sites e landing pages para pessoas e empresas — rápidos, bonitos e feitos para gerar contatos.",
+    "forYou": "Para você (pessoa física)",
+    "forYouText": "Cartão de visitas digital, portfólio, página de vendas, catálogo ou convite de evento.",
+    "forBusiness": "Para sua empresa",
+    "forBusinessText": "Site para negócio local, landing page para anúncios, site institucional, loja própria ou site B2B.",
+    "seeMore": "Ver como funciona",
+    "note": "As páginas de apresentação estão em português.",
+    "orTalk": "Prefere falar direto?",
+    "whatsapp": "Chamar no WhatsApp",
+    "contactPage": "Deixar meu contato",
+    "homeTitle": "Eu também crio sites e landing pages",
+    "homeText": "Preciso de um site para o meu negócio ou para mim? Eu planejo, desenvolvo e publico — com orçamento fechado antes de começar.",
+    "homeCta": "Quero um site"
   }
 }
