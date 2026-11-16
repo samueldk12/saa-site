@@ -8,7 +8,7 @@ import type { LandingConfig, IconKey } from '@/lib/lp/types';
 import { PROJECTS } from '@/lib/lp';
 import { BRAND, whatsappLink } from '@/lib/lp/site';
 import LeadForm from './LeadForm';
-import { TrackView, CtaLink, StickyCta } from './LandingClient';
+import { TrackView, CtaLink, StickyCta, SectionTracker } from './LandingClient';
 
 const ICONS: Record<IconKey, IconType> = {
   whatsapp: FaWhatsapp, mobile: FaMobileAlt, search: FaSearch, bolt: FaBolt, chart: FaChartLine,
@@ -97,9 +97,10 @@ export default function LandingPage({ cfg }: { cfg: LandingConfig }) {
   return (
     <div style={vars} className="min-h-screen bg-[var(--lp-bg)] text-[color:var(--lp-ink)] antialiased" data-lp={cfg.slug}>
       <TrackView slug={cfg.slug} />
+      <SectionTracker slug={cfg.slug} />
 
       {/* Topo minimalista: foco total na conversao */}
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+      <header data-section="topo" className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <span className="text-sm font-semibold tracking-wide">{BRAND}</span>
         <a
           href={whatsappLink(cfg.form.waMessage)}
@@ -112,7 +113,7 @@ export default function LandingPage({ cfg }: { cfg: LandingConfig }) {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto max-w-6xl px-4 pb-14 pt-6 sm:px-6 sm:pt-10">
+      <section data-section="hero" className="mx-auto max-w-6xl px-4 pb-14 pt-6 sm:px-6 sm:pt-10">
         <div className={`grid items-center gap-10 ${formInHero ? 'lg:grid-cols-[1.15fr_1fr]' : 'lg:grid-cols-[1.1fr_0.9fr]'}`}>
           <div>
             <span className="inline-block rounded-full border border-[color:var(--lp-border)] bg-[var(--lp-surface)] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[color:var(--lp-muted)]">
@@ -138,7 +139,7 @@ export default function LandingPage({ cfg }: { cfg: LandingConfig }) {
           </div>
 
           {formInHero ? (
-            <div id="form" className={`${formCard} scroll-mt-6`}>{form}</div>
+            <div id="form" data-section="formulario" className={`${formCard} scroll-mt-6`}>{form}</div>
           ) : (
             <Mock cfg={cfg} />
           )}
@@ -146,7 +147,7 @@ export default function LandingPage({ cfg }: { cfg: LandingConfig }) {
       </section>
 
       {/* Dor */}
-      <section className="border-y border-[color:var(--lp-border)] bg-[var(--lp-surface)]">
+      <section data-section="dores" className="border-y border-[color:var(--lp-border)] bg-[var(--lp-surface)]">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
           <h2 className={`${heading} text-2xl sm:text-3xl`}>{cfg.painsTitle}</h2>
           <ul className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -158,7 +159,7 @@ export default function LandingPage({ cfg }: { cfg: LandingConfig }) {
       </section>
 
       {/* Beneficios (+ ilustracao quando o form esta no hero) */}
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <section data-section="beneficios" className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className={`grid items-center gap-10 ${formInHero ? 'lg:grid-cols-[1fr_0.8fr]' : ''}`}>
           <div>
             <h2 className={`${heading} text-2xl sm:text-3xl`}>{cfg.benefitsTitle}</h2>
@@ -182,7 +183,7 @@ export default function LandingPage({ cfg }: { cfg: LandingConfig }) {
       </section>
 
       {/* Como funciona */}
-      <section className="border-y border-[color:var(--lp-border)] bg-[var(--lp-surface)]">
+      <section data-section="como-funciona" className="border-y border-[color:var(--lp-border)] bg-[var(--lp-surface)]">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
           <h2 className={`${heading} text-2xl sm:text-3xl`}>Como funciona</h2>
           <ol className="mt-8 grid gap-4 md:grid-cols-3">
@@ -198,7 +199,7 @@ export default function LandingPage({ cfg }: { cfg: LandingConfig }) {
       </section>
 
       {/* O que esta incluso + projetos reais */}
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <section data-section="incluso-e-projetos" className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
             <h2 className={`${heading} text-2xl sm:text-3xl`}>O que está incluso</h2>
@@ -238,7 +239,7 @@ export default function LandingPage({ cfg }: { cfg: LandingConfig }) {
       </section>
 
       {/* FAQ */}
-      <section className="border-y border-[color:var(--lp-border)] bg-[var(--lp-surface)]">
+      <section data-section="faq" className="border-y border-[color:var(--lp-border)] bg-[var(--lp-surface)]">
         <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
           <h2 className={`${heading} text-2xl sm:text-3xl`}>Perguntas frequentes</h2>
           <div className="mt-8 grid gap-3">
@@ -255,7 +256,7 @@ export default function LandingPage({ cfg }: { cfg: LandingConfig }) {
       </section>
 
       {/* CTA final / formulario */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <section data-section="cta-final" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         {formInHero ? (
           <div className="text-center">
             <h2 className={`${heading} text-2xl sm:text-4xl`}>Pronto para começar?</h2>
@@ -266,7 +267,7 @@ export default function LandingPage({ cfg }: { cfg: LandingConfig }) {
           </div>
         ) : (
           <div className="mx-auto max-w-xl">
-            <div id="form" className={`${formCard} scroll-mt-6`}>{form}</div>
+            <div id="form" data-section="formulario" className={`${formCard} scroll-mt-6`}>{form}</div>
           </div>
         )}
       </section>

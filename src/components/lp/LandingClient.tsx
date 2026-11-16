@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { track } from '@/lib/lp/client';
+import { track, trackSection } from '@/lib/lp/client';
 
 // Dispara a visualizacao uma vez por carregamento.
 export function TrackView({ slug }: { slug: string }) {
@@ -55,4 +55,26 @@ export function StickyCta({ slug, label }: { slug: string; label: string }) {
       </CtaLink>
     </div>
   );
+}
+
+// Registra (uma vez por secao) quando cada [data-section] entra na tela —
+// mostra ate' onde o visitante rola e quais partes da pagina ele realmente ve.
+export function SectionTracker({ slug }: { slug: string }) {
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>('[data-section]');
+    const seen = new Set<string>();
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        const name = (e.target as HTMLElement).dataset.section;
+        if (e.isIntersecting && name && !seen.has(name)) {
+          seen.add(name);
+          trackSection(slug, name);
+          io.unobserve(e.target);
+        }
+      }
+    }, { threshold: 0.4 });
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [slug]);
+  return null;
 }

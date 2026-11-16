@@ -1,10 +1,22 @@
 'use client';
 
+import posthog from 'posthog-js';
+import { sendSiteEvent } from '@/lib/visitor';
+
 // Helpers do navegador: sessao anonima, UTM, eventos e envio de lead.
 
 // window.gtag e' declarado em components/GoogleAnalytics.tsx.
 function ga(name: string, params: Record<string, unknown>) {
   if (typeof window.gtag === 'function') window.gtag('event', name, params);
+  // PostHog (so' envia se foi iniciado em instrumentation-client.ts)
+  try {
+    if (posthog.__loaded) posthog.capture(name, params);
+  } catch { /* ignora */ }
+}
+
+// Secao da landing que o visitante chegou a ver (hero, faq, form...).
+export function trackSection(slug: string, section: string) {
+  ga('lp_section_view', { lp_slug: slug, section, ab_group: getVariantGroup() || 'direct' });
 }
 
 const SID_KEY = 'saa_sid';
@@ -82,6 +94,12 @@ export async function submitLead(payload: LeadPayload): Promise<{ ok: boolean; e
     });
     const data = await res.json().catch(() => ({}));
     if (res.ok) {
+      try {
+        // vincula a sessao a um contato (sem enviar dados pessoais)
+        const sid = getSid();
+        if (posthog.__loaded && sid) posthog.identify(sid);
+      } catch { /* ignora */ }
+      sendSiteEvent('lead', window.location.pathname, payload.source);
       ga('generate_lead', { lp_slug: payload.source, ab_group: getVariantGroup() || 'direct' });
       return { ok: true };
     }

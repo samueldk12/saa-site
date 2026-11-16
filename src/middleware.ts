@@ -70,6 +70,7 @@ function shouldSkip(pathname: string) {
   // Ignorar APIs, recursos estáticos e arquivos
   return (
     pathname.startsWith('/api/') ||
+    pathname.startsWith('/ingest') || // proxy do PostHog
     pathname.startsWith('/lp/') || // landing pages (so' em portugues, sem locale)
     pathname.startsWith('/admin') ||
     pathname.startsWith('/_next/') ||
